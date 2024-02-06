@@ -4,6 +4,16 @@
 	"license": "MIT",
 	"private": "false",
 	"type": "module",
+	"name": "drizzle-orm-helpers",
+	"version": "0.1.0",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./package.json": "./package.json"
+	},
 	"devDependencies": {
 		"@microsoft/api-extractor": "^7.39.5",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -19,5 +29,8 @@
 	},
 	"peerDependencies": {
 		"drizzle-orm": "^0.29.3"
+	},
+	"scripts": {
+		"prepublishOnly": "npm run tsup"
 	}
 }
