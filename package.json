@@ -1,0 +1,23 @@
+{
+	"author": "Emmanuel Beaudry Marchand",
+	"description": "",
+	"license": "MIT",
+	"private": "false",
+	"type": "module",
+	"devDependencies": {
+		"@microsoft/api-extractor": "^7.39.5",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^6.21.0",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-drizzle": "^0.2.3",
+		"prettier": "^3.2.5",
+		"prettier-plugin-jsdoc": "^1.3.0",
+		"tsup": "^8.0.1",
+		"type-fest": "^4.10.2",
+		"typescript": "^5.3.3"
+	},
+	"peerDependencies": {
+		"drizzle-orm": "^0.29.3"
+	}
+}

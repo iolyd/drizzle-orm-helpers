@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"target": "ESNext",
+		"useUnknownInCatchVariables": true,
+		"checkJs": true
+	},
+	"exclude": ["dist"]
+}
