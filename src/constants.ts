@@ -1,4 +1,4 @@
-import { ValueOf } from 'type-fest';
+import { LiteralUnion, ValueOf } from 'type-fest';
 
 export const PAGE_SIZE_DEFAULT = 20;
 
@@ -43,7 +43,7 @@ export const REGCONFIGS = {
 	YIDDISH: 'yiddish',
 } as const;
 
-export type Regconfig = ValueOf<typeof REGCONFIGS>;
+export type Regconfig = LiteralUnion<ValueOf<typeof REGCONFIGS>, string>;
 
 /**
  * Common coordinate projection systems and their Spatial Reference System ID.
@@ -59,7 +59,9 @@ export const SRIDS = {
 	WebMercator: 3857,
 } as const;
 
-export type SRID = ValueOf<typeof SRIDS> | `${ValueOf<typeof SRIDS>}`;
+export type Srid =
+	| ValueOf<typeof SRIDS>
+	| LiteralUnion<`${ValueOf<typeof SRIDS>}`, string | number>;
 
 export const GEOMETRY_TYPES = {
 	Point: 'Point',
