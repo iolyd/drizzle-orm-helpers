@@ -16,7 +16,6 @@ import { AnyMySqlSelect, MySqlSelect, TableConfig } from 'drizzle-orm/mysql-core
 import { AnyPgSelect, PgSelect } from 'drizzle-orm/pg-core';
 import { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import type { SetNonNullable, SetOptional } from 'type-fest';
-import { getColumns } from './utilities';
 
 /**
  * Dialect agnostic select.
@@ -107,7 +106,7 @@ export function random() {
 	return sql<number>`random()`;
 }
 
-export function when(condition: SQLWrapper | AnyColumn, statement: SQLWrapper) {
+export function whn(condition: SQLWrapper | AnyColumn, statement: SQLWrapper) {
 	return sql`when ${condition} then ${statement}`;
 }
 
@@ -115,31 +114,22 @@ export function els(statement: SQLWrapper) {
 	return sql`else ${statement}`;
 }
 
-export function cases(...statements: SQLWrapper[]) {
+export function cas(...statements: SQLWrapper[]) {
 	return sql.join([sql`case`, ...statements, sql`end`]);
 }
 
 /**
  * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
  *
- * Function is overloaded to handle both full table and single column references.
+ * @param columns Record of columns to get from the conflict's `excluded` table.
  */
-export function excluded<T extends AnyColumn>(columnOrTable: T): SQL<T>;
-export function excluded<T extends AnyTable<TableConfig>, C = T['_']['columns']>(
-	columnOrTable: T
-): { [K in keyof C]: SQL<C[K]> };
-export function excluded<T extends Column | Table>(columnOrTable: T) {
-	if (columnOrTable instanceof Column) {
-		return sql.raw(`excluded.${columnOrTable.name}`);
-	}
-	const cols = getColumns(columnOrTable);
-	type C = typeof cols;
-	return (Object.keys(cols) as (keyof C)[]).reduce(
+export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
+	return (Object.keys(columns) as (keyof T)[]).reduce(
 		(acc, curr) => {
-			acc[curr as string] = excluded(cols[curr]);
+			acc[curr] = sql.raw(`excluded.${columns[curr].name}`) as SQL<InferDataType<T[typeof curr]>>;
 			return acc;
 		},
-		<{ [K in keyof C]: SQL<C[K]> }>{}
+		<{ [K in keyof T]: SQL<InferDataType<T[K]>> }>{}
 	);
 }
 
