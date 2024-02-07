@@ -106,15 +106,24 @@ export function random() {
 	return sql<number>`random()`;
 }
 
-export function whn(condition: SQLWrapper | AnyColumn, statement: SQLWrapper) {
+/**
+ * When statement.
+ */
+export function wn(condition: SQLWrapper, statement: unknown) {
 	return sql`when ${condition} then ${statement}`;
 }
 
-export function els(statement: SQLWrapper) {
+/**
+ * Else statement for fallback statement in condition tree.
+ */
+export function el(statement: SQLWrapper) {
 	return sql`else ${statement}`;
 }
 
-export function cas(...statements: SQLWrapper[]) {
+/**
+ * Case condition chain.
+ */
+export function cs(...statements: SQLWrapper[]) {
 	return sql.join([sql`case`, ...statements, sql`end`]);
 }
 
