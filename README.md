@@ -15,4 +15,5 @@ package(s).
 
 ## Documentation
 
-A simple auto-generated documentation is available [here](./documentation.md).
+A simple auto-generated
+[documentation is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation.md).

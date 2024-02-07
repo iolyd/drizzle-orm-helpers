@@ -11,6 +11,10 @@
 		"README.md",
 		"documentation.md"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/iolyd/drizzle-orm-helpers.git"
+	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
