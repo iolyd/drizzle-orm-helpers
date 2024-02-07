@@ -94,8 +94,15 @@ export function createRegconfig<T extends Record<string, Regconfig>>(
  * @example
  *
  * ```
- * const generateNanoid = createGenerateNanoid({...})
+ * const generateNanoid = createGenerateNanoid({
+ * 	schemaName: extensionsSchema.schemaName,
+ * });
  * ```
+ *
+ * @param schemaName Name of the extension schema.
+ * @param defaultLength The nanoid length to use by default when generating without a specified
+ *   length. Lengths can be customized by passing a param to the returned `generateNanoid`
+ *   function.
  */
 export function createGenerateNanoid({
 	schemaName,
@@ -108,9 +115,14 @@ export function createGenerateNanoid({
 	/**
 	 * Generate a nanoid using postgres-nanoid.
 	 *
-	 * @see https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571
+	 * @param optimized Should the postgres extension use optimization.
+	 * @param length The length of the nanoid generated.
+	 * @param alphabet The set of characters to pick randomly from. By default, the alphabet
+	 *   established when initializing and configuring the Postgres extension will be used.
+	 * @see {@link /sql/nanoid.sql} for a demo of how to create the required extension and functions.
 	 * @todo Stay up to date when default values will accept 'sql' without having to pass param to
-	 *   sql.raw()
+	 *   sql.raw() (ref.:
+	 *   https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571)
 	 */
 	return function generateNanoid({
 		optimized = false,

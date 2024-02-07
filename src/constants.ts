@@ -7,8 +7,9 @@ export const PAGE_SIZE_DEFAULT = 20;
  *
  * @example
  *
- * ```
- * select json_object_agg(upper(cfgname), cfgname) from pg_catalog.pg_ts_config;
+ * ```sql
+ * SELECT json_object_agg(upper(cfgname), cfgname)
+ * FROM pg_catalog.pg_ts_config;
  * ```
  */
 export const REGCONFIGS = {
