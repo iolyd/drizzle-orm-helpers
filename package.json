@@ -19,7 +19,7 @@
 		"./package.json": "./package.json"
 	},
 	"devDependencies": {
-		"@microsoft/api-extractor": "^7.39.5",
+		"@microsoft/api-extractor": "^7.40.0",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
 		"eslint": "^8.56.0",
