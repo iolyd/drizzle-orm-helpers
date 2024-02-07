@@ -180,7 +180,7 @@ export function isRange(
 		max?: number;
 		upper?: RangeBoundType;
 		lower?: RangeBoundType;
-	}
+	} = {}
 ): maybeRange is Range {
 	if (!Array.isArray(maybeRange) || maybeRange.length !== 2) {
 		return false;
