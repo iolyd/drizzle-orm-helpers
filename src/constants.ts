@@ -74,3 +74,21 @@ export const GEOMETRY_TYPES = {
 };
 
 export type GeometryType = ValueOf<typeof GEOMETRY_TYPES>;
+
+export const RANGE_BOUND_TYPES = {
+	INCLUSIVE: 'inclusive',
+	EXCLUSIVE: 'exclusive',
+} as const;
+
+export type RangeBoundType = ValueOf<typeof RANGE_BOUND_TYPES>;
+
+export const RANGE_BOUND_BRACKETS = {
+	LOWER: {
+		[RANGE_BOUND_TYPES.INCLUSIVE]: '[',
+		[RANGE_BOUND_TYPES.EXCLUSIVE]: '(',
+	},
+	UPPER: {
+		[RANGE_BOUND_TYPES.INCLUSIVE]: ']',
+		[RANGE_BOUND_TYPES.EXCLUSIVE]: ')',
+	},
+} satisfies Record<'UPPER' | 'LOWER', Record<RangeBoundType, string>>;
