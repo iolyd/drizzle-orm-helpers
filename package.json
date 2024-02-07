@@ -1,8 +1,7 @@
 {
 	"author": "Emmanuel Beaudry Marchand",
-	"description": "",
+	"description": "A collection a tiny helpers for Drizzle ORM.",
 	"license": "MIT",
-	"private": "false",
 	"type": "module",
 	"name": "drizzle-orm-helpers",
 	"version": "0.1.0",
