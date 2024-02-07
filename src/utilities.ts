@@ -8,7 +8,7 @@ import {
 	is,
 	sql,
 } from 'drizzle-orm';
-import { PAGE_SIZE_DEFAULT, RangeBoundType, Regconfig } from './constants';
+import { NANOID_LENGTH_DEFAULT, PAGE_SIZE_DEFAULT, RangeBoundType, Regconfig } from './constants';
 import { AnySelect, Select } from './primitives';
 
 /**
@@ -81,9 +81,9 @@ export function createRegconfig<T extends Record<string, Regconfig>>(languageTag
 	 */
 	return function regconfig(languageTag: SQLWrapper) {
 		const cases = languageTagsArr.map(
-			(tag) => `when ${languageTag} = '${tag}' then '${languageTags[tag]}'::regconfig`
+			(tag) => sql`when ${languageTag} = '${tag}' then '${languageTags[tag]}'::regconfig`
 		);
-		return `(case ${cases.join(' ')} end)`;
+		return sql.join([sql`(case`, ...cases, sql`end)`], sql` `).mapWith(String);
 	};
 }
 
@@ -103,19 +103,21 @@ export function createRegconfig<T extends Record<string, Regconfig>>(languageTag
  */
 export function createGenerateNanoid({
 	schemaName,
-	defaultLength,
+	defaultLength = NANOID_LENGTH_DEFAULT,
 }: {
 	schemaName?: string;
-	defaultLength: number;
-}) {
+	defaultLength?: number;
+} = {}) {
 	const schema = schemaName ? `"${schemaName}".` : '';
 	/**
 	 * Generate a nanoid using postgres-nanoid.
 	 *
 	 * @param optimized Should the postgres extension use optimization.
-	 * @param length The length of the nanoid generated.
-	 * @param alphabet The set of characters to pick randomly from. By default, the alphabet
-	 *   established when initializing and configuring the Postgres extension will be used.
+	 * @param size The length of the nanoid generated. If explicit nullish is passed, will default to
+	 *   the Postgres function's default size.
+	 * @param alphabet The set of characters to pick randomly from. Defaults to
+	 *   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'. If explicit nullish is
+	 *   passed, will default to the Postgres function's default alphabet.
 	 * @see {@link /sql/nanoid.sql} for a demo of how to create the required extension and functions.
 	 * @todo Stay up to date when default values will accept 'sql' without having to pass param to
 	 *   sql.raw() (ref.:
@@ -123,24 +125,20 @@ export function createGenerateNanoid({
 	 */
 	return function generateNanoid({
 		optimized = false,
-		length = defaultLength,
+		size = defaultLength,
 		alphabet,
 	}: {
 		optimized?: boolean;
-		/**
-		 * Defaults to {NANOID_LENGTH_DEFAULT}.
-		 */
-		length?: number;
-		/**
-		 * Defaults to your extension's initialization setting.
-		 */
+		size?: number;
 		alphabet?: string;
 	} = {}) {
-		const opts: (string | number)[] = [length];
+		const opts: (string | number)[] = [size];
 		if (alphabet) {
 			opts.push(`'${alphabet}'`);
 		}
-		return sql.raw(`${schema}"nanoid${optimized ? '_optimized' : ''}"(${opts.join(',')})`);
+		return sql
+			.raw(`${schema}"nanoid${optimized ? '_optimized' : ''}"(${opts.join(',')})`)
+			.mapWith(String);
 	};
 }
 
