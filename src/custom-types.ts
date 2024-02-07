@@ -1,5 +1,5 @@
 import { customType } from 'drizzle-orm/pg-core';
-import { GEOMETRY_TYPES, SRID, SRIDS } from './constants';
+import { GEOMETRY_TYPES, Srid, SRIDS } from './constants';
 import type { Range } from './utilities';
 
 /**
@@ -170,7 +170,7 @@ type Coordinate<T extends { z?: boolean; m?: boolean } = { z: false; m: false }>
  * @see https://github.com/drizzle-team/drizzle-orm/issues/337#issuecomment-1600854417.
  */
 export const point = <
-	C extends { schemaName?: string; srid?: SRID; z?: boolean; m?: boolean },
+	C extends { schemaName?: string; srid?: Srid; z?: boolean; m?: boolean },
 	N extends string,
 >(
 	name: N,
