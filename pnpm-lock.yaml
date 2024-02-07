@@ -40,6 +40,9 @@ devDependencies:
   type-fest:
     specifier: ^4.10.2
     version: 4.10.2
+  typedoc:
+    specifier: ^0.25.7
+    version: 0.25.7(typescript@5.3.3)
   typedoc-plugin-markdown:
     specifier: ^3.17.1
     version: 3.17.1(typedoc@0.25.7)
