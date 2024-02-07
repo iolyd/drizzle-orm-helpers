@@ -16,23 +16,17 @@ export const citext = customType<{ data: string }>({
 /**
  * Tsvector type for generated columns used notably for fuzzy string search.
  *
+ * @param config.sources Array of source columns to generate the ts vector from.
+ * @param config.langauge Language of the vector, used for stemming. (regconfig cfgname).
+ * @param config.weighted If true, concatenated sources will be weighted by their order.
  * @see https://github.com/drizzle-team/drizzle-orm/issues/247
  */
 export const tsvector = customType<{
 	data: string;
 	configRequired: true;
 	config: {
-		/**
-		 * Array of source columns to generate the ts vector from.
-		 */
 		sources: string[];
-		/**
-		 * Language of the vector, used for stemming. (regconfig cfgname).
-		 */
 		language: string;
-		/**
-		 * Should sources be weighted by their order.
-		 */
 		weighted?: boolean;
 	};
 }>({
@@ -93,11 +87,16 @@ export const daterange = customType<{ data: [Date, Date] }>({
 /**
  * Implements cube extension type for 3d vectors.
  *
+ * @param config.schemaName Name of the schema where the `cube` extension is added.
  * @see https://www.postgresql.org/docs/current/cube.html
  */
-export const cube = customType<{ data: [x: number, y: number, z: number]; driverData: number[] }>({
-	dataType() {
-		return 'extensions.cube';
+export const cube = customType<{
+	data: [x: number, y: number, z: number];
+	driverData: number[];
+	config?: { schemaName?: string };
+}>({
+	dataType(config) {
+		return `${config?.schemaName ? config?.schemaName + '.' : ''}cube`;
 	},
 	fromDriver(value) {
 		if (value.length !== 3) {
@@ -115,8 +114,9 @@ export const cube = customType<{ data: [x: number, y: number, z: number]; driver
 /**
  * Implements postgres int4 / int8 range type.
  *
+ * @param config.size Size of integers, where `4` corresponds to `int4range` and `8`corresponds to a
+ *   bigint range (int8range).
  * @see https://www.postgresql.org/docs/current/rangetypes.html
- *
  * @todo Add multiranges if needed.
  */
 export const intrange = customType<{
@@ -166,6 +166,11 @@ type Coordinate<T extends { z?: boolean; m?: boolean } = { z: false; m: false }>
 /**
  * Implements postgis point geometry type.
  *
+ * @param config.schemaName Name of the schema where the PostGIS extension is added.
+ * @param config.srid Id of the projection system to use for the column.
+ * @param config.z Should the point coordinates include a `z` dimension, i.e. is it in 3D?
+ * @param config.m Should the point coordinates include a `m` dimension (occasionnally used to
+ *   contain time data)?
  * @see https://github.com/drizzle-team/drizzle-orm/issues/671
  * @see https://github.com/drizzle-team/drizzle-orm/issues/337#issuecomment-1600854417.
  */
@@ -183,7 +188,7 @@ export const point = <
 		config: C;
 	}>({
 		dataType(config) {
-			return `extensions.geometry(Point${extraDimensions},${config?.srid ?? SRIDS.WGS84})`;
+			return `${config?.schemaName ? config.schemaName + '.' : ''}geometry(Point${extraDimensions},${config?.srid ?? SRIDS.WGS84})`;
 		},
 		toDriver(value) {
 			const zd = config?.z ? `,${config.z}` : '';
