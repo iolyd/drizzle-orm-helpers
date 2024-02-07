@@ -93,6 +93,16 @@ export function bool<T extends boolean>(value: T) {
 export const nul = sql<null>`null`;
 
 /**
+ * SQL template infinity value.
+ */
+export const infinity = sql<typeof Infinity>`infinity`;
+
+/**
+ * SQL template today value.
+ */
+export const today = sql<Date>`today`;
+
+/**
  * SQL json_strip_nulls.
  */
 export function jsonStripNulls<T>(json: SQL<T> | SQL.Aliased<T>) {
