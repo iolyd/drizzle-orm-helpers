@@ -8,7 +8,7 @@ import {
 	is,
 	sql,
 } from 'drizzle-orm';
-import { PAGE_SIZE_DEFAULT, Regconfig } from './constants';
+import { PAGE_SIZE_DEFAULT, RangeBoundType, Regconfig } from './constants';
 import { AnySelect, Select } from './primitives';
 
 /**
@@ -70,14 +70,11 @@ export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
  * ```
  * const regconfig = createRegconfig({...})
  * ```
+ *
+ * @param languageTags Lookup dictionnary used as a reference to match your app's language tags with
+ *   Postgres's regconfig language names.
  */
-export function createRegconfig<T extends Record<string, Regconfig>>(
-	/**
-	 * Dictionnary used as a reference to match your app language tags with Postgres's regconfig
-	 * language names.
-	 */
-	languageTags: T
-) {
+export function createRegconfig<T extends Record<string, Regconfig>>(languageTags: T) {
 	const languageTagsArr = Object.keys(languageTags);
 	/**
 	 * Use this sql switch to retrieve an sql langauge tag statement's corresponding regconfig name.
@@ -154,26 +151,37 @@ export function paginate<T extends Select>(qb: T, page: number, size: number = P
 	return qb.limit(size).offset(page * size);
 }
 
+/**
+ * Type for returned value of postgres range data. While empty ranges normally return 'empty', they
+ * are here modeled as [null, null] for convenience when binding range members or reprensentinf
+ * their state for reactivity.
+ */
 export type Range = [number, number] | [null, null];
 
 /**
- * Schema to validate and assert as range.
+ * Schema to validate and assert as range. Can also be used for the base of a custom validator with
+ * the library of your choice.
+ *
+ * @example
+ *
+ * ```
+ * // zod custom schema
+ * const rangeSchema = z.custom<Range>(isRange);
+ * ```
+ *
+ * @param config.min Minimum value of the range.
+ * @param config.max Maximum value of the range.
  */
 export function isRange(
 	maybeRange: unknown,
 	{
 		min,
 		max,
-		ordered = true,
 	}: {
 		min?: number;
 		max?: number;
-		/**
-		 * Should min and max order be forced?
-		 *
-		 * @default true
-		 */
-		ordered?: boolean;
+		upper?: RangeBoundType;
+		lower?: RangeBoundType;
 	}
 ): maybeRange is Range {
 	if (!Array.isArray(maybeRange) || maybeRange.length !== 2) {
@@ -183,11 +191,11 @@ export function isRange(
 		// For convenience, 'empty' ranges are coalesced to null-bounded tuples.
 		return true;
 	}
-	if (ordered && maybeRange[0] > maybeRange[1]) {
-		// Order is not respected.
+	if (maybeRange[0] > maybeRange[1]) {
+		// Ascending order is not respected.
 		return false;
 	}
-	if ((min && Math.min(...maybeRange) < min) || (max && Math.max(...maybeRange) > max)) {
+	if ((min && maybeRange[0] < min) || (max && maybeRange[1] > max)) {
 		// Limits are not respected.
 		return false;
 	}
