@@ -31,7 +31,7 @@
 		"drizzle-orm": "^0.29.3"
 	},
 	"scripts": {
-		"doc": "pnpm typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs true --out docs src/index.ts && mv docs/modules.md docs.md && rm -rf docs",
+		"doc": "pnpm typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs true --out docs src/index.ts && mv docs/modules.md documentation.md && rm -rf docs",
 		"prepublishOnly": "pnpm doc && pnpm tsup"
 	}
 }
