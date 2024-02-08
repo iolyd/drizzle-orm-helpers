@@ -11,7 +11,7 @@ import {
 	sql,
 } from 'drizzle-orm';
 import { NANOID_LENGTH_DEFAULT, PAGE_SIZE_DEFAULT, RangeBoundType, Regconfig } from './constants';
-import { AnySelect, Select, cs, el, getCurrentTsConfig, wn } from './primitives';
+import { AnySelect, Select, cs, wn } from './primitives';
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
@@ -85,9 +85,8 @@ export function createRegconfig<T extends Record<string, Regconfig>>(languageTag
 		return cs(
 			...languageTagsArr.map((tag) =>
 				wn(eq(languageTag, tag), sql`${languageTags[tag]}::regconfig`)
-			),
-			el(getCurrentTsConfig())
-		).mapWith(String) as SQL<Regconfig>;
+			)
+		).mapWith(String) as SQL<Regconfig | null>;
 	};
 }
 
