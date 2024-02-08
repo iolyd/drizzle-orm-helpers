@@ -123,6 +123,14 @@ export function random() {
 	return sql<number>`random()`;
 }
 
+// export function ifb(condition: SQLWrapper, statement: unknown) {
+// 	return sql`if ${condition} then ${statement} end if`;
+// }
+
+// export function eif() {
+// 	return sql``;
+// }
+
 /**
  * When statement.
  *
