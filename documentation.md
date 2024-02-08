@@ -74,7 +74,7 @@ Dialect agnostic AnySelect.
 
 #### Defined in
 
-[src/primitives.ts:37](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L37)
+[src/primitives.ts:37](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L37)
 
 ___
 
@@ -92,7 +92,7 @@ Infer type of table column.
 
 #### Defined in
 
-[src/primitives.ts:42](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L42)
+[src/primitives.ts:42](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L42)
 
 ___
 
@@ -110,7 +110,7 @@ Infer SQL template or column data type.
 
 #### Defined in
 
-[src/primitives.ts:49](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L49)
+[src/primitives.ts:49](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L49)
 
 ___
 
@@ -124,7 +124,7 @@ their state for reactivity.
 
 #### Defined in
 
-[src/utilities.ts:161](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L161)
+[src/utilities.ts:160](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L160)
 
 ___
 
@@ -142,7 +142,7 @@ Dialect agnostic select.
 
 #### Defined in
 
-[src/primitives.ts:28](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L28)
+[src/primitives.ts:28](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L28)
 
 ## Variables
 
@@ -154,7 +154,7 @@ Empty array as SQL json.
 
 #### Defined in
 
-[src/primitives.ts:67](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L67)
+[src/primitives.ts:67](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L67)
 
 ___
 
@@ -166,7 +166,7 @@ Empty record as SQL json.
 
 #### Defined in
 
-[src/primitives.ts:62](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L62)
+[src/primitives.ts:62](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L62)
 
 ___
 
@@ -178,7 +178,7 @@ Empty SQL array (not json typed)
 
 #### Defined in
 
-[src/primitives.ts:72](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L72)
+[src/primitives.ts:72](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L72)
 
 ___
 
@@ -190,7 +190,7 @@ SQL template false value.
 
 #### Defined in
 
-[src/primitives.ts:82](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L82)
+[src/primitives.ts:82](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L82)
 
 ___
 
@@ -202,7 +202,7 @@ SQL template infinity value.
 
 #### Defined in
 
-[src/primitives.ts:99](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L99)
+[src/primitives.ts:99](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L99)
 
 ___
 
@@ -214,7 +214,7 @@ SQL template null value.
 
 #### Defined in
 
-[src/primitives.ts:94](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L94)
+[src/primitives.ts:94](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L94)
 
 ___
 
@@ -226,7 +226,7 @@ SQL template today value.
 
 #### Defined in
 
-[src/primitives.ts:104](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L104)
+[src/primitives.ts:104](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L104)
 
 ___
 
@@ -238,7 +238,7 @@ SQL template true value.
 
 #### Defined in
 
-[src/primitives.ts:77](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L77)
+[src/primitives.ts:77](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L77)
 
 ## Functions
 
@@ -266,7 +266,7 @@ Aggregate sql values into an sql array.
 
 #### Defined in
 
-[src/primitives.ts:192](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L192)
+[src/primitives.ts:192](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L192)
 
 ___
 
@@ -294,7 +294,7 @@ SQL template boolean value.
 
 #### Defined in
 
-[src/primitives.ts:87](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L87)
+[src/primitives.ts:87](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L87)
 
 ___
 
@@ -327,7 +327,7 @@ https://www.postgresql.org/docs/current/citext.html
 
 #### Defined in
 
-[src/custom-types.ts:11](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L11)
+[src/custom-types.ts:11](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L11)
 
 ___
 
@@ -355,7 +355,7 @@ SQL coalesce.
 
 #### Defined in
 
-[src/primitives.ts:346](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L346)
+[src/primitives.ts:346](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L346)
 
 ___
 
@@ -400,13 +400,13 @@ const generateNanoid = createGenerateNanoid({
 
 #### Defined in
 
-[src/utilities.ts:108](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L108)
+[src/utilities.ts:107](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L107)
 
 ___
 
 ### createRegconfig
 
-▸ **createRegconfig**\<`T`\>(`languageTags`): (`languageTag`: `SQLWrapper`) => `SQL`\<`Regconfig`\>
+▸ **createRegconfig**\<`T`\>(`languageTags`): (`languageTag`: `SQLWrapper`) => `SQL`\<``null`` \| `Regconfig`\>
 
 #### Type parameters
 
@@ -424,7 +424,7 @@ ___
 
 `fn`
 
-▸ (`languageTag`): `SQL`\<`Regconfig`\>
+▸ (`languageTag`): `SQL`\<``null`` \| `Regconfig`\>
 
 ##### Parameters
 
@@ -434,7 +434,7 @@ ___
 
 ##### Returns
 
-`SQL`\<`Regconfig`\>
+`SQL`\<``null`` \| `Regconfig`\>
 
 **`Example`**
 
@@ -444,7 +444,7 @@ const regconfig = createRegconfig({...})
 
 #### Defined in
 
-[src/utilities.ts:79](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L79)
+[src/utilities.ts:79](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L79)
 
 ___
 
@@ -472,7 +472,7 @@ CASE statements END;
 
 #### Defined in
 
-[src/primitives.ts:170](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L170)
+[src/primitives.ts:170](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L170)
 
 ___
 
@@ -506,7 +506,7 @@ https://www.postgresql.org/docs/current/cube.html
 
 #### Defined in
 
-[src/custom-types.ts:100](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L100)
+[src/custom-types.ts:100](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L100)
 
 ___
 
@@ -544,7 +544,7 @@ Add multiranges if needed.
 
 #### Defined in
 
-[src/custom-types.ts:82](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L82)
+[src/custom-types.ts:82](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L82)
 
 ___
 
@@ -572,7 +572,7 @@ ELSE statement;
 
 #### Defined in
 
-[src/primitives.ts:157](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L157)
+[src/primitives.ts:157](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L157)
 
 ___
 
@@ -600,7 +600,7 @@ Get excluded column values in conflict cases. Useful for onConflictDoUpdate's se
 
 #### Defined in
 
-[src/primitives.ts:179](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L179)
+[src/primitives.ts:179](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L179)
 
 ___
 
@@ -632,7 +632,7 @@ https://github.com/drizzle-team/drizzle-orm/pull/1789
 
 #### Defined in
 
-[src/utilities.ts:21](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L21)
+[src/utilities.ts:21](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L21)
 
 ___
 
@@ -646,7 +646,7 @@ ___
 
 #### Defined in
 
-[src/primitives.ts:258](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L258)
+[src/primitives.ts:258](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L258)
 
 ___
 
@@ -672,7 +672,7 @@ ___
 
 #### Defined in
 
-[src/utilities.ts:45](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L45)
+[src/utilities.ts:45](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L45)
 
 ___
 
@@ -710,7 +710,7 @@ Add multiranges if needed.
 
 #### Defined in
 
-[src/custom-types.ts:129](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L129)
+[src/custom-types.ts:129](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L129)
 
 ___
 
@@ -745,7 +745,7 @@ const rangeSchema = z.custom<Range>(isRange);
 
 #### Defined in
 
-[src/utilities.ts:177](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L177)
+[src/utilities.ts:176](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L176)
 
 ___
 
@@ -775,7 +775,7 @@ Json_agg.
 
 #### Defined in
 
-[src/primitives.ts:265](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L265)
+[src/primitives.ts:265](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L265)
 
 ___
 
@@ -803,7 +803,7 @@ Aggregate sql values into a json object.
 
 #### Defined in
 
-[src/primitives.ts:304](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L304)
+[src/primitives.ts:304](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L304)
 
 ___
 
@@ -832,7 +832,7 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Defined in
 
-[src/primitives.ts:289](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L289)
+[src/primitives.ts:289](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L289)
 
 ___
 
@@ -865,7 +865,7 @@ type instead of an SQL wrapped type.
 
 #### Defined in
 
-[src/primitives.ts:326](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L326)
+[src/primitives.ts:326](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L326)
 
 ___
 
@@ -893,7 +893,7 @@ SQL json_strip_nulls.
 
 #### Defined in
 
-[src/primitives.ts:109](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L109)
+[src/primitives.ts:109](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L109)
 
 ___
 
@@ -923,7 +923,7 @@ Paginate a query.
 
 #### Defined in
 
-[src/utilities.ts:152](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/utilities.ts#L152)
+[src/utilities.ts:151](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/utilities.ts#L151)
 
 ___
 
@@ -944,7 +944,7 @@ ___
 
 #### Defined in
 
-[src/primitives.ts:247](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L247)
+[src/primitives.ts:247](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L247)
 
 ___
 
@@ -979,7 +979,7 @@ Implements postgis point geometry type.
 
 #### Defined in
 
-[src/custom-types.ts:184](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L184)
+[src/custom-types.ts:184](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L184)
 
 ___
 
@@ -1001,7 +1001,7 @@ random();
 
 #### Defined in
 
-[src/primitives.ts:122](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L122)
+[src/primitives.ts:122](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L122)
 
 ___
 
@@ -1030,7 +1030,7 @@ type.
 
 #### Defined in
 
-[src/primitives.ts:229](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L229)
+[src/primitives.ts:229](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L229)
 
 ___
 
@@ -1060,7 +1060,7 @@ https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-
 
 #### Defined in
 
-[src/primitives.ts:201](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L201)
+[src/primitives.ts:201](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L201)
 
 ___
 
@@ -1086,7 +1086,7 @@ ___
 
 #### Defined in
 
-[src/primitives.ts:213](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L213)
+[src/primitives.ts:213](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L213)
 
 ___
 
@@ -1107,7 +1107,7 @@ ___
 
 #### Defined in
 
-[src/primitives.ts:243](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L243)
+[src/primitives.ts:243](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L243)
 
 ___
 
@@ -1128,7 +1128,7 @@ ___
 
 #### Defined in
 
-[src/primitives.ts:239](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L239)
+[src/primitives.ts:239](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L239)
 
 ___
 
@@ -1151,7 +1151,7 @@ Test a text search query against a ts_vector value.
 
 #### Defined in
 
-[src/primitives.ts:254](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L254)
+[src/primitives.ts:254](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L254)
 
 ___
 
@@ -1190,7 +1190,7 @@ Add multiranges if needed.
 
 #### Defined in
 
-[src/custom-types.ts:62](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L62)
+[src/custom-types.ts:62](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L62)
 
 ___
 
@@ -1231,7 +1231,7 @@ Implementation isn't clean. Figure out a better way to map the language name and
 
 #### Defined in
 
-[src/custom-types.ts:27](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/custom-types.ts#L27)
+[src/custom-types.ts:27](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/custom-types.ts#L27)
 
 ___
 
@@ -1261,4 +1261,4 @@ THEN statement;
 
 #### Defined in
 
-[src/primitives.ts:144](https://github.com/iolyd/drizzle-orm-helpers/blob/ef39047/src/primitives.ts#L144)
+[src/primitives.ts:144](https://github.com/iolyd/drizzle-orm-helpers/blob/10ad4cc/src/primitives.ts#L144)
