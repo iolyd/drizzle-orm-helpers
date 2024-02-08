@@ -16,6 +16,7 @@ import { AnyMySqlSelect, MySqlSelect, TableConfig } from 'drizzle-orm/mysql-core
 import { AnyPgSelect, PgSelect } from 'drizzle-orm/pg-core';
 import { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import type { SetNonNullable, SetOptional } from 'type-fest';
+import { Regconfig } from './constants';
 
 /**
  * Dialect agnostic select.
@@ -111,6 +112,12 @@ export function jsonStripNulls<T>(json: SQL<T> | SQL.Aliased<T>) {
 
 /**
  * SQL random function.
+ *
+ * @example
+ *
+ * ```sql
+ * random();
+ * ```
  */
 export function random() {
 	return sql<number>`random()`;
@@ -118,6 +125,13 @@ export function random() {
 
 /**
  * When statement.
+ *
+ * @example
+ *
+ * ```sql
+ * WHEN condition;
+ * THEN statement;
+ * ```
  */
 export function wn(condition: SQLWrapper, statement: unknown) {
 	return sql`when ${condition} then ${statement}`;
@@ -125,6 +139,12 @@ export function wn(condition: SQLWrapper, statement: unknown) {
 
 /**
  * Else statement for fallback statement in condition tree.
+ *
+ * - @example.
+ *
+ * ```sql
+ * ELSE statement;
+ * ```
  */
 export function el(statement: SQLWrapper) {
 	return sql`else ${statement}`;
@@ -132,6 +152,14 @@ export function el(statement: SQLWrapper) {
 
 /**
  * Case condition chain.
+ *
+ * @example
+ *
+ * ```sql
+ * CASE;
+ * statements;
+ * END;
+ * ```
  */
 export function cs(...statements: SQLWrapper[]) {
 	return sql.join([sql`case`, ...statements, sql`end`]);
@@ -219,6 +247,10 @@ export function plaintoTsquery(language: SQLWrapper, text: unknown) {
  */
 export function ts(vector: SQLWrapper, querytext: SQLWrapper) {
 	return sql`${vector} @@ ${bindIfParam(querytext, vector)}`;
+}
+
+export function getCurrentTsConfig() {
+	return sql<Regconfig>`get_current_ts_config()`;
 }
 
 /**
