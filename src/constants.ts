@@ -1,5 +1,5 @@
 import { PgDialect } from 'drizzle-orm/pg-core';
-import { LiteralUnion, ValueOf } from 'type-fest';
+import { ValueOf } from 'type-fest';
 
 export const PG_DIALECT = new PgDialect();
 
@@ -52,10 +52,18 @@ export const REGCONFIGS = {
 	YIDDISH: 'yiddish',
 } as const;
 
-export type Regconfig = LiteralUnion<ValueOf<typeof REGCONFIGS>, string>;
+export type Regconfig = ValueOf<typeof REGCONFIGS>;
 
 /**
- * Common coordinate projection systems and their Spatial Reference System ID.
+ * Common coordinate projection systems and their Spatial Reference System ID (EPSG).
+ *
+ * @example
+ *
+ * ```sql
+ * SELECT * FROM extensions.spatial_ref_sys;
+ * ```
+ *
+ * @todo Add more aliased systems.
  */
 export const SRIDS = {
 	/**
@@ -65,13 +73,14 @@ export const SRIDS = {
 	/**
 	 * Lat/Lon flat-map coordinates in meters. Generally the default system used for web apps.
 	 */
-	WebMercator: 3857,
+	WEB_MERCATOR: 3857,
 } as const;
 
-export type Srid =
-	| ValueOf<typeof SRIDS>
-	| LiteralUnion<`${ValueOf<typeof SRIDS>}`, string | number>;
+export type Srid = ValueOf<typeof SRIDS> | `${ValueOf<typeof SRIDS>}`;
 
+/**
+ * GeoJSON geometry types accepted by PostGIS.
+ */
 export const GEOMETRY_TYPES = {
 	Point: 'Point',
 	LineString: 'LineString',

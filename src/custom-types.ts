@@ -52,7 +52,24 @@ export const tsvector = customType<{
 });
 
 /**
- * Implements postgres timestamp range.
+ * Implements Postgres regconfig. Useful for text search language config storage.
+ *
+ * @see https://www.postgresql.org/docs/current/textsearch-controls.html
+ */
+export const regconfig = customType<{ data: Regconfig }>({
+	dataType() {
+		return 'regconfig';
+	},
+	fromDriver(value) {
+		return value as Regconfig;
+	},
+	toDriver(input) {
+		return input;
+	},
+});
+
+/**
+ * Implements Postgres timestamp range.
  *
  * @see https://orm.drizzle.team/docs/custom-types Timestamp for reference.
  * @see https://www.postgresql.org/docs/current/rangetypes.html

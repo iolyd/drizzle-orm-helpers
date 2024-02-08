@@ -76,12 +76,12 @@ export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
  * @param languageTags Lookup dictionnary used as a reference to match your app's language tags with
  *   Postgres's regconfig language names.
  */
-export function createRegconfig<T extends Record<string, Regconfig>>(languageTags: T) {
+export function createGetRegconfig<T extends Record<string, Regconfig>>(languageTags: T) {
 	const languageTagsArr = Object.keys(languageTags);
 	/**
 	 * Use this sql switch to retrieve an sql langauge tag statement's corresponding regconfig name.
 	 */
-	return function regconfig(languageTag: SQLWrapper) {
+	return function getRegconfig(languageTag: SQLWrapper) {
 		return cs(
 			...languageTagsArr.map((tag) =>
 				wn(eq(languageTag, tag), sql`${languageTags[tag]}::regconfig`)
