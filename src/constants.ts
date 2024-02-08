@@ -1,4 +1,7 @@
+import { PgDialect } from 'drizzle-orm/pg-core';
 import { LiteralUnion, ValueOf } from 'type-fest';
+
+export const PG_DIALECT = new PgDialect();
 
 export const PAGE_SIZE_DEFAULT = 20;
 

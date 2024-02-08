@@ -1,5 +1,6 @@
+import { SQL } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
-import { GEOMETRY_TYPES, Srid, SRIDS } from './constants';
+import { GEOMETRY_TYPES, PG_DIALECT, Regconfig, Srid, SRIDS } from './constants';
 import type { Range } from './utilities';
 
 /**
@@ -20,21 +21,27 @@ export const citext = customType<{ data: string }>({
  * @param config.langauge Language of the vector, used for stemming. (regconfig cfgname).
  * @param config.weighted If true, concatenated sources will be weighted by their order.
  * @see https://github.com/drizzle-team/drizzle-orm/issues/247
+ * @todo Implementation isn't clean. Figure out a better way to map the language name and column
+ *   references, or stay up to date on support for `generatedAs()`.
  */
 export const tsvector = customType<{
 	data: string;
 	configRequired: true;
 	config: {
 		sources: string[];
-		language: string;
+		language: Regconfig | SQL<Regconfig>;
 		weighted?: boolean;
 	};
 }>({
 	dataType(config) {
+		const cfgname =
+			config.language instanceof SQL
+				? PG_DIALECT.sqlToQuery(config.language.inlineParams()).sql
+				: config.language;
 		if (config.weighted) {
 			const weighted = config.sources.map((input, index) => {
 				const weight = String.fromCharCode(index + 65);
-				return `setweight(to_tsvector(${config.language}, coalesce(${input}, '')), '${weight}')`;
+				return `setweight(to_tsvector(${cfgname}, coalesce(${input}, '')), '${weight}')`;
 			});
 			return `tsvector generated always as (${weighted.join(' || ')}) stored`;
 		} else {
