@@ -164,13 +164,11 @@ export function el(statement: SQLWrapper) {
  * @example
  *
  * ```sql
- * CASE;
- * statements;
- * END;
+ * CASE statements END;
  * ```
  */
 export function cs(...statements: SQLWrapper[]) {
-	return sql.join([sql`case`, ...statements, sql`end`]);
+	return sql.join([sql`case`, ...statements, sql`end`], sql` `);
 }
 
 /**
