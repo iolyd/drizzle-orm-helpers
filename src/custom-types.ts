@@ -1,6 +1,6 @@
-import { SQL } from 'drizzle-orm';
+import { SQL, SQLWrapper } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
-import { GEOMETRY_TYPES, PG_DIALECT, Regconfig, Srid, SRIDS } from './constants';
+import { GEOMETRY_TYPES, PG_DIALECT, Regconfig, SRIDS, Srid } from './constants';
 import type { Range } from './utilities';
 
 /**
@@ -29,7 +29,7 @@ export const tsvector = customType<{
 	configRequired: true;
 	config: {
 		sources: string[];
-		language: Regconfig | SQL<Regconfig>;
+		language: Regconfig | SQL<Regconfig> | SQLWrapper;
 		weighted?: boolean;
 	};
 }>({
