@@ -103,6 +103,7 @@ export function createRegconfig<T extends Record<string, Regconfig>>(languageTag
  * @param defaultLength The nanoid length to use by default when generating without a specified
  *   length. Lengths can be customized by passing a param to the returned `generateNanoid`
  *   function.
+ * @see {@link https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql Example of how to create the needed extensions and the nanoid functions} .
  */
 export function createGenerateNanoid({
 	schemaName,
