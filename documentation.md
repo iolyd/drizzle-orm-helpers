@@ -1,397 +1,371 @@
-# drizzle-orm-helpers
+# Drizzle ORM Helpers documentation
 
-## Table of contents
+## Table of Contents
 
-### Type Aliases
-
-- [AnySelect](modules.md#anyselect)
-- [InferColumnType](modules.md#infercolumntype)
-- [InferDataType](modules.md#inferdatatype)
-- [Range](modules.md#range)
-- [Select](modules.md#select)
-
-### Variables
-
-- [emptyJsonArray](modules.md#emptyjsonarray)
-- [emptyJsonObject](modules.md#emptyjsonobject)
-- [emptySqlArray](modules.md#emptysqlarray)
-- [fal](modules.md#fal)
-- [infinity](modules.md#infinity)
-- [nul](modules.md#nul)
-- [today](modules.md#today)
-- [tru](modules.md#tru)
-
-### Functions
-
-- [arrayAgg](modules.md#arrayagg)
-- [bool](modules.md#bool)
-- [citext](modules.md#citext)
-- [coalesce](modules.md#coalesce)
-- [createGenerateNanoid](modules.md#creategeneratenanoid)
-- [createGetRegconfig](modules.md#creategetregconfig)
-- [cs](modules.md#cs)
-- [cube](modules.md#cube)
-- [daterange](modules.md#daterange)
-- [el](modules.md#el)
-- [excluded](modules.md#excluded)
-- [getColumns](modules.md#getcolumns)
-- [getCurrentTsConfig](modules.md#getcurrenttsconfig)
-- [getNameOrAlias](modules.md#getnameoralias)
-- [intrange](modules.md#intrange)
-- [isRange](modules.md#isrange)
-- [jsonAgg](modules.md#jsonagg)
-- [jsonAggBuildObject](modules.md#jsonaggbuildobject)
-- [jsonBuildObject](modules.md#jsonbuildobject)
-- [jsonObjectAgg](modules.md#jsonobjectagg)
-- [jsonStripNulls](modules.md#jsonstripnulls)
-- [paginate](modules.md#paginate)
-- [plaintoTsquery](modules.md#plaintotsquery)
-- [point](modules.md#point)
-- [random](modules.md#random)
-- [regconfig](modules.md#regconfig)
-- [rowToJson](modules.md#rowtojson)
-- [toJson](modules.md#tojson)
-- [toJsonb](modules.md#tojsonb)
-- [toTsquery](modules.md#totsquery)
-- [toTsvector](modules.md#totsvector)
-- [ts](modules.md#ts)
-- [tsrange](modules.md#tsrange)
-- [tsvector](modules.md#tsvector)
-- [wn](modules.md#wn)
+- [Type Aliases](#type-aliases)
+- [Variables](#variables)
+- [Functions](#functions)
 
 ## Type Aliases
 
+<a id="anyselect" name="anyselect"></a>
+
 ### AnySelect
 
-Ƭ **AnySelect**: `SetOptional`\<`AnyPgSelect` \| `AnyMySqlSelect` \| `AnySQLiteSelect`, ``"where"``\>
+```ts
+type AnySelect: SetOptional<AnyPgSelect | AnyMySqlSelect | AnySQLiteSelect, "where">;
+```
 
 Dialect agnostic AnySelect.
 
-**`See`**
+#### See
 
- - AnyPgSelect
- - AnyMySqlSelect
- - AnySQLiteSelect
+- AnyPgSelect
+- AnyMySqlSelect
+- AnySQLiteSelect
 
-#### Defined in
+---
 
-[src/primitives.ts:37](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L37)
+<a id="infercolumntypet" name="infercolumntypet"></a>
 
-___
+### InferColumnType\<T>
 
-### InferColumnType
-
-Ƭ **InferColumnType**\<`T`\>: `AnyColumn`\<`Pick`\<`ReturnType`\<`T`\>[``"_"``], ``"data"`` \| ``"dataType"``\>\>
+```ts
+type InferColumnType<T>: AnyColumn<Pick<ReturnType<T>["_"], "data" | "dataType">>;
+```
 
 Infer type of table column.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends (...`config`: `never`[]) => `ColumnBuilderBase` |
+| Type parameter                                               |
+| :----------------------------------------------------------- |
+| `T` extends (...`config`: `never`\[]) => `ColumnBuilderBase` |
 
-#### Defined in
+---
 
-[src/primitives.ts:42](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L42)
+<a id="inferdatatypet" name="inferdatatypet"></a>
 
-___
+### InferDataType\<T>
 
-### InferDataType
-
-Ƭ **InferDataType**\<`T`\>: `T` extends `Column` ? `T`[``"_"``][``"notNull"``] extends ``true`` ? `T`[``"_"``][``"dataType"``] : `T`[``"_"``][``"dataType"``] \| ``null`` : `T` extends `SQL`\<infer U\> ? `U` : `T` extends `SQL.Aliased`\<infer U\> ? `U` : `never`
+```ts
+type InferDataType<T>: T extends Column ? T["_"]["notNull"] extends true ? T["_"]["dataType"] : T["_"]["dataType"] | null : T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : never;
+```
 
 Infer SQL template or column data type.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Column` \| `SQL` \| `SQL.Aliased` |
+| Type parameter       |
+| :------------------- | ----- | ------------- |
+| `T` extends `Column` | `SQL` | `SQL.Aliased` |
 
-#### Defined in
+---
 
-[src/primitives.ts:49](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L49)
-
-___
+<a id="range" name="range"></a>
 
 ### Range
 
-Ƭ **Range**: [`number`, `number`] \| [``null``, ``null``]
+```ts
+type Range: [number, number] | [null, null];
+```
 
-Type for returned value of postgres range data. While empty ranges normally return 'empty', they
-are here modeled as [null, null] for convenience when binding range members or reprensentinf
-their state for reactivity.
+Type for returned value of postgres range data. While empty ranges normally return 'empty', they are
+here modeled as \[null, null] for convenience when binding range members or reprensentinf their
+state for reactivity.
 
-#### Defined in
+---
 
-[src/utilities.ts:161](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L161)
-
-___
+<a id="select" name="select"></a>
 
 ### Select
 
-Ƭ **Select**: `SetOptional`\<`PgSelect` \| `MySqlSelect` \| `SQLiteSelect`, ``"where"``\>
+```ts
+type Select: SetOptional<PgSelect | MySqlSelect | SQLiteSelect, "where">;
+```
 
 Dialect agnostic select.
 
-**`See`**
+#### See
 
- - PgSelect.
- - MySqlSelect
- - SQLiteSelect
-
-#### Defined in
-
-[src/primitives.ts:28](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L28)
+- PgSelect.
+- MySqlSelect
+- SQLiteSelect
 
 ## Variables
 
+<a id="emptyjsonarray" name="emptyjsonarray"></a>
+
 ### emptyJsonArray
 
-• `Const` **emptyJsonArray**: `SQL`\<[`never`]\>
+```ts
+const emptyJsonArray: SQL<[never]>;
+```
 
 Empty array as SQL json.
 
-#### Defined in
+---
 
-[src/primitives.ts:67](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L67)
-
-___
+<a id="emptyjsonobject" name="emptyjsonobject"></a>
 
 ### emptyJsonObject
 
-• `Const` **emptyJsonObject**: `SQL`\<`object`\>
+```ts
+const emptyJsonObject: SQL<object>;
+```
 
 Empty record as SQL json.
 
-#### Defined in
+---
 
-[src/primitives.ts:62](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L62)
-
-___
+<a id="emptysqlarray" name="emptysqlarray"></a>
 
 ### emptySqlArray
 
-• `Const` **emptySqlArray**: `SQL`\<`SQL`\<[]\>\>
+```ts
+const emptySqlArray: SQL<SQL<[]>>;
+```
 
 Empty SQL array (not json typed)
 
-#### Defined in
+---
 
-[src/primitives.ts:72](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L72)
-
-___
+<a id="fal" name="fal"></a>
 
 ### fal
 
-• `Const` **fal**: `SQL`\<``false``\>
+```ts
+const fal: SQL<false>;
+```
 
 SQL template false value.
 
-#### Defined in
+---
 
-[src/primitives.ts:82](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L82)
-
-___
+<a id="infinity" name="infinity"></a>
 
 ### infinity
 
-• `Const` **infinity**: `SQL`\<`number`\>
+```ts
+const infinity: SQL<number>;
+```
 
 SQL template infinity value.
 
-#### Defined in
+---
 
-[src/primitives.ts:99](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L99)
-
-___
+<a id="nul" name="nul"></a>
 
 ### nul
 
-• `Const` **nul**: `SQL`\<``null``\>
+```ts
+const nul: SQL<null>;
+```
 
 SQL template null value.
 
-#### Defined in
+---
 
-[src/primitives.ts:94](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L94)
-
-___
+<a id="today" name="today"></a>
 
 ### today
 
-• `Const` **today**: `SQL`\<`Date`\>
+```ts
+const today: SQL<Date>;
+```
 
 SQL template today value.
 
-#### Defined in
+---
 
-[src/primitives.ts:104](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L104)
-
-___
+<a id="tru" name="tru"></a>
 
 ### tru
 
-• `Const` **tru**: `SQL`\<``true``\>
+```ts
+const tru: SQL<true>;
+```
 
 SQL template true value.
 
-#### Defined in
-
-[src/primitives.ts:77](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L77)
-
 ## Functions
 
-### arrayAgg
+<a id="arrayagg" name="arrayagg"></a>
 
-▸ **arrayAgg**\<`T`\>(`raw`): `SQL`\<``null`` \| `T` extends `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`T`\>[] : `T`[]\>
+### arrayAgg()
+
+```ts
+arrayAgg<T>(raw: T): SQL<null | T extends SQL<unknown> | Aliased<unknown> ? InferDataType<T>[] : T[]>
+```
 
 Aggregate sql values into an sql array.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> \| {} |
+| Type parameter               |
+| :--------------------------- | -------------------- | --- |
+| `T` extends `SQL`<`unknown`> | `Aliased`<`unknown`> | {}  |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `raw` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `raw`     | `T`  |
 
 #### Returns
 
-`SQL`\<``null`` \| `T` extends `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`T`\>[] : `T`[]\>
+`SQL`<`null` | `T` extends `SQL`<`unknown`> | `Aliased`<`unknown`> ?
+[`InferDataType`](documentation.md#inferdatatypet)<`T`>\[] : `T`\[]>
 
-#### Defined in
+---
 
-[src/primitives.ts:192](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L192)
+<a id="bool" name="bool"></a>
 
-___
+### bool()
 
-### bool
-
-▸ **bool**\<`T`\>(`value`): `SQL`\<`T`\>
+```ts
+bool<T>(value: T): SQL<T>
+```
 
 SQL template boolean value.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `boolean` |
+| Type parameter        |
+| :-------------------- |
+| `T` extends `boolean` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `value` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `value`   | `T`  |
 
 #### Returns
 
-`SQL`\<`T`\>
+`SQL`<`T`>
 
-#### Defined in
+---
 
-[src/primitives.ts:87](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L87)
+<a id="citext" name="citext"></a>
 
-___
+### citext()
 
-### citext
-
-▸ **citext**\<`TName`\>(`dbName`, `fieldConfig?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: `string` ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+citext<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: string;
+  dataType: "custom";
+  driverParam: unknown;
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Ci-text postgres column type.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig?` | `unknown` |
+| Parameter      | Type      |
+| :------------- | :-------- |
+| `dbName`       | `TName`   |
+| `fieldConfig`? | `unknown` |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: `string` ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: `string`; `dataType`:
+`"custom"`; `driverParam`: `unknown`; `enumValues`: `undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type               |
+> | :------------ | :----------------- |
+> | `columnType`  | `"PgCustomColumn"` |
+> | `data`        | `string`           |
+> | `dataType`    | `"custom"`         |
+> | `driverParam` | `unknown`          |
+> | `enumValues`  | `undefined`        |
+> | `name`        | `TName`            |
+
+#### See
 
 https://www.postgresql.org/docs/current/citext.html
 
-#### Defined in
+---
 
-[src/custom-types.ts:11](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L11)
+<a id="coalesce" name="coalesce"></a>
 
-___
+### coalesce()
 
-### coalesce
-
-▸ **coalesce**\<`T`\>(`...values`): `CoalesceSQL`\<`T`, ``true``, `never`\>
+```ts
+coalesce<T>(...values: T): CoalesceSQL<T, true, never>
+```
 
 SQL coalesce.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `SQL`\<`unknown`\>[] |
+| Type parameter                  |
+| :------------------------------ |
+| `T` extends `SQL`<`unknown`>\[] |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `...values` | `T` |
+| Parameter   | Type |
+| :---------- | :--- |
+| ...`values` | `T`  |
 
 #### Returns
 
-`CoalesceSQL`\<`T`, ``true``, `never`\>
+`CoalesceSQL`<`T`, `true`, `never`>
 
-#### Defined in
+---
 
-[src/primitives.ts:346](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L346)
+<a id="creategeneratenanoid" name="creategeneratenanoid"></a>
 
-___
+### createGenerateNanoid()
 
-### createGenerateNanoid
-
-▸ **createGenerateNanoid**(`«destructured»?`): (`__namedParameters`: \{ `alphabet?`: `string` ; `optimized?`: `boolean` = false; `size?`: `number` = defaultLength }) => `SQL`\<`string`\>
+```ts
+createGenerateNanoid(__namedParameters:     {
+      defaultLength: NANOID_LENGTH_DEFAULT;
+      schemaName: string;
+      }): (__namedParameters: {
+  alphabet: string;
+  optimized: false;
+  size: defaultLength;
+}) => SQL<string>
+```
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `«destructured»` | `Object` | `{}` |
-| › `defaultLength?` | `number` | `NANOID_LENGTH_DEFAULT` |
-| › `schemaName?` | `string` | `undefined` |
+| Parameter                          | Type     |
+| :--------------------------------- | :------- |
+| `__namedParameters`                | `Object` |
+| `__namedParameters.defaultLength`? | `number` |
+| `__namedParameters.schemaName`?    | `string` |
 
 #### Returns
 
-`fn`
+`Function`
 
-▸ (`«destructured»?`): `SQL`\<`string`\>
+> ##### Parameters
+>
+> | Parameter                      | Type      |
+> | :----------------------------- | :-------- |
+> | `__namedParameters`            | `Object`  |
+> | `__namedParameters.alphabet`?  | `string`  |
+> | `__namedParameters.optimized`? | `boolean` |
+> | `__namedParameters.size`?      | `number`  |
+>
+> ##### Returns
+>
+> `SQL`<`string`>
 
-##### Parameters
-
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `«destructured»` | `Object` | `{}` |
-| › `alphabet?` | `string` | `undefined` |
-| › `optimized?` | `boolean` | `false` |
-| › `size?` | `number` | `defaultLength` |
-
-##### Returns
-
-`SQL`\<`string`\>
-
-**`Example`**
+#### Example
 
 ```
 const generateNanoid = createGenerateNanoid({
@@ -399,167 +373,202 @@ const generateNanoid = createGenerateNanoid({
 });
 ```
 
-**`See`**
+#### See
 
-[Example of how to create the needed extensions and the nanoid functions](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql) .
+[Example of how to create the needed extensions and the nanoid functions](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
+.
 
-#### Defined in
+---
 
-[src/utilities.ts:108](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L108)
+<a id="creategetregconfig" name="creategetregconfig"></a>
 
-___
+### createGetRegconfig()
 
-### createGetRegconfig
-
-▸ **createGetRegconfig**\<`T`\>(`languageTags`): (`languageTag`: `SQLWrapper`) => `SQL`\<``null`` \| `Regconfig`\>
+```ts
+createGetRegconfig<T>(languageTags: T): (languageTag: SQLWrapper) => SQL<null | Regconfig>
+```
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Record`\<`string`, `Regconfig`\> |
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` extends `Record`<`string`, `Regconfig`> |
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `languageTags` | `T` | Lookup dictionnary used as a reference to match your app's language tags with Postgres's regconfig language names. |
+| Parameter      | Type | Description                                                                                                              |
+| :------------- | :--- | :----------------------------------------------------------------------------------------------------------------------- |
+| `languageTags` | `T`  | Lookup dictionnary used as a reference to match your app's language tags with<br /> Postgres's regconfig language names. |
 
 #### Returns
 
-`fn`
+`Function`
 
-▸ (`languageTag`): `SQL`\<``null`` \| `Regconfig`\>
+> ##### Parameters
+>
+> | Parameter     | Type         |
+> | :------------ | :----------- |
+> | `languageTag` | `SQLWrapper` |
+>
+> ##### Returns
+>
+> `SQL`<`null` | `Regconfig`>
 
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `languageTag` | `SQLWrapper` |
-
-##### Returns
-
-`SQL`\<``null`` \| `Regconfig`\>
-
-**`Example`**
+#### Example
 
 ```
 const regconfig = createRegconfig({...})
 ```
 
-#### Defined in
+---
 
-[src/utilities.ts:79](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L79)
+<a id="cs" name="cs"></a>
 
-___
+### cs()
 
-### cs
-
-▸ **cs**(`...statements`): `SQL`\<`unknown`\>
+```ts
+cs(...statements: SQLWrapper[]): SQL<unknown>
+```
 
 Case condition chain.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `...statements` | `SQLWrapper`[] |
+| Parameter       | Type            |
+| :-------------- | :-------------- |
+| ...`statements` | `SQLWrapper`\[] |
 
 #### Returns
 
-`SQL`\<`unknown`\>
+`SQL`<`unknown`>
 
-**`Example`**
+#### Example
 
 ```sql
 CASE statements END;
 ```
 
-#### Defined in
+---
 
-[src/primitives.ts:170](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L170)
+<a id="cube" name="cube"></a>
 
-___
+### cube()
 
-### cube
-
-▸ **cube**\<`TName`\>(`dbName`, `fieldConfig?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [x: number, y: number, z: number] ; `dataType`: ``"custom"`` ; `driverParam`: `number`[] ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+cube<TName>(dbName: TName, fieldConfig?:     {
+      schemaName: string;
+      }): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: [number, number, number];
+  dataType: "custom";
+  driverParam: number[];
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Implements cube extension type for 3d vectors.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig?` | `Object` |
-| `fieldConfig.schemaName?` | `string` |
+| Parameter                 | Type     |
+| :------------------------ | :------- |
+| `dbName`                  | `TName`  |
+| `fieldConfig`?            | `Object` |
+| `fieldConfig.schemaName`? | `string` |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [x: number, y: number, z: number] ; `dataType`: ``"custom"`` ; `driverParam`: `number`[] ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: \[`number`, `number`, `number`];
+`dataType`: `"custom"`; `driverParam`: `number`\[]; `enumValues`: `undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type                            |
+> | :------------ | :------------------------------ |
+> | `columnType`  | `"PgCustomColumn"`              |
+> | `data`        | \[`number`, `number`, `number`] |
+> | `dataType`    | `"custom"`                      |
+> | `driverParam` | `number`\[]                     |
+> | `enumValues`  | `undefined`                     |
+> | `name`        | `TName`                         |
+
+#### See
 
 https://www.postgresql.org/docs/current/cube.html
 
-#### Defined in
+---
 
-[src/custom-types.ts:117](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L117)
+<a id="daterange" name="daterange"></a>
 
-___
+### daterange()
 
-### daterange
-
-▸ **daterange**\<`TName`\>(`dbName`, `fieldConfig?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [`Date`, `Date`] ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+daterange<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: [Date, Date];
+  dataType: "custom";
+  driverParam: unknown;
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Implements postgres date range.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig?` | `unknown` |
+| Parameter      | Type      |
+| :------------- | :-------- |
+| `dbName`       | `TName`   |
+| `fieldConfig`? | `unknown` |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [`Date`, `Date`] ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: \[`Date`, `Date`]; `dataType`:
+`"custom"`; `driverParam`: `unknown`; `enumValues`: `undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type               |
+> | :------------ | :----------------- |
+> | `columnType`  | `"PgCustomColumn"` |
+> | `data`        | \[`Date`, `Date`]  |
+> | `dataType`    | `"custom"`         |
+> | `driverParam` | `unknown`          |
+> | `enumValues`  | `undefined`        |
+> | `name`        | `TName`            |
 
- - https://orm.drizzle.team/docs/custom-types Timestamp for reference.
- - https://www.postgresql.org/docs/current/rangetypes.html
+#### See
 
-**`Todo`**
+- https://orm.drizzle.team/docs/custom-types Timestamp for reference.
+- https://www.postgresql.org/docs/current/rangetypes.html
+
+#### Todo
 
 Add multiranges if needed.
 
-#### Defined in
+---
 
-[src/custom-types.ts:99](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L99)
+<a id="el" name="el"></a>
 
-___
+### el()
 
-### el
-
-▸ **el**(`statement`): `SQL`\<`unknown`\>
+```ts
+el(statement: SQLWrapper): SQL<unknown>
+```
 
 Else statement for fallback statement in condition tree.
 
-- @example.
+- [**@example**](https://github.com/example).
 
 ```sql
 ELSE statement;
@@ -567,736 +576,862 @@ ELSE statement;
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Parameter   | Type         |
+| :---------- | :----------- |
 | `statement` | `SQLWrapper` |
 
 #### Returns
 
-`SQL`\<`unknown`\>
+`SQL`<`unknown`>
 
-#### Defined in
+---
 
-[src/primitives.ts:157](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L157)
+<a id="excluded" name="excluded"></a>
 
-___
+### excluded()
 
-### excluded
-
-▸ **excluded**\<`T`\>(`columns`): \{ [K in string \| number \| symbol]: SQL\<InferDataType\<T[K]\>\> }
+```ts
+excluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferDataType<T[K]>> }
+```
 
 Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Record`\<`string`, `AnyColumn`\> |
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` extends `Record`<`string`, `AnyColumn`> |
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `columns` | `T` | Record of columns to get from the conflict's `excluded` table. |
+| Parameter | Type | Description                                                    |
+| :-------- | :--- | :------------------------------------------------------------- |
+| `columns` | `T`  | Record of columns to get from the conflict's `excluded` table. |
 
 #### Returns
 
-\{ [K in string \| number \| symbol]: SQL\<InferDataType\<T[K]\>\> }
+`{ [K in string | number | symbol]: SQL<InferDataType<T[K]>> }`
 
-#### Defined in
+---
 
-[src/primitives.ts:179](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L179)
+<a id="getcolumns" name="getcolumns"></a>
 
-___
+### getColumns()
 
-### getColumns
-
-▸ **getColumns**\<`T`\>(`table`): `T` extends `Table` ? `T`[``"_"``][``"columns"``] : `T` extends `View` ? `T`[``"_"``][``"selectedFields"``] : `T` extends `Subquery` ? `T`[``"_"``][``"selectedFields"``] : `T` extends [`AnySelect`](modules.md#anyselect) ? `T`[``"_"``][``"selectedFields"``] : `never`
+```ts
+getColumns<T>(table: T): T extends Table ? T["_"]["columns"] : T extends View ? T["_"]["selectedFields"] : T extends Subquery ? T["_"]["selectedFields"] : T extends AnySelect ? T["_"]["selectedFields"] : never
+```
 
 Should replace `getTableColumns` to allow for more input versatility.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends [`AnySelect`](modules.md#anyselect) \| `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> \| `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> |
+| Type parameter                                        |
+| :---------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `T` extends [`AnySelect`](documentation.md#anyselect) | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `table` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `table`   | `T`  |
 
 #### Returns
 
-`T` extends `Table` ? `T`[``"_"``][``"columns"``] : `T` extends `View` ? `T`[``"_"``][``"selectedFields"``] : `T` extends `Subquery` ? `T`[``"_"``][``"selectedFields"``] : `T` extends [`AnySelect`](modules.md#anyselect) ? `T`[``"_"``][``"selectedFields"``] : `never`
+`T` extends `Table` ? `T`\[`"_"`]\[`"columns"`] : `T` extends `View` ?
+`T`\[`"_"`]\[`"selectedFields"`] : `T` extends `Subquery` ? `T`\[`"_"`]\[`"selectedFields"`] : `T`
+extends [`AnySelect`](documentation.md#anyselect) ? `T`\[`"_"`]\[`"selectedFields"`] : `never`
 
-**`See`**
+#### See
 
 https://github.com/drizzle-team/drizzle-orm/pull/1789
 
-#### Defined in
+---
 
-[src/utilities.ts:21](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L21)
+<a id="getcurrenttsconfig" name="getcurrenttsconfig"></a>
 
-___
+### getCurrentTsConfig()
 
-### getCurrentTsConfig
-
-▸ **getCurrentTsConfig**(): `SQL`\<`Regconfig`\>
+```ts
+getCurrentTsConfig(): SQL<Regconfig>
+```
 
 #### Returns
 
-`SQL`\<`Regconfig`\>
+`SQL`<`Regconfig`>
 
-#### Defined in
+---
 
-[src/primitives.ts:258](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L258)
+<a id="getnameoralias" name="getnameoralias"></a>
 
-___
+### getNameOrAlias()
 
-### getNameOrAlias
-
-▸ **getNameOrAlias**\<`T`\>(`table`): `T` extends `Table` ? `T`[``"_"``][``"name"``] : `T` extends `View` ? `T`[``"_"``][``"name"``] : `T` extends `Subquery` ? `T`[``"_"``][``"alias"``] : `T` extends [`AnySelect`](modules.md#anyselect) ? `T`[``"_"``][``"tableName"``] : `never`
+```ts
+getNameOrAlias<T>(table: T): T extends Table ? T["_"]["name"] : T extends View ? T["_"]["name"] : T extends Subquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : never
+```
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends [`AnySelect`](modules.md#anyselect) \| `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> \| `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> |
+| Type parameter                                        |
+| :---------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `T` extends [`AnySelect`](documentation.md#anyselect) | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `table` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `table`   | `T`  |
 
 #### Returns
 
-`T` extends `Table` ? `T`[``"_"``][``"name"``] : `T` extends `View` ? `T`[``"_"``][``"name"``] : `T` extends `Subquery` ? `T`[``"_"``][``"alias"``] : `T` extends [`AnySelect`](modules.md#anyselect) ? `T`[``"_"``][``"tableName"``] : `never`
+`T` extends `Table` ? `T`\[`"_"`]\[`"name"`] : `T` extends `View` ? `T`\[`"_"`]\[`"name"`] : `T`
+extends `Subquery` ? `T`\[`"_"`]\[`"alias"`] : `T` extends [`AnySelect`](documentation.md#anyselect)
+? `T`\[`"_"`]\[`"tableName"`] : `never`
 
-#### Defined in
+---
 
-[src/utilities.ts:45](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L45)
+<a id="intrange" name="intrange"></a>
 
-___
+### intrange()
 
-### intrange
-
-▸ **intrange**\<`TName`\>(`dbName`, `fieldConfig?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [`Range`](modules.md#range) ; `dataType`: ``"custom"`` ; `driverParam`: `string` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+intrange<TName>(dbName: TName, fieldConfig?:     {
+      size: 4 | 8;
+      }): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: Range;
+  dataType: "custom";
+  driverParam: string;
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Implements postgres int4 / int8 range type.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig?` | `Object` |
-| `fieldConfig.size` | ``4`` \| ``8`` |
+| Parameter           | Type     |
+| :------------------ | :------- | --- |
+| `dbName`            | `TName`  |
+| `fieldConfig`?      | `Object` |
+| `fieldConfig.size`? | `4`      | `8` |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [`Range`](modules.md#range) ; `dataType`: ``"custom"`` ; `driverParam`: `string` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`:
+[`Range`](documentation.md#range); `dataType`: `"custom"`; `driverParam`: `string`; `enumValues`:
+`undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type                              |
+> | :------------ | :-------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                |
+> | `data`        | [`Range`](documentation.md#range) |
+> | `dataType`    | `"custom"`                        |
+> | `driverParam` | `string`                          |
+> | `enumValues`  | `undefined`                       |
+> | `name`        | `TName`                           |
+
+#### See
 
 https://www.postgresql.org/docs/current/rangetypes.html
 
-**`Todo`**
+#### Todo
 
 Add multiranges if needed.
 
-#### Defined in
+---
 
-[src/custom-types.ts:146](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L146)
+<a id="isrange" name="isrange"></a>
 
-___
+### isRange()
 
-### isRange
+```ts
+isRange(maybeRange: unknown, __namedParameters:     {
+      lower: RangeBoundType;
+      max: number;
+      min: number;
+      upper: RangeBoundType;
+      }): maybeRange is Range
+```
 
-▸ **isRange**(`maybeRange`, `«destructured»?`): maybeRange is Range
-
-Schema to validate and assert as range. Can also be used for the base of a custom validator with
-the library of your choice.
+Schema to validate and assert as range. Can also be used for the base of a custom validator with the
+library of your choice.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `maybeRange` | `unknown` |
-| `«destructured»` | `Object` |
-| › `lower?` | `RangeBoundType` |
-| › `max?` | `number` |
-| › `min?` | `number` |
-| › `upper?` | `RangeBoundType` |
+| Parameter                  | Type             |
+| :------------------------- | :--------------- |
+| `maybeRange`               | `unknown`        |
+| `__namedParameters`        | `Object`         |
+| `__namedParameters.lower`? | `RangeBoundType` |
+| `__namedParameters.max`?   | `number`         |
+| `__namedParameters.min`?   | `number`         |
+| `__namedParameters.upper`? | `RangeBoundType` |
 
 #### Returns
 
-maybeRange is Range
+`maybeRange is Range`
 
-**`Example`**
+#### Example
 
 ```
 // zod custom schema
 const rangeSchema = z.custom<Range>(isRange);
 ```
 
-#### Defined in
+---
 
-[src/utilities.ts:177](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L177)
+<a id="jsonagg" name="jsonagg"></a>
 
-___
+### jsonAgg()
 
-### jsonAgg
-
-▸ **jsonAgg**\<`T`\>(`selection`, `«destructured»?`): `SQL`\<`T` extends `Table` ? `InferSelectModel`\<`T`\> : `T` extends `Column` ? [`InferDataType`](modules.md#inferdatatype)\<`T`\>[] : `T` extends `Subquery` ? \{ [K in keyof T["\_"]["selectedFields"]]: InferDataType\<T["\_"]["selectedFields"][K]\> }[] : `T` extends [`AnySelect`](modules.md#anyselect) ? `Awaited`\<`T`\> : `never`\>
+```ts
+jsonAgg<T>(selection: T, __namedParameters:     {
+      notNull: true;
+}): SQL<T extends Table ? InferSelectModel<T> : T extends Column ? InferDataType<T>[] : T extends Subquery ? { [K in keyof T["_"]["selectedFields"]]: InferDataType<T["_"]["selectedFields"][K]> }[] : T extends AnySelect ? Awaited<T> : never>
+```
 
 Json_agg.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends [`AnySelect`](modules.md#anyselect) \| `Column`\<`ColumnBaseConfig`\<`ColumnDataType`, `string`\>, `object`, `object`\> \| `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> \| `Subquery`\<`string`, `unknown`\> |
+| Type parameter                                        |
+| :---------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- |
+| `T` extends [`AnySelect`](documentation.md#anyselect) | `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Subquery`<`string`, `unknown`> |
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `selection` | `T` | `undefined` |
-| `«destructured»` | `Object` | `{}` |
-| › `notNull?` | `boolean` | `true` |
+| Parameter                    | Type      |
+| :--------------------------- | :-------- |
+| `selection`                  | `T`       |
+| `__namedParameters`          | `Object`  |
+| `__namedParameters.notNull`? | `boolean` |
 
 #### Returns
 
-`SQL`\<`T` extends `Table` ? `InferSelectModel`\<`T`\> : `T` extends `Column` ? [`InferDataType`](modules.md#inferdatatype)\<`T`\>[] : `T` extends `Subquery` ? \{ [K in keyof T["\_"]["selectedFields"]]: InferDataType\<T["\_"]["selectedFields"][K]\> }[] : `T` extends [`AnySelect`](modules.md#anyselect) ? `Awaited`\<`T`\> : `never`\>
+`SQL`<`T` extends `Table` ? `InferSelectModel`<`T`> : `T` extends `Column` ?
+[`InferDataType`](documentation.md#inferdatatypet)<`T`>\[] : `T` extends `Subquery` ?
+`{ [K in keyof T["_"]["selectedFields"]]: InferDataType<T["_"]["selectedFields"][K]> }`\[] : `T`
+extends [`AnySelect`](documentation.md#anyselect) ? `Awaited`<`T`> : `never`>
 
-#### Defined in
+---
 
-[src/primitives.ts:265](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L265)
+<a id="jsonaggbuildobject" name="jsonaggbuildobject"></a>
 
-___
+### jsonAggBuildObject()
 
-### jsonAggBuildObject
-
-▸ **jsonAggBuildObject**\<`T`\>(`shape`): `SQL`\<\{ [K in keyof T]: InferDataType\<T[K]\> extends never ? T : InferDataType\<T[K]\> }[]\>
+```ts
+jsonAggBuildObject<T>(shape: T): SQL<{ [K in keyof T]: InferDataType<T[K]> extends never ? T : InferDataType<T[K]> }[]>
+```
 
 Aggregate sql values into a json object.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Record`\<`string`, `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> \| `AnyColumn`\> |
+| Type parameter                                  |
+| :---------------------------------------------- | -------------------- | ------------ |
+| `T` extends `Record`<`string`, `SQL`<`unknown`> | `Aliased`<`unknown`> | `AnyColumn`> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `shape` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `shape`   | `T`  |
 
 #### Returns
 
-`SQL`\<\{ [K in keyof T]: InferDataType\<T[K]\> extends never ? T : InferDataType\<T[K]\> }[]\>
+`SQL`<`{ [K in keyof T]: InferDataType<T[K]> extends never ? T : InferDataType<T[K]> }`\[]>
 
-#### Defined in
+---
 
-[src/primitives.ts:304](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L304)
+<a id="jsonbuildobject" name="jsonbuildobject"></a>
 
-___
+### jsonBuildObject()
 
-### jsonBuildObject
+```ts
+jsonBuildObject<T>(shape: T): SQL<{ [K in string | number | symbol]: InferDataType<T[K]> }>
+```
 
-▸ **jsonBuildObject**\<`T`\>(`shape`): `SQL`\<\{ [K in string \| number \| symbol]: InferDataType\<T[K]\> }\>
-
-Build objects using `json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
+Build objects using \`json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
 return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Record`\<`string`, `SQL`\<`unknown`\> \| `AnyColumn`\> |
+| Type parameter                                  |
+| :---------------------------------------------- | ------------ |
+| `T` extends `Record`<`string`, `SQL`<`unknown`> | `AnyColumn`> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `shape` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `shape`   | `T`  |
 
 #### Returns
 
-`SQL`\<\{ [K in string \| number \| symbol]: InferDataType\<T[K]\> }\>
+`SQL`<`{ [K in string | number | symbol]: InferDataType<T[K]> }`>
 
-#### Defined in
+---
 
-[src/primitives.ts:289](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L289)
+<a id="jsonobjectagg" name="jsonobjectagg"></a>
 
-___
+### jsonObjectAgg()
 
-### jsonObjectAgg
+```ts
+jsonObjectAgg<K, V, TK, TV>(key: K, value: V): SQL<Record<TK, TV>>
+```
 
-▸ **jsonObjectAgg**\<`K`, `V`, `TK`, `TV`\>(`key`, `value`): `SQL`\<`Record`\<`TK`, `TV`\>\>
-
-Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
-type instead of an SQL wrapped type.
+Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped type
+instead of an SQL wrapped type.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `K` | extends `AnyColumn` |
-| `V` | extends `SQL`\<`unknown`\> \| `AnyTable`\<`TableConfig`\> |
-| `TK` | extends `string` \| `number` = ``null`` extends [`InferDataType`](modules.md#inferdatatype)\<`K`\> ? `never` : [`InferDataType`](modules.md#inferdatatype)\<`K`\> extends `string` \| `number` ? `InferDataType<K>` : `never` |
-| `TV` | `V` extends `AnyTable`\<`TableConfig`\> ? \{ [K in string \| number]: \{ [Key in string as Key]: V["\_"]["columns"][Key]["\_"]["notNull"] extends true ? V["\_"]["columns"][Key]["\_"]["data"] : null \| V["\_"]["columns"][Key]["\_"]["data"] }[K] } : `V` extends `SQL`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`V`\> : `never` |
+| Type parameter               | Value                                                   |
+| :--------------------------- | :------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `K` extends `AnyColumn`      | -                                                       |
+| `V` extends `SQL`<`unknown`> | `AnyTable`<`TableConfig`>                               | -                                                                                                                                                           |
+| `TK` extends `string`        | `number`                                                | `null` extends [`InferDataType`](documentation.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](documentation.md#inferdatatypet)<`K`> extends `string` | `number` ? `InferDataType<K>` : `never`                                                                                                     |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`> ? `{ [K in string | number]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null                       | V["\_"]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`V`> : `never` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `key` | `K` |
-| `value` | `V` |
+| Parameter | Type |
+| :-------- | :--- |
+| `key`     | `K`  |
+| `value`   | `V`  |
 
 #### Returns
 
-`SQL`\<`Record`\<`TK`, `TV`\>\>
+`SQL`<`Record`<`TK`, `TV`>>
 
-#### Defined in
+---
 
-[src/primitives.ts:326](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L326)
+<a id="jsonstripnulls" name="jsonstripnulls"></a>
 
-___
+### jsonStripNulls()
 
-### jsonStripNulls
-
-▸ **jsonStripNulls**\<`T`\>(`json`): `SQL`\<`SetNonNullable`\<`T`, keyof `T`\>\>
+```ts
+jsonStripNulls<T>(json: SQL<T> | Aliased<T>): SQL<SetNonNullable<T, keyof T>>
+```
 
 SQL json_strip_nulls.
 
 #### Type parameters
 
-| Name |
-| :------ |
-| `T` |
+| Type parameter |
+| :------------- |
+| `T`            |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `json` | `SQL`\<`T`\> \| `Aliased`\<`T`\> |
+| Parameter | Type       |
+| :-------- | :--------- | -------------- |
+| `json`    | `SQL`<`T`> | `Aliased`<`T`> |
 
 #### Returns
 
-`SQL`\<`SetNonNullable`\<`T`, keyof `T`\>\>
+`SQL`<`SetNonNullable`<`T`, keyof `T`>>
 
-#### Defined in
+---
 
-[src/primitives.ts:109](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L109)
+<a id="paginate" name="paginate"></a>
 
-___
+### paginate()
 
-### paginate
-
-▸ **paginate**\<`T`\>(`qb`, `page`, `size?`): `PgSelect` \| `MySqlSelect` \| `SQLiteSelect`
+```ts
+paginate<T>(
+   qb: T,
+   page: number,
+   size: number): PgSelect | MySqlSelect | SQLiteSelect
+```
 
 Paginate a query.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends [`Select`](modules.md#select) |
+| Type parameter                                  |
+| :---------------------------------------------- |
+| `T` extends [`Select`](documentation.md#select) |
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `qb` | `T` | `undefined` |
-| `page` | `number` | `undefined` |
-| `size` | `number` | `PAGE_SIZE_DEFAULT` |
+| Parameter | Type     | Default value       |
+| :-------- | :------- | :------------------ |
+| `qb`      | `T`      | `undefined`         |
+| `page`    | `number` | `undefined`         |
+| `size`    | `number` | `PAGE_SIZE_DEFAULT` |
 
 #### Returns
 
-`PgSelect` \| `MySqlSelect` \| `SQLiteSelect`
+`PgSelect` | `MySqlSelect` | `SQLiteSelect`
 
-#### Defined in
+---
 
-[src/utilities.ts:152](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/utilities.ts#L152)
+<a id="plaintotsquery" name="plaintotsquery"></a>
 
-___
+### plaintoTsquery()
 
-### plaintoTsquery
-
-▸ **plaintoTsquery**(`language`, `text`): `SQL`\<`string`\>
+```ts
+plaintoTsquery(language: SQLWrapper, text: unknown): SQL<string>
+```
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Parameter  | Type         |
+| :--------- | :----------- |
 | `language` | `SQLWrapper` |
-| `text` | `unknown` |
+| `text`     | `unknown`    |
 
 #### Returns
 
-`SQL`\<`string`\>
+`SQL`<`string`>
 
-#### Defined in
+---
 
-[src/primitives.ts:247](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L247)
+<a id="point" name="point"></a>
 
-___
+### point()
 
-### point
-
-▸ **point**\<`C`, `N`\>(`name`, `config?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: \{ `coordinates`: `Coordinate`\<`C`\> ; `type`: `string`  } ; `dataType`: ``"custom"`` ; `driverParam`: `string` ; `enumValues`: `undefined` ; `name`: `N`  }\>
+```ts
+point<C, N>(name: N, config?: C): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: {
+     coordinates: Coordinate<C>;
+     type: string;
+  };
+  dataType: "custom";
+  driverParam: string;
+  enumValues: undefined;
+  name: N;
+}>
+```
 
 Implements postgis point geometry type.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `C` | extends `Object` |
-| `N` | extends `string` |
+| Type parameter |
+| :------------- |
+
+| `C` extends { `m`: `boolean`; `schemaName`: `string`; `srid`: `Srid`; `z`: `boolean`; } | | `N`
+extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `name` | `N` |
-| `config?` | `C` |
+| Parameter | Type |
+| :-------- | :--- |
+| `name`    | `N`  |
+| `config`? | `C`  |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: \{ `coordinates`: `Coordinate`\<`C`\> ; `type`: `string`  } ; `dataType`: ``"custom"`` ; `driverParam`: `string` ; `enumValues`: `undefined` ; `name`: `N`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: { `coordinates`:
+`Coordinate`<`C`>; `type`: `string`; }; `dataType`: `"custom"`; `driverParam`: `string`;
+`enumValues`: `undefined`; `name`: `N`; }>
 
-**`See`**
+> | Member             | Type                                                    |
+> | :----------------- | :------------------------------------------------------ |
+> | `columnType`       | `"PgCustomColumn"`                                      |
+> | `data`             | { `coordinates`: `Coordinate`<`C`>; `type`: `string`; } |
+> | `data.coordinates` | `Coordinate`<`C`>                                       |
+> | `data.type`        | `string`                                                |
+> | `dataType`         | `"custom"`                                              |
+> | `driverParam`      | `string`                                                |
+> | `enumValues`       | `undefined`                                             |
+> | `name`             | `N`                                                     |
 
- - https://github.com/drizzle-team/drizzle-orm/issues/671
- - https://github.com/drizzle-team/drizzle-orm/issues/337#issuecomment-1600854417.
+#### See
 
-#### Defined in
+- https://github.com/drizzle-team/drizzle-orm/issues/671
+- https://github.com/drizzle-team/drizzle-orm/issues/337#issuecomment-1600854417.
 
-[src/custom-types.ts:201](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L201)
+---
 
-___
+<a id="random" name="random"></a>
 
-### random
+### random()
 
-▸ **random**(): `SQL`\<`number`\>
+```ts
+random(): SQL<number>
+```
 
 SQL random function.
 
 #### Returns
 
-`SQL`\<`number`\>
+`SQL`<`number`>
 
-**`Example`**
+#### Example
 
 ```sql
 random();
 ```
 
-#### Defined in
+---
 
-[src/primitives.ts:122](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L122)
+<a id="regconfig" name="regconfig"></a>
 
-___
+### regconfig()
 
-### regconfig
-
-▸ **regconfig**\<`TName`\>(`dbName`, `fieldConfig?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: `Regconfig` ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+regconfig<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: Regconfig;
+  dataType: "custom";
+  driverParam: unknown;
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Implements Postgres regconfig. Useful for text search language config storage.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig?` | `unknown` |
+| Parameter      | Type      |
+| :------------- | :-------- |
+| `dbName`       | `TName`   |
+| `fieldConfig`? | `unknown` |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: `Regconfig` ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: `Regconfig`; `dataType`:
+`"custom"`; `driverParam`: `unknown`; `enumValues`: `undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type               |
+> | :------------ | :----------------- |
+> | `columnType`  | `"PgCustomColumn"` |
+> | `data`        | `Regconfig`        |
+> | `dataType`    | `"custom"`         |
+> | `driverParam` | `unknown`          |
+> | `enumValues`  | `undefined`        |
+> | `name`        | `TName`            |
+
+#### See
 
 https://www.postgresql.org/docs/current/textsearch-controls.html
 
-#### Defined in
+---
 
-[src/custom-types.ts:59](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L59)
+<a id="rowtojson" name="rowtojson"></a>
 
-___
+### rowToJson()
 
-### rowToJson
+```ts
+rowToJson<T>(row: T): SQL<T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : null>
+```
 
-▸ **rowToJson**\<`T`\>(`row`): `SQL`\<`T` extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> ? \{ [K in string \| number]: \{ [Key in string as Key]: T["\_"]["columns"][Key]["\_"]["notNull"] extends true ? T["\_"]["columns"][Key]["\_"]["data"] : null \| T["\_"]["columns"][Key]["\_"]["data"] }[K] } : `T` extends `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> ? `T`[``"_"``][``"selectedFields"``] : ``null``\>
-
-Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped
-type.
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> \| `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> |
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `row` | `T` |
-
-#### Returns
-
-`SQL`\<`T` extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> ? \{ [K in string \| number]: \{ [Key in string as Key]: T["\_"]["columns"][Key]["\_"]["notNull"] extends true ? T["\_"]["columns"][Key]["\_"]["data"] : null \| T["\_"]["columns"][Key]["\_"]["data"] }[K] } : `T` extends `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> ? `T`[``"_"``][``"selectedFields"``] : ``null``\>
-
-#### Defined in
-
-[src/primitives.ts:229](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L229)
-
-___
-
-### toJson
-
-▸ **toJson**\<`T`\>(`anyelement`): `SQL`\<`T` extends `Column`\<`ColumnBaseConfig`\<`ColumnDataType`, `string`\>, `object`, `object`\> \| `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`T`\> : `T` extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> ? \{ [K in string \| number]: \{ [Key in string as Key]: T["\_"]["columns"][Key]["\_"]["notNull"] extends true ? T["\_"]["columns"][Key]["\_"]["data"] : null \| T["\_"]["columns"][Key]["\_"]["data"] }[K] } : `T` extends `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> ? `T`[``"_"``][``"selectedFields"``] : `unknown`\>
+Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped type.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `SQLWrapper` \| `AnyColumn` |
+| Type parameter                                                          |
+| :---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `anyelement` | `T` |
+| Parameter | Type |
+| :-------- | :--- |
+| `row`     | `T`  |
 
 #### Returns
 
-`SQL`\<`T` extends `Column`\<`ColumnBaseConfig`\<`ColumnDataType`, `string`\>, `object`, `object`\> \| `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`T`\> : `T` extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> ? \{ [K in string \| number]: \{ [Key in string as Key]: T["\_"]["columns"][Key]["\_"]["notNull"] extends true ? T["\_"]["columns"][Key]["\_"]["data"] : null \| T["\_"]["columns"][Key]["\_"]["data"] }[K] } : `T` extends `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> ? `T`[``"_"``][``"selectedFields"``] : `unknown`\>
+`SQL`<`T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
+`{ [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] }`
+: `T` extends `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> ?
+`T`\[`"_"`]\[`"selectedFields"`] : `null`>
 
-**`See`**
+---
+
+<a id="tojson" name="tojson"></a>
+
+### toJson()
+
+```ts
+toJson<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType, string>, object, object> | SQL<unknown> | Aliased<unknown> ? InferDataType<T> : T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : unknown>
+```
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- | ----------- |
+| `T` extends `SQLWrapper` | `AnyColumn` |
+
+#### Parameters
+
+| Parameter    | Type |
+| :----------- | :--- |
+| `anyelement` | `T`  |
+
+#### Returns
+
+`SQL`<`T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> |
+`SQL`<`unknown`> | `Aliased`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`T`> :
+`T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
+`{ [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] }`
+: `T` extends `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> ?
+`T`\[`"_"`]\[`"selectedFields"`] : `unknown`>
+
+#### See
 
 https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-TABLE
 
-#### Defined in
+---
 
-[src/primitives.ts:201](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L201)
+<a id="tojsonb" name="tojsonb"></a>
 
-___
+### toJsonb()
 
-### toJsonb
-
-▸ **toJsonb**\<`T`\>(`anyelement`): `SQL`\<`T` extends `Column`\<`ColumnBaseConfig`\<`ColumnDataType`, `string`\>, `object`, `object`\> \| `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`T`\> : `T` extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> ? \{ [K in string \| number]: \{ [Key in string as Key]: T["\_"]["columns"][Key]["\_"]["notNull"] extends true ? T["\_"]["columns"][Key]["\_"]["data"] : null \| T["\_"]["columns"][Key]["\_"]["data"] }[K] } : `T` extends `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> ? `T`[``"_"``][``"selectedFields"``] : `unknown`\>
+```ts
+toJsonb<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType, string>, object, object> | SQL<unknown> | Aliased<unknown> ? InferDataType<T> : T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : unknown>
+```
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `SQLWrapper` \| `AnyColumn` |
+| Type parameter           |
+| :----------------------- | ----------- |
+| `T` extends `SQLWrapper` | `AnyColumn` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `anyelement` | `T` |
+| Parameter    | Type |
+| :----------- | :--- |
+| `anyelement` | `T`  |
 
 #### Returns
 
-`SQL`\<`T` extends `Column`\<`ColumnBaseConfig`\<`ColumnDataType`, `string`\>, `object`, `object`\> \| `SQL`\<`unknown`\> \| `Aliased`\<`unknown`\> ? [`InferDataType`](modules.md#inferdatatype)\<`T`\> : `T` extends `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`\>\>\> ? \{ [K in string \| number]: \{ [Key in string as Key]: T["\_"]["columns"][Key]["\_"]["notNull"] extends true ? T["\_"]["columns"][Key]["\_"]["data"] : null \| T["\_"]["columns"][Key]["\_"]["data"] }[K] } : `T` extends `View`\<`string`, `boolean`, `ColumnsSelection`\> \| `Subquery`\<`string`, `unknown`\> ? `T`[``"_"``][``"selectedFields"``] : `unknown`\>
+`SQL`<`T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> |
+`SQL`<`unknown`> | `Aliased`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`T`> :
+`T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
+`{ [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] }`
+: `T` extends `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> ?
+`T`\[`"_"`]\[`"selectedFields"`] : `unknown`>
 
-#### Defined in
+---
 
-[src/primitives.ts:213](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L213)
+<a id="totsquery" name="totsquery"></a>
 
-___
+### toTsquery()
 
-### toTsquery
-
-▸ **toTsquery**(`language`, `text`): `SQL`\<`string`\>
+```ts
+toTsquery(language: SQLWrapper | AnyColumn, text: unknown): SQL<string>
+```
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `language` | `SQLWrapper` \| `AnyColumn` |
-| `text` | `unknown` |
+| Parameter  | Type         |
+| :--------- | :----------- | ----------- |
+| `language` | `SQLWrapper` | `AnyColumn` |
+| `text`     | `unknown`    |
 
 #### Returns
 
-`SQL`\<`string`\>
+`SQL`<`string`>
 
-#### Defined in
+---
 
-[src/primitives.ts:243](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L243)
+<a id="totsvector" name="totsvector"></a>
 
-___
+### toTsvector()
 
-### toTsvector
-
-▸ **toTsvector**(`language`, `text`): `SQL`\<`string`\>
+```ts
+toTsvector(language: SQLWrapper | AnyColumn, text: unknown): SQL<string>
+```
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `language` | `SQLWrapper` \| `AnyColumn` |
-| `text` | `unknown` |
+| Parameter  | Type         |
+| :--------- | :----------- | ----------- |
+| `language` | `SQLWrapper` | `AnyColumn` |
+| `text`     | `unknown`    |
 
 #### Returns
 
-`SQL`\<`string`\>
+`SQL`<`string`>
 
-#### Defined in
+---
 
-[src/primitives.ts:239](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L239)
+<a id="ts" name="ts"></a>
 
-___
+### ts()
 
-### ts
-
-▸ **ts**(`vector`, `querytext`): `SQL`\<`unknown`\>
+```ts
+ts(vector: SQLWrapper, querytext: SQLWrapper): SQL<unknown>
+```
 
 Test a text search query against a ts_vector value.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `vector` | `SQLWrapper` |
+| Parameter   | Type         |
+| :---------- | :----------- |
+| `vector`    | `SQLWrapper` |
 | `querytext` | `SQLWrapper` |
 
 #### Returns
 
-`SQL`\<`unknown`\>
+`SQL`<`unknown`>
 
-#### Defined in
+---
 
-[src/primitives.ts:254](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L254)
+<a id="tsrange" name="tsrange"></a>
 
-___
+### tsrange()
 
-### tsrange
-
-▸ **tsrange**\<`TName`\>(`dbName`, `fieldConfig?`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [`Date`, `Date`] ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+tsrange<TName>(dbName: TName, fieldConfig?:     {
+      withTimezone: boolean;
+      }): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: [Date, Date];
+  dataType: "custom";
+  driverParam: unknown;
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Implements Postgres timestamp range.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig?` | `Object` |
-| `fieldConfig.withTimezone` | `boolean` |
+| Parameter                   | Type      |
+| :-------------------------- | :-------- |
+| `dbName`                    | `TName`   |
+| `fieldConfig`?              | `Object`  |
+| `fieldConfig.withTimezone`? | `boolean` |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: [`Date`, `Date`] ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: \[`Date`, `Date`]; `dataType`:
+`"custom"`; `driverParam`: `unknown`; `enumValues`: `undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type               |
+> | :------------ | :----------------- |
+> | `columnType`  | `"PgCustomColumn"` |
+> | `data`        | \[`Date`, `Date`]  |
+> | `dataType`    | `"custom"`         |
+> | `driverParam` | `unknown`          |
+> | `enumValues`  | `undefined`        |
+> | `name`        | `TName`            |
 
- - https://orm.drizzle.team/docs/custom-types Timestamp for reference.
- - https://www.postgresql.org/docs/current/rangetypes.html
+#### See
 
-**`Todo`**
+- https://orm.drizzle.team/docs/custom-types Timestamp for reference.
+- https://www.postgresql.org/docs/current/rangetypes.html
+
+#### Todo
 
 Add multiranges if needed.
 
-#### Defined in
+---
 
-[src/custom-types.ts:79](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L79)
+<a id="tsvector" name="tsvector"></a>
 
-___
+### tsvector()
 
-### tsvector
-
-▸ **tsvector**\<`TName`\>(`dbName`, `fieldConfig`): `PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: `string` ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+```ts
+tsvector<TName>(dbName: TName, fieldConfig:     {
+      language: Regconfig | SQLWrapper | SQL<Regconfig>;
+      sources: string[];
+      weighted: boolean;
+      }): PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: string;
+  dataType: "custom";
+  driverParam: unknown;
+  enumValues: undefined;
+  name: TName;
+}>
+```
 
 Tsvector type for generated columns used notably for fuzzy string search.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `TName` | extends `string` |
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `TName` |
-| `fieldConfig` | `Object` |
-| `fieldConfig.language` | `Regconfig` \| `SQLWrapper` \| `SQL`\<`Regconfig`\> |
-| `fieldConfig.sources` | `string`[] |
-| `fieldConfig.weighted?` | `boolean` |
+| Parameter               | Type        |
+| :---------------------- | :---------- | ------------ | ------------------ |
+| `dbName`                | `TName`     |
+| `fieldConfig`           | `Object`    |
+| `fieldConfig.language`  | `Regconfig` | `SQLWrapper` | `SQL`<`Regconfig`> |
+| `fieldConfig.sources`   | `string`\[] |
+| `fieldConfig.weighted`? | `boolean`   |
 
 #### Returns
 
-`PgCustomColumnBuilder`\<\{ `columnType`: ``"PgCustomColumn"`` ; `data`: `string` ; `dataType`: ``"custom"`` ; `driverParam`: `unknown` ; `enumValues`: `undefined` ; `name`: `TName`  }\>
+`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: `string`; `dataType`:
+`"custom"`; `driverParam`: `unknown`; `enumValues`: `undefined`; `name`: `TName`; }>
 
-**`See`**
+> | Member        | Type               |
+> | :------------ | :----------------- |
+> | `columnType`  | `"PgCustomColumn"` |
+> | `data`        | `string`           |
+> | `dataType`    | `"custom"`         |
+> | `driverParam` | `unknown`          |
+> | `enumValues`  | `undefined`        |
+> | `name`        | `TName`            |
+
+#### See
 
 https://github.com/drizzle-team/drizzle-orm/issues/247
 
-**`Todo`**
+#### Todo
 
-Implementation isn't clean. Figure out a better way to map the language name and column
-  references, or stay up to date on support for `generatedAs()`.
+Implementation isn't clean. Figure out a better way to map the language name and column references,
+or stay up to date on support for `generatedAs()`.
 
-#### Defined in
+---
 
-[src/custom-types.ts:27](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/custom-types.ts#L27)
+<a id="wn" name="wn"></a>
 
-___
+### wn()
 
-### wn
-
-▸ **wn**(`condition`, `statement`): `SQL`\<`unknown`\>
+```ts
+wn(condition: SQLWrapper, statement: unknown): SQL<unknown>
+```
 
 When statement.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Parameter   | Type         |
+| :---------- | :----------- |
 | `condition` | `SQLWrapper` |
-| `statement` | `unknown` |
+| `statement` | `unknown`    |
 
 #### Returns
 
-`SQL`\<`unknown`\>
+`SQL`<`unknown`>
 
-**`Example`**
+#### Example
 
 ```sql
 WHEN condition;
 THEN statement;
 ```
-
-#### Defined in
-
-[src/primitives.ts:144](https://github.com/iolyd/drizzle-orm-helpers/blob/5ee3a27/src/primitives.ts#L144)
