@@ -46,6 +46,6 @@
 	},
 	"scripts": {
 		"doc": "pnpm typedoc && mv doc/documentation.md documentation.md && rm -rf doc",
-		"prepublishOnly": "pnpm doc && pnpm tsup && git commit documentation.md -m \"📖 Updated docs\""
+		"prepublishOnly": "pnpm doc && git add documentation.md && git commit -m \"📖 Update documentation\" && pnpm tsup && git add dist && git commit -m \"🚀 Update dist\""
 	}
 }
