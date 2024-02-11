@@ -35,7 +35,7 @@
 			"remark-toc",
 			{
 				"heading": "Table of Contents",
-				"maxDepth": 2
+				"maxDepth": 3
 			}
 		]
 	]
