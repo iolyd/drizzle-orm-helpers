@@ -17,7 +17,7 @@ import { AnyMySqlSelect, MySqlSelect } from 'drizzle-orm/mysql-core';
 import { AnyPgSelect, PgSelect } from 'drizzle-orm/pg-core';
 import { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import { SetOptional } from 'type-fest';
-import { NANOID_SIZE_DEFAULT, PAGE_SIZE_DEFAULT, Regconfig } from './constants';
+import { PAGE_SIZE_DEFAULT, Regconfig } from './constants';
 import { cs, wn } from './expressions';
 
 /**
@@ -148,62 +148,6 @@ export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
 		},
 		<{ [K in keyof T]: SQL<InferDataType<T[K]>> }>{}
 	);
-}
-
-/**
- * @example
- *
- * ```
- * const generateNanoid = createGenerateNanoid({
- * 	schemaName: extensionsSchema.schemaName,
- * });
- * ```
- *
- * @param schemaName Name of the extension schema.
- * @param defaultLength The nanoid length to use by default when generating without a specified
- *   length. Lengths can be customized by passing a param to the returned `generateNanoid`
- *   function.
- * @see {@link https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql Example of how to create the needed extensions and the nanoid functions} .
- */
-export function createGenerateNanoid({
-	schemaName,
-	defaultLength = NANOID_SIZE_DEFAULT,
-}: {
-	schemaName?: string;
-	defaultLength?: number;
-} = {}) {
-	const schema = schemaName ? `"${schemaName}".` : '';
-	/**
-	 * Generate a nanoid using postgres-nanoid.
-	 *
-	 * @param optimized Should the postgres extension use optimization.
-	 * @param size The length of the nanoid generated. If explicit nullish is passed, will default to
-	 *   the Postgres function's default size.
-	 * @param alphabet The set of characters to pick randomly from. Defaults to
-	 *   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'. If explicit nullish is
-	 *   passed, will default to the Postgres function's default alphabet.
-	 * @see {@link /sql/nanoid.sql} for a demo of how to create the required extension and functions.
-	 * @todo Stay up to date when default values will accept 'sql' without having to pass param to
-	 *   sql.raw() (ref.:
-	 *   https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571)
-	 */
-	return function generateNanoid({
-		optimized = false,
-		size = defaultLength,
-		alphabet,
-	}: {
-		optimized?: boolean;
-		size?: number;
-		alphabet?: string;
-	} = {}) {
-		const opts: (string | number)[] = [size];
-		if (alphabet) {
-			opts.push(`'${alphabet}'`);
-		}
-		return sql
-			.raw(`${schema}"nanoid${optimized ? '_optimized' : ''}"(${opts.join(',')})`)
-			.mapWith(String);
-	};
 }
 
 /**
