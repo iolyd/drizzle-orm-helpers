@@ -1,9 +1,7 @@
--- Custom SQL migration file, put you code below! --
 /*
  * Code taken from: https://github.com/viascom/nanoid-postgres/blob/main/nanoid.sql
  * as proposed in: https://community.neon.tech/t/extension-request-nanoid/1092/2
- */
-/*
+ 
  * Copyright 2023 Viascom Ltd liab. Co
  *
  * Licensed to the Apache Software Foundation (ASF) under one
