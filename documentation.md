@@ -2,10 +2,6 @@
 
 ## Table of Contents
 
-- [Classes](#classes)
-  - [Cube](#cube)
-  - [Nanoid](#nanoid)
-  - [RegconfigMatcher](#regconfigmatcher)
 - [Type Aliases](#type-aliases)
   - [AnySelect](#anyselect)
   - [InferColumnType\<T>](#infercolumntypet)
@@ -24,14 +20,15 @@
   - [tru](#tru)
   - [yes](#yes)
 - [Functions](#functions)
+  - [Cube()](#cube)
+  - [Nanoid()](#nanoid)
+  - [RegconfigMatcher()](#regconfigmatcher)
   - [arrayAgg()](#arrayagg)
   - [bool()](#bool)
   - [citext()](#citext)
   - [coalesce()](#coalesce)
   - [createGenerateNanoid()](#creategeneratenanoid)
-  - [createGetRegconfig()](#creategetregconfig)
   - [cs()](#cs)
-  - [cube()](#cube-1)
   - [daterange()](#daterange)
   - [el()](#el)
   - [excluded()](#excluded)
@@ -58,96 +55,6 @@
   - [tsrange()](#tsrange)
   - [tsvector()](#tsvector)
   - [wn()](#wn)
-
-## Classes
-
-<a id="cube" name="cube"></a>
-
-### Cube
-
-#### Constructors
-
-<a id="constructors" name="constructors"></a>
-
-##### new Cube()
-
-```ts
-new Cube(): Cube
-```
-
-###### Returns
-
-[`Cube`](documentation.md#cube)
-
----
-
-<a id="nanoid" name="nanoid"></a>
-
-### Nanoid
-
-Class to create a reference to your `nanoid()` Postgres function with customized presets.
-
-#### Example
-
-```ts
-const nanoid = new Nanoid({
-  schemaName: extensionsSchema.schemaName,
-});
-```
-
-...would then call.
-
-```sql
-schema.nanoid(...)
-```
-
-#### Param
-
-Name of the extension schema.
-
-#### Param
-
-The nanoid length to use by default when generating without a specified length. Lengths can be
-customized by passing a param to the returned `generateNanoid` function.
-
-#### See
-
-[Example of how to create the needed extensions and the nanoid functions](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
-.
-
-#### Constructors
-
-<a id="constructors-1" name="constructors-1"></a>
-
-##### new Nanoid()
-
-```ts
-new Nanoid(): Nanoid
-```
-
-###### Returns
-
-[`Nanoid`](documentation.md#nanoid)
-
----
-
-<a id="regconfigmatcher" name="regconfigmatcher"></a>
-
-### RegconfigMatcher
-
-#### Constructors
-
-<a id="constructors-2" name="constructors-2"></a>
-
-##### new RegconfigMatcher()
-
-```ts
-new RegconfigMatcher(): RegconfigMatcher
-```
-
-###### Returns
-
-[`RegconfigMatcher`](documentation.md#regconfigmatcher)
 
 ## Type Aliases
 
@@ -365,6 +272,186 @@ tru
 
 ## Functions
 
+<a id="cube" name="cube"></a>
+
+### Cube()
+
+```ts
+Cube(__namedParameters:     {
+      schemaName: string;
+      }): <TName>(dbName: TName, fieldConfig?: unknown) => PgCustomColumnBuilder<{
+  columnType: "PgCustomColumn";
+  data: [number, number, number];
+  dataType: "custom";
+  driverParam: number[];
+  enumValues: undefined;
+  name: TName;
+}>
+```
+
+Create a cube column type with proper reference to the schema where your Postgres `cube` extension
+is located.
+
+#### Parameters
+
+| Parameter                       | Type     |
+| :------------------------------ | :------- |
+| `__namedParameters`             | `Object` |
+| `__namedParameters.schemaName`? | `string` |
+
+#### Returns
+
+`Function`
+
+Custom column type for Postgres 3d vectors.
+
+> ##### Type parameters
+>
+> | Type parameter           |
+> | :----------------------- |
+> | `TName` extends `string` |
+>
+> ##### Parameters
+>
+> | Parameter      | Type      |
+> | :------------- | :-------- |
+> | `dbName`       | `TName`   |
+> | `fieldConfig`? | `unknown` |
+>
+> ##### Returns
+>
+> `PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: \[`number`, `number`,
+> `number`]; `dataType`: `"custom"`; `driverParam`: `number`\[]; `enumValues`: `undefined`; `name`:
+> `TName`; }>
+>
+> > | Member        | Type                            |
+> > | :------------ | :------------------------------ |
+> > | `columnType`  | `"PgCustomColumn"`              |
+> > | `data`        | \[`number`, `number`, `number`] |
+> > | `dataType`    | `"custom"`                      |
+> > | `driverParam` | `number`\[]                     |
+> > | `enumValues`  | `undefined`                     |
+> > | `name`        | `TName`                         |
+
+#### Example
+
+```
+const cube = Cube({ schemaName: extensionsSchema.schemaName });
+```
+
+#### See
+
+https://www.postgresql.org/docs/current/cube.html
+
+---
+
+<a id="nanoid" name="nanoid"></a>
+
+### Nanoid()
+
+```ts
+Nanoid(__namedParameters:     {
+      defaultAlphabet: NANOID_ALPHABET_DEFAULT;
+      defaultSize: NANOID_SIZE_DEFAULT;
+      schemaName: string;
+      }): (__namedParameters: {
+  alphabet: defaultAlphabet;
+  optimized: false;
+  size: defaultSize;
+}) => SQL<string>
+```
+
+Create a reference to your `nanoid()` Postgres function with customized presets.
+
+#### Parameters
+
+| Parameter                            | Type     |
+| :----------------------------------- | :------- |
+| `__namedParameters`                  | `Object` |
+| `__namedParameters.defaultAlphabet`? | `string` |
+| `__namedParameters.defaultSize`?     | `number` |
+| `__namedParameters.schemaName`?      | `string` |
+
+#### Returns
+
+`Function`
+
+> ##### Parameters
+>
+> | Parameter                      | Type      |
+> | :----------------------------- | :-------- |
+> | `__namedParameters`            | `Object`  |
+> | `__namedParameters.alphabet`?  | `string`  |
+> | `__namedParameters.optimized`? | `boolean` |
+> | `__namedParameters.size`?      | `number`  |
+>
+> ##### Returns
+>
+> `SQL`<`string`>
+
+#### Example
+
+```ts
+const nanoid = Nanoid({
+  schemaName: extensionsSchema.schemaName,
+});
+```
+
+...would then call.
+
+```sql
+schema.nanoid(...)
+```
+
+#### See
+
+[Example of how to create the needed extensions and the nanoid functions](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
+.
+
+---
+
+<a id="regconfigmatcher" name="regconfigmatcher"></a>
+
+### RegconfigMatcher()
+
+```ts
+RegconfigMatcher<T>(languageTags: T): (languageTag: SQLWrapper) => SQL<null | Regconfig>
+```
+
+#### Type parameters
+
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` extends `Record`<`string`, `Regconfig`> |
+
+#### Parameters
+
+| Parameter      | Type | Description                                                                                                              |
+| :------------- | :--- | :----------------------------------------------------------------------------------------------------------------------- |
+| `languageTags` | `T`  | Lookup dictionnary used as a reference to match your app's language tags with<br /> Postgres's regconfig language names. |
+
+#### Returns
+
+`Function`
+
+> ##### Parameters
+>
+> | Parameter     | Type         |
+> | :------------ | :----------- |
+> | `languageTag` | `SQLWrapper` |
+>
+> ##### Returns
+>
+> `SQL`<`null` | `Regconfig`>
+
+#### Example
+
+```
+const regconfig = createRegconfig({...})
+```
+
+---
+
 <a id="arrayagg" name="arrayagg"></a>
 
 ### arrayAgg()
@@ -506,7 +593,7 @@ SQL coalesce.
 
 ```ts
 createGenerateNanoid(__namedParameters:     {
-      defaultLength: NANOID_LENGTH_DEFAULT;
+      defaultLength: NANOID_SIZE_DEFAULT;
       schemaName: string;
       }): (__namedParameters: {
   alphabet: string;
@@ -555,48 +642,6 @@ const generateNanoid = createGenerateNanoid({
 
 ---
 
-<a id="creategetregconfig" name="creategetregconfig"></a>
-
-### createGetRegconfig()
-
-```ts
-createGetRegconfig<T>(languageTags: T): (languageTag: SQLWrapper) => SQL<null | Regconfig>
-```
-
-#### Type parameters
-
-| Type parameter                              |
-| :------------------------------------------ |
-| `T` extends `Record`<`string`, `Regconfig`> |
-
-#### Parameters
-
-| Parameter      | Type | Description                                                                                                              |
-| :------------- | :--- | :----------------------------------------------------------------------------------------------------------------------- |
-| `languageTags` | `T`  | Lookup dictionnary used as a reference to match your app's language tags with<br /> Postgres's regconfig language names. |
-
-#### Returns
-
-`Function`
-
-> ##### Parameters
->
-> | Parameter     | Type         |
-> | :------------ | :----------- |
-> | `languageTag` | `SQLWrapper` |
->
-> ##### Returns
->
-> `SQL`<`null` | `Regconfig`>
-
-#### Example
-
-```
-const regconfig = createRegconfig({...})
-```
-
----
-
 <a id="cs" name="cs"></a>
 
 ### cs()
@@ -622,59 +667,6 @@ Case condition chain.
 ```sql
 CASE statements END;
 ```
-
----
-
-<a id="cube-1" name="cube-1"></a>
-
-### cube()
-
-```ts
-cube<TName>(dbName: TName, fieldConfig?:     {
-      schemaName: string;
-      }): PgCustomColumnBuilder<{
-  columnType: "PgCustomColumn";
-  data: [number, number, number];
-  dataType: "custom";
-  driverParam: number[];
-  enumValues: undefined;
-  name: TName;
-}>
-```
-
-Implements cube extension type for 3d vectors.
-
-#### Type parameters
-
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
-
-#### Parameters
-
-| Parameter                 | Type     |
-| :------------------------ | :------- |
-| `dbName`                  | `TName`  |
-| `fieldConfig`?            | `Object` |
-| `fieldConfig.schemaName`? | `string` |
-
-#### Returns
-
-`PgCustomColumnBuilder`<{ `columnType`: `"PgCustomColumn"`; `data`: \[`number`, `number`, `number`];
-`dataType`: `"custom"`; `driverParam`: `number`\[]; `enumValues`: `undefined`; `name`: `TName`; }>
-
-> | Member        | Type                            |
-> | :------------ | :------------------------------ |
-> | `columnType`  | `"PgCustomColumn"`              |
-> | `data`        | \[`number`, `number`, `number`] |
-> | `dataType`    | `"custom"`                      |
-> | `driverParam` | `number`\[]                     |
-> | `enumValues`  | `undefined`                     |
-> | `name`        | `TName`                         |
-
-#### See
-
-https://www.postgresql.org/docs/current/cube.html
 
 ---
 
