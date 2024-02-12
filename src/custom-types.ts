@@ -1,7 +1,7 @@
 import { SQL, SQLWrapper } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
+import { Range } from '.';
 import { GEOMETRY_TYPES, PG_DIALECT, Regconfig, SRIDS, Srid } from './constants';
-import type { Range } from './utilities';
 
 /**
  * Ci-text postgres column type.
@@ -102,6 +102,7 @@ export const daterange = customType<{ data: [Date, Date] }>({
 	},
 });
 
+export class Cube {}
 /**
  * Implements cube extension type for 3d vectors.
  *

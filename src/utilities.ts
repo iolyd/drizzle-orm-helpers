@@ -1,4 +1,7 @@
 import {
+	AnyColumn,
+	Column,
+	ColumnBuilderBase,
 	SQL,
 	SQLWrapper,
 	Subquery,
@@ -10,8 +13,50 @@ import {
 	is,
 	sql,
 } from 'drizzle-orm';
-import { NANOID_LENGTH_DEFAULT, PAGE_SIZE_DEFAULT, RangeBoundType, Regconfig } from './constants';
-import { AnySelect, Select, cs, wn } from './primitives';
+import { AnyMySqlSelect, MySqlSelect } from 'drizzle-orm/mysql-core';
+import { AnyPgSelect, PgSelect } from 'drizzle-orm/pg-core';
+import { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
+import { SetOptional } from 'type-fest';
+import { NANOID_LENGTH_DEFAULT, PAGE_SIZE_DEFAULT, Regconfig } from './constants';
+import { cs, wn } from './expressions';
+
+/**
+ * Dialect agnostic select.
+ *
+ * @see PgSelect.
+ * @see MySqlSelect
+ * @see SQLiteSelect
+ */
+export type Select = SetOptional<PgSelect | MySqlSelect | SQLiteSelect, 'where'>;
+
+/**
+ * Dialect agnostic AnySelect.
+ *
+ * @see AnyPgSelect
+ * @see AnyMySqlSelect
+ * @see AnySQLiteSelect
+ */
+export type AnySelect = SetOptional<AnyPgSelect | AnyMySqlSelect | AnySQLiteSelect, 'where'>;
+
+/**
+ * Infer type of table column.
+ */
+export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase> = AnyColumn<
+	Pick<ReturnType<T>['_'], 'data' | 'dataType'>
+>;
+
+/**
+ * Infer SQL template or column data type.
+ */
+export type InferDataType<T extends Column | SQL | SQL.Aliased> = T extends Column
+	? T['_']['notNull'] extends true
+		? T['_']['dataType']
+		: T['_']['dataType'] | null
+	: T extends SQL<infer U>
+		? U
+		: T extends SQL.Aliased<infer U>
+			? U
+			: never;
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
@@ -66,6 +111,7 @@ export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
 					(table as any).tableName;
 }
 
+export class RegconfigMatcher {}
 /**
  * @example
  *
@@ -88,6 +134,21 @@ export function createGetRegconfig<T extends Record<string, Regconfig>>(language
 			)
 		).mapWith(String) as SQL<Regconfig | null>;
 	};
+}
+
+/**
+ * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
+ *
+ * @param columns Record of columns to get from the conflict's `excluded` table.
+ */
+export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
+	return (Object.keys(columns) as (keyof T)[]).reduce(
+		(acc, curr) => {
+			acc[curr] = sql.raw(`excluded.${columns[curr].name}`) as SQL<InferDataType<T[typeof curr]>>;
+			return acc;
+		},
+		<{ [K in keyof T]: SQL<InferDataType<T[K]>> }>{}
+	);
 }
 
 /**
@@ -151,55 +212,4 @@ export function createGenerateNanoid({
  */
 export function paginate<T extends Select>(qb: T, page: number, size: number = PAGE_SIZE_DEFAULT) {
 	return qb.limit(size).offset(page * size);
-}
-
-/**
- * Type for returned value of postgres range data. While empty ranges normally return 'empty', they
- * are here modeled as [null, null] for convenience when binding range members or reprensentinf
- * their state for reactivity.
- */
-export type Range = [number, number] | [null, null];
-
-/**
- * Schema to validate and assert as range. Can also be used for the base of a custom validator with
- * the library of your choice.
- *
- * @example
- *
- * ```
- * // zod custom schema
- * const rangeSchema = z.custom<Range>(isRange);
- * ```
- *
- * @param config.min Minimum value of the range.
- * @param config.max Maximum value of the range.
- */
-export function isRange(
-	maybeRange: unknown,
-	{
-		min,
-		max,
-	}: {
-		min?: number;
-		max?: number;
-		upper?: RangeBoundType;
-		lower?: RangeBoundType;
-	} = {}
-): maybeRange is Range {
-	if (!Array.isArray(maybeRange) || maybeRange.length !== 2) {
-		return false;
-	}
-	if (maybeRange[0] === null && maybeRange[1] === null) {
-		// For convenience, 'empty' ranges are coalesced to null-bounded tuples.
-		return true;
-	}
-	if (maybeRange[0] > maybeRange[1]) {
-		// Ascending order is not respected.
-		return false;
-	}
-	if ((min && maybeRange[0] < min) || (max && maybeRange[1] > max)) {
-		// Limits are not respected.
-		return false;
-	}
-	return true;
 }

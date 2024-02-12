@@ -1,19 +1,17 @@
-# Drizzle ORM Helpers
+<h1 align="center">Drizzle ORM Helpers</h1>
 
 <p align="center">
 <b>⚠️   Use at your own risk   ⚠️</b>
 </p>
 <p align="center">
-🚧
-<i>This package is under construction, things are most likely broken!</i>
-🚧
+<sup>🚧   This package is under construction, expect some things to be broken!   🚧</sup>
 </p>
+
+<br />
 
 Collection of unofficial helpers for use with Drizzle ORM. Most helpers provided are oriented
 towards Postgres and should be seen as temporary, awaiting remplacements in official Drizzle
 package(s).
 
-## Documentation
-
-A simple auto-generated
-[documentation is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation.md).
+A crude auto-generated
+[**documentation** is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation.md).
