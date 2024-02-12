@@ -27,7 +27,6 @@
   - [bool()](#bool)
   - [citext()](#citext)
   - [coalesce()](#coalesce)
-  - [createGenerateNanoid()](#creategeneratenanoid)
   - [cs()](#cs)
   - [daterange()](#daterange)
   - [el()](#el)
@@ -584,61 +583,6 @@ SQL coalesce.
 #### Returns
 
 `CoalesceSQL`<`T`, `true`, `never`>
-
----
-
-<a id="creategeneratenanoid" name="creategeneratenanoid"></a>
-
-### createGenerateNanoid()
-
-```ts
-createGenerateNanoid(__namedParameters:     {
-      defaultLength: NANOID_SIZE_DEFAULT;
-      schemaName: string;
-      }): (__namedParameters: {
-  alphabet: string;
-  optimized: false;
-  size: defaultLength;
-}) => SQL<string>
-```
-
-#### Parameters
-
-| Parameter                          | Type     |
-| :--------------------------------- | :------- |
-| `__namedParameters`                | `Object` |
-| `__namedParameters.defaultLength`? | `number` |
-| `__namedParameters.schemaName`?    | `string` |
-
-#### Returns
-
-`Function`
-
-> ##### Parameters
->
-> | Parameter                      | Type      |
-> | :----------------------------- | :-------- |
-> | `__namedParameters`            | `Object`  |
-> | `__namedParameters.alphabet`?  | `string`  |
-> | `__namedParameters.optimized`? | `boolean` |
-> | `__namedParameters.size`?      | `number`  |
->
-> ##### Returns
->
-> `SQL`<`string`>
-
-#### Example
-
-```
-const generateNanoid = createGenerateNanoid({
-	schemaName: extensionsSchema.schemaName,
-});
-```
-
-#### See
-
-[Example of how to create the needed extensions and the nanoid functions](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
-.
 
 ---
 
