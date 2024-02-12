@@ -206,16 +206,45 @@ export function getCurrentTsConfig() {
 	return sql<Regconfig>`get_current_ts_config()`;
 }
 
-export function toTsvector(language: SQLWrapper | AnyColumn, text: unknown) {
-	return sql<string>`to_tsvector(${language}, ${bindIfParam(text, language)})`.mapWith(String);
+/**
+ * @param regconfig Laguage configuration to use when converting source text to text search vector.
+ * @param text Source text to convert into a text search vector.
+ *
+ *   ```sql
+ *   to_tsvector();
+ *   --or;
+ *   plainto_tsvector();
+ *   ```
+ */
+export function toTsvector(regconfig: SQLWrapper | AnyColumn, text: unknown) {
+	return sql<string>`to_tsvector(${regconfig}, ${bindIfParam(text, regconfig)})`.mapWith(String);
 }
 
-export function toTsquery(language: SQLWrapper | AnyColumn, text: unknown) {
-	return sql<string>`to_tsquery(${language}, ${bindIfParam(text, language)})`.mapWith(String);
-}
-
-export function plaintoTsquery(language: SQLWrapper, text: unknown) {
-	return sql<string>`plainto_tsquery(${language}, ${bindIfParam(text, language)})`.mapWith(String);
+/**
+ * @param regconfig Language config for the text search query.
+ * @param text Source text to convert into a text search query.
+ * @param config.plain Specifies if the source text should be compared as a plain (case insensitive)
+ *   query.
+ *
+ *   ```sql
+ *   to_tsvector();
+ *   ```
+ */
+export function toTsquery(
+	regconfig: SQLWrapper | AnyColumn,
+	text: unknown,
+	{
+		plain = false,
+	}: {
+		plain?: boolean;
+	} = {}
+) {
+	if (plain) {
+		return sql<string>`plainto_tsquery(${regconfig}, ${bindIfParam(text, regconfig)})`.mapWith(
+			String
+		);
+	}
+	return sql<string>`to_tsquery(${regconfig}, ${bindIfParam(text, regconfig)})`.mapWith(String);
 }
 
 /**
