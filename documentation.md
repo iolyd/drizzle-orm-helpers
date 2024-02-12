@@ -2,6 +2,10 @@
 
 ## Table of Contents
 
+- [Classes](#classes)
+  - [Cube](#cube)
+  - [Nanoid](#nanoid)
+  - [RegconfigMatcher](#regconfigmatcher)
 - [Type Aliases](#type-aliases)
   - [AnySelect](#anyselect)
   - [InferColumnType\<T>](#infercolumntypet)
@@ -9,14 +13,16 @@
   - [Range](#range)
   - [Select](#select)
 - [Variables](#variables)
+  - [emptyArray](#emptyarray)
   - [emptyJsonArray](#emptyjsonarray)
   - [emptyJsonObject](#emptyjsonobject)
-  - [emptySqlArray](#emptysqlarray)
   - [fal](#fal)
   - [infinity](#infinity)
+  - [no](#no)
   - [nul](#nul)
   - [today](#today)
   - [tru](#tru)
+  - [yes](#yes)
 - [Functions](#functions)
   - [arrayAgg()](#arrayagg)
   - [bool()](#bool)
@@ -25,7 +31,7 @@
   - [createGenerateNanoid()](#creategeneratenanoid)
   - [createGetRegconfig()](#creategetregconfig)
   - [cs()](#cs)
-  - [cube()](#cube)
+  - [cube()](#cube-1)
   - [daterange()](#daterange)
   - [el()](#el)
   - [excluded()](#excluded)
@@ -40,7 +46,6 @@
   - [jsonObjectAgg()](#jsonobjectagg)
   - [jsonStripNulls()](#jsonstripnulls)
   - [paginate()](#paginate)
-  - [plaintoTsquery()](#plaintotsquery)
   - [point()](#point)
   - [random()](#random)
   - [regconfig()](#regconfig)
@@ -53,6 +58,96 @@
   - [tsrange()](#tsrange)
   - [tsvector()](#tsvector)
   - [wn()](#wn)
+
+## Classes
+
+<a id="cube" name="cube"></a>
+
+### Cube
+
+#### Constructors
+
+<a id="constructors" name="constructors"></a>
+
+##### new Cube()
+
+```ts
+new Cube(): Cube
+```
+
+###### Returns
+
+[`Cube`](documentation.md#cube)
+
+---
+
+<a id="nanoid" name="nanoid"></a>
+
+### Nanoid
+
+Class to create a reference to your `nanoid()` Postgres function with customized presets.
+
+#### Example
+
+```ts
+const nanoid = new Nanoid({
+  schemaName: extensionsSchema.schemaName,
+});
+```
+
+...would then call.
+
+```sql
+schema.nanoid(...)
+```
+
+#### Param
+
+Name of the extension schema.
+
+#### Param
+
+The nanoid length to use by default when generating without a specified length. Lengths can be
+customized by passing a param to the returned `generateNanoid` function.
+
+#### See
+
+[Example of how to create the needed extensions and the nanoid functions](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
+.
+
+#### Constructors
+
+<a id="constructors-1" name="constructors-1"></a>
+
+##### new Nanoid()
+
+```ts
+new Nanoid(): Nanoid
+```
+
+###### Returns
+
+[`Nanoid`](documentation.md#nanoid)
+
+---
+
+<a id="regconfigmatcher" name="regconfigmatcher"></a>
+
+### RegconfigMatcher
+
+#### Constructors
+
+<a id="constructors-2" name="constructors-2"></a>
+
+##### new RegconfigMatcher()
+
+```ts
+new RegconfigMatcher(): RegconfigMatcher
+```
+
+###### Returns
+
+[`RegconfigMatcher`](documentation.md#regconfigmatcher)
 
 ## Type Aliases
 
@@ -142,6 +237,18 @@ Dialect agnostic select.
 
 ## Variables
 
+<a id="emptyarray" name="emptyarray"></a>
+
+### emptyArray
+
+```ts
+const emptyArray: SQL<SQL<[]>>;
+```
+
+Empty SQL array (not json typed)
+
+---
+
 <a id="emptyjsonarray" name="emptyjsonarray"></a>
 
 ### emptyJsonArray
@@ -166,18 +273,6 @@ Empty record as SQL json.
 
 ---
 
-<a id="emptysqlarray" name="emptysqlarray"></a>
-
-### emptySqlArray
-
-```ts
-const emptySqlArray: SQL<SQL<[]>>;
-```
-
-Empty SQL array (not json typed)
-
----
-
 <a id="fal" name="fal"></a>
 
 ### fal
@@ -199,6 +294,22 @@ const infinity: SQL<number>;
 ```
 
 SQL template infinity value.
+
+---
+
+<a id="no" name="no"></a>
+
+### no
+
+```ts
+const no: SQL<false> = fal;
+```
+
+SQL template alias false value.
+
+#### See
+
+fal
 
 ---
 
@@ -235,6 +346,22 @@ const tru: SQL<true>;
 ```
 
 SQL template true value.
+
+---
+
+<a id="yes" name="yes"></a>
+
+### yes
+
+```ts
+const yes: SQL<true> = tru;
+```
+
+SQL template alias for true value.
+
+#### See
+
+tru
 
 ## Functions
 
@@ -498,7 +625,7 @@ CASE statements END;
 
 ---
 
-<a id="cube" name="cube"></a>
+<a id="cube-1" name="cube-1"></a>
 
 ### cube()
 
@@ -674,9 +801,9 @@ Should replace `getTableColumns` to allow for more input versatility.
 
 #### Type parameters
 
-| Type parameter                                        |
-| :---------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
-| `T` extends [`AnySelect`](documentation.md#anyselect) | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
+| Type parameter                                                          |
+| :---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- | ----------------------------------------- |
+| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> | [`AnySelect`](documentation.md#anyselect) |
 
 #### Parameters
 
@@ -704,6 +831,12 @@ https://github.com/drizzle-team/drizzle-orm/pull/1789
 getCurrentTsConfig(): SQL<Regconfig>
 ```
 
+Get the database's currently set regconfig for text-search functionalities.
+
+```sql
+get_current_ts_config();
+```
+
 #### Returns
 
 `SQL`<`Regconfig`>
@@ -720,9 +853,9 @@ getNameOrAlias<T>(table: T): T extends Table ? T["_"]["name"] : T extends View ?
 
 #### Type parameters
 
-| Type parameter                                        |
-| :---------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
-| `T` extends [`AnySelect`](documentation.md#anyselect) | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
+| Type parameter                                                          |
+| :---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- | ----------------------------------------- |
+| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> | [`AnySelect`](documentation.md#anyselect) |
 
 #### Parameters
 
@@ -850,9 +983,9 @@ Json_agg.
 
 #### Type parameters
 
-| Type parameter                                        |
-| :---------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- |
-| `T` extends [`AnySelect`](documentation.md#anyselect) | `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Subquery`<`string`, `unknown`> |
+| Type parameter                                                                           |
+| :--------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- | ----------------------------------------- |
+| `T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Subquery`<`string`, `unknown`> | [`AnySelect`](documentation.md#anyselect) |
 
 #### Parameters
 
@@ -883,9 +1016,9 @@ Aggregate sql values into a json object.
 
 #### Type parameters
 
-| Type parameter                                  |
-| :---------------------------------------------- | -------------------- | ------------ |
-| `T` extends `Record`<`string`, `SQL`<`unknown`> | `Aliased`<`unknown`> | `AnyColumn`> |
+| Type parameter                             |
+| :----------------------------------------- | ---------------- | --------------------- |
+| `T` extends `Record`<`string`, `AnyColumn` | `SQL`<`unknown`> | `Aliased`<`unknown`>> |
 
 #### Parameters
 
@@ -912,9 +1045,9 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Type parameters
 
-| Type parameter                                  |
-| :---------------------------------------------- | ------------ |
-| `T` extends `Record`<`string`, `SQL`<`unknown`> | `AnyColumn`> |
+| Type parameter                             |
+| :----------------------------------------- | ----------------- |
+| `T` extends `Record`<`string`, `AnyColumn` | `SQL`<`unknown`>> |
 
 #### Parameters
 
@@ -941,12 +1074,12 @@ instead of an SQL wrapped type.
 
 #### Type parameters
 
-| Type parameter               | Value                                                   |
-| :--------------------------- | :------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `K` extends `AnyColumn`      | -                                                       |
-| `V` extends `SQL`<`unknown`> | `AnyTable`<`TableConfig`>                               | -                                                                                                                                                           |
-| `TK` extends `string`        | `number`                                                | `null` extends [`InferDataType`](documentation.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](documentation.md#inferdatatypet)<`K`> extends `string` | `number` ? `InferDataType<K>` : `never`                                                                                                     |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`> ? `{ [K in string | number]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null                       | V["\_"]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`V`> : `never` |
+| Type parameter               | Value                                                                                        |
+| :--------------------------- | :------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `K` extends `AnyColumn`      | -                                                                                            |
+| `V` extends `SQL`<`unknown`> | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                               | -                                                                                                                                                           |
+| `TK` extends `string`        | `number`                                                                                     | `null` extends [`InferDataType`](documentation.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](documentation.md#inferdatatypet)<`K`> extends `string` | `number` ? `InferDataType<K>` : `never`                                                                                                     |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string | number]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null                       | V["\_"]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`V`> : `never` |
 
 #### Parameters
 
@@ -1019,27 +1152,6 @@ Paginate a query.
 #### Returns
 
 `PgSelect` | `MySqlSelect` | `SQLiteSelect`
-
----
-
-<a id="plaintotsquery" name="plaintotsquery"></a>
-
-### plaintoTsquery()
-
-```ts
-plaintoTsquery(language: SQLWrapper, text: unknown): SQL<string>
-```
-
-#### Parameters
-
-| Parameter  | Type         |
-| :--------- | :----------- |
-| `language` | `SQLWrapper` |
-| `text`     | `unknown`    |
-
-#### Returns
-
-`SQL`<`string`>
 
 ---
 
@@ -1210,7 +1322,7 @@ Since it is a json method, it should return an unwrapped (raw) type instead of a
 ### toJson()
 
 ```ts
-toJson<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType, string>, object, object> | SQL<unknown> | Aliased<unknown> ? InferDataType<T> : T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : unknown>
+toJson<T>(anyelement: T): SQL<T extends SQL<unknown> | Column<ColumnBaseConfig<ColumnDataType, string>, object, object> | Aliased<unknown> ? InferDataType<T> : T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : unknown>
 ```
 
 #### Type parameters
@@ -1227,9 +1339,9 @@ toJson<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType, 
 
 #### Returns
 
-`SQL`<`T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> |
-`SQL`<`unknown`> | `Aliased`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`T`> :
-`T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
+`SQL`<`T` extends `SQL`<`unknown`> | `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>,
+`object`, `object`> | `Aliased`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`T`>
+: `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
 `{ [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] }`
 : `T` extends `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> ?
 `T`\[`"_"`]\[`"selectedFields"`] : `unknown`>
@@ -1245,7 +1357,7 @@ https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-
 ### toJsonb()
 
 ```ts
-toJsonb<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType, string>, object, object> | SQL<unknown> | Aliased<unknown> ? InferDataType<T> : T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : unknown>
+toJsonb<T>(anyelement: T): SQL<T extends SQL<unknown> | Column<ColumnBaseConfig<ColumnDataType, string>, object, object> | Aliased<unknown> ? InferDataType<T> : T extends Table<TableConfig<Column<any, object, object>>> ? { [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] } : T extends View<string, boolean, ColumnsSelection> | Subquery<string, unknown> ? T["_"]["selectedFields"] : unknown>
 ```
 
 #### Type parameters
@@ -1262,9 +1374,9 @@ toJsonb<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType,
 
 #### Returns
 
-`SQL`<`T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> |
-`SQL`<`unknown`> | `Aliased`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`T`> :
-`T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
+`SQL`<`T` extends `SQL`<`unknown`> | `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>,
+`object`, `object`> | `Aliased`<`unknown`> ? [`InferDataType`](documentation.md#inferdatatypet)<`T`>
+: `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ?
 `{ [K in string | number]: { [Key in string as Key]: T["_"]["columns"][Key]["_"]["notNull"] extends true ? T["_"]["columns"][Key]["_"]["data"] : null | T["_"]["columns"][Key]["_"]["data"] }[K] }`
 : `T` extends `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> ?
 `T`\[`"_"`]\[`"selectedFields"`] : `unknown`>
@@ -1276,15 +1388,22 @@ toJsonb<T>(anyelement: T): SQL<T extends Column<ColumnBaseConfig<ColumnDataType,
 ### toTsquery()
 
 ```ts
-toTsquery(language: SQLWrapper | AnyColumn, text: unknown): SQL<string>
+toTsquery(
+   regconfig: SQLWrapper | AnyColumn,
+   text: unknown,
+   __namedParameters:     {
+      plain: false;
+}): SQL<string>
 ```
 
 #### Parameters
 
-| Parameter  | Type         |
-| :--------- | :----------- | ----------- |
-| `language` | `SQLWrapper` | `AnyColumn` |
-| `text`     | `unknown`    |
+| Parameter                  | Type         | Description                                      |
+| :------------------------- | :----------- | :----------------------------------------------- | ------------------------------------------ |
+| `regconfig`                | `SQLWrapper` | `AnyColumn`                                      | Language config for the text search query. |
+| `text`                     | `unknown`    | Source text to convert into a text search query. |
+| `__namedParameters`        | `Object`     | -                                                |
+| `__namedParameters.plain`? | `boolean`    | -                                                |
 
 #### Returns
 
@@ -1297,15 +1416,15 @@ toTsquery(language: SQLWrapper | AnyColumn, text: unknown): SQL<string>
 ### toTsvector()
 
 ```ts
-toTsvector(language: SQLWrapper | AnyColumn, text: unknown): SQL<string>
+toTsvector(regconfig: SQLWrapper | AnyColumn, text: unknown): SQL<string>
 ```
 
 #### Parameters
 
-| Parameter  | Type         |
-| :--------- | :----------- | ----------- |
-| `language` | `SQLWrapper` | `AnyColumn` |
-| `text`     | `unknown`    |
+| Parameter   | Type         | Description                                                                                                           |
+| :---------- | :----------- | :-------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `regconfig` | `SQLWrapper` | `AnyColumn`                                                                                                           | Laguage configuration to use when converting source text to text search vector. |
+| `text`      | `unknown`    | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
 
 #### Returns
 
@@ -1400,7 +1519,7 @@ Add multiranges if needed.
 
 ```ts
 tsvector<TName>(dbName: TName, fieldConfig:     {
-      language: Regconfig | SQLWrapper | SQL<Regconfig>;
+      language: SQLWrapper | Regconfig | SQL<Regconfig>;
       sources: string[];
       weighted: boolean;
       }): PgCustomColumnBuilder<{
@@ -1423,13 +1542,13 @@ Tsvector type for generated columns used notably for fuzzy string search.
 
 #### Parameters
 
-| Parameter               | Type        |
-| :---------------------- | :---------- | ------------ | ------------------ |
-| `dbName`                | `TName`     |
-| `fieldConfig`           | `Object`    |
-| `fieldConfig.language`  | `Regconfig` | `SQLWrapper` | `SQL`<`Regconfig`> |
-| `fieldConfig.sources`   | `string`\[] |
-| `fieldConfig.weighted`? | `boolean`   |
+| Parameter               | Type         |
+| :---------------------- | :----------- | ----------- | ------------------ |
+| `dbName`                | `TName`      |
+| `fieldConfig`           | `Object`     |
+| `fieldConfig.language`  | `SQLWrapper` | `Regconfig` | `SQL`<`Regconfig`> |
+| `fieldConfig.sources`   | `string`\[]  |
+| `fieldConfig.weighted`? | `boolean`    |
 
 #### Returns
 
