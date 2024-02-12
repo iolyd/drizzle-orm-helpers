@@ -17,7 +17,7 @@ import { AnyMySqlSelect, MySqlSelect } from 'drizzle-orm/mysql-core';
 import { AnyPgSelect, PgSelect } from 'drizzle-orm/pg-core';
 import { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import { SetOptional } from 'type-fest';
-import { NANOID_LENGTH_DEFAULT, PAGE_SIZE_DEFAULT, Regconfig } from './constants';
+import { NANOID_SIZE_DEFAULT, PAGE_SIZE_DEFAULT, Regconfig } from './constants';
 import { cs, wn } from './expressions';
 
 /**
@@ -111,7 +111,6 @@ export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
 					(table as any).tableName;
 }
 
-export class RegconfigMatcher {}
 /**
  * @example
  *
@@ -122,7 +121,7 @@ export class RegconfigMatcher {}
  * @param languageTags Lookup dictionnary used as a reference to match your app's language tags with
  *   Postgres's regconfig language names.
  */
-export function createGetRegconfig<T extends Record<string, Regconfig>>(languageTags: T) {
+export function RegconfigMatcher<T extends Record<string, Regconfig>>(languageTags: T) {
 	const languageTagsArr = Object.keys(languageTags);
 	/**
 	 * Use this sql switch to retrieve an sql langauge tag statement's corresponding regconfig name.
@@ -168,7 +167,7 @@ export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
  */
 export function createGenerateNanoid({
 	schemaName,
-	defaultLength = NANOID_LENGTH_DEFAULT,
+	defaultLength = NANOID_SIZE_DEFAULT,
 }: {
 	schemaName?: string;
 	defaultLength?: number;

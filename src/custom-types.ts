@@ -102,33 +102,42 @@ export const daterange = customType<{ data: [Date, Date] }>({
 	},
 });
 
-export class Cube {}
 /**
- * Implements cube extension type for 3d vectors.
+ * Create a cube column type with proper reference to the schema where your Postgres `cube`
+ * extension is located.
+ *
+ * @example
+ *
+ * ```
+ * const cube = Cube({ schemaName: extensionsSchema.schemaName });
+ * ```
  *
  * @param config.schemaName Name of the schema where the `cube` extension is added.
+ * @returns Custom column type for Postgres 3d vectors.
  * @see https://www.postgresql.org/docs/current/cube.html
  */
-export const cube = customType<{
-	data: [x: number, y: number, z: number];
-	driverData: number[];
-	config?: { schemaName?: string };
-}>({
-	dataType(config) {
-		return `${config?.schemaName ? config?.schemaName + '.' : ''}cube`;
-	},
-	fromDriver(value) {
-		if (value.length !== 3) {
-			throw new Error(
-				'Expected a cube value, but value is not a properly dimensioned array of numbers.'
-			);
-		}
-		return [value[0], value[1], value[2]];
-	},
-	toDriver(value) {
-		return value;
-	},
-});
+export function Cube({ schemaName }: { schemaName?: string } = {}) {
+	const schema = schemaName ? `${schemaName}.` : '';
+	return customType<{
+		data: [x: number, y: number, z: number];
+		driverData: number[];
+	}>({
+		dataType() {
+			return `${schema}cube`;
+		},
+		fromDriver(value) {
+			if (value.length !== 3) {
+				throw new Error(
+					'Expected a cube value, but value is not a properly dimensioned array of numbers.'
+				);
+			}
+			return [value[0], value[1], value[2]];
+		},
+		toDriver(value) {
+			return value;
+		},
+	});
+}
 
 /**
  * Implements postgres int4 / int8 range type.

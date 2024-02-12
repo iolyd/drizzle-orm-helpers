@@ -5,7 +5,7 @@ export const PG_DIALECT = new PgDialect();
 
 export const PAGE_SIZE_DEFAULT = 20;
 
-export const NANOID_LENGTH_DEFAULT = 15;
+export const NANOID_SIZE_DEFAULT = 15;
 
 export const NANOID_ALPHABET_DEFAULT =
 	'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
