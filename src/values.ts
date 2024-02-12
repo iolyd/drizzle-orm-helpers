@@ -13,7 +13,7 @@ export const emptyJsonArray = sql<[never]>`'[]'::json`;
 /**
  * Empty SQL array (not json typed)
  */
-export const emptySqlArray = sql<SQL<[]>>`{}`;
+export const emptyArray = sql<SQL<[]>>`{}`;
 
 /**
  * SQL template true value.
