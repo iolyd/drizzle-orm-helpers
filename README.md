@@ -14,4 +14,4 @@ towards Postgres and should be seen as temporary, awaiting remplacements in offi
 package(s).
 
 A crude auto-generated
-[**documentation** is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation.md).
+[**documentation** is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation/README.md).

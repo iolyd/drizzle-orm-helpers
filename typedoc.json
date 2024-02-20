@@ -16,7 +16,7 @@
 	"namedAnchors": true,
 	"readme": "none",
 	"githubPages": false,
-	"excludeGroups": true,
+	"excludeGroups": false,
 	"hidePageHeader": true,
 	"entryFileName": "README",
 	"entryModule": "src",
