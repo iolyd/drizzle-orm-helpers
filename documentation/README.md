@@ -11,10 +11,8 @@
 - [Variables](#variables)
   - [currentTimestamp](#currenttimestamp)
   - [fal](#fal)
-  - [no](#no)
   - [nul](#nul)
   - [tru](#tru)
-  - [yes](#yes)
 - [Functions](#functions)
   - [bool()](#bool)
   - [cases()](#cases)
@@ -139,22 +137,6 @@ SQL template false value.
 
 ---
 
-<a id="no" name="no"></a>
-
-### no
-
-```ts
-const no: SQL<false> = fal;
-```
-
-SQL template alias false value.
-
-#### See
-
-fal
-
----
-
 <a id="nul" name="nul"></a>
 
 ### nul
@@ -176,22 +158,6 @@ const tru: SQL<true>;
 ```
 
 SQL template true value.
-
----
-
-<a id="yes" name="yes"></a>
-
-### yes
-
-```ts
-const yes: SQL<true> = tru;
-```
-
-SQL template alias for true value.
-
-#### See
-
-tru
 
 ## Functions
 
