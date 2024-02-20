@@ -952,7 +952,7 @@ cube ~> integer → float8
 ### generatedTsvector()
 
 ```ts
-generatedTsvector<TName>(dbName: TName, fieldConfig:     Object): MySqlCustomColumnBuilder<Object>
+generatedTsvector<TName>(dbName: TName, fieldConfig:     Object): PgCustomColumnBuilder<Object>
 ```
 
 Tsvector type for generated columns used notably for fuzzy string search.
@@ -975,16 +975,16 @@ Tsvector type for generated columns used notably for fuzzy string search.
 
 #### Returns
 
-`MySqlCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`<`Object`>
 
-> | Member        | Type                  |
-> | :------------ | :-------------------- |
-> | `columnType`  | `"MySqlCustomColumn"` |
-> | `data`        | `string`              |
-> | `dataType`    | `"custom"`            |
-> | `driverParam` | `unknown`             |
-> | `enumValues`  | `undefined`           |
-> | `name`        | `TName`               |
+> | Member        | Type               |
+> | :------------ | :----------------- |
+> | `columnType`  | `"PgCustomColumn"` |
+> | `data`        | `string`           |
+> | `dataType`    | `"custom"`         |
+> | `driverParam` | `unknown`          |
+> | `enumValues`  | `undefined`        |
+> | `name`        | `TName`            |
 
 #### See
 
