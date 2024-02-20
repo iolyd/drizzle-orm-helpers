@@ -14,9 +14,6 @@
   - [emptyArray](#emptyarray)
   - [emptyJsonArray](#emptyjsonarray)
   - [emptyJsonObject](#emptyjsonobject)
-  - [infinity](#infinity)
-  - [now](#now)
-  - [today](#today)
 - [Functions](#functions)
   - [arrayAgg()](#arrayagg)
   - [citext()](#citext)
@@ -249,48 +246,6 @@ const emptyJsonObject: SQL<object>;
 ```
 
 Empty record as SQL json.
-
----
-
-<a id="infinity" name="infinity"></a>
-
-### infinity
-
-```ts
-const infinity: SQL<number>;
-```
-
-SQL template infinity value.
-
----
-
-<a id="now" name="now"></a>
-
-### now
-
-```ts
-const now: SQL<Date>;
-```
-
-Get the current time as a constant.
-
-#### Example
-
-```sql
-'now';
-```
-
----
-
-<a id="today" name="today"></a>
-
-### today
-
-```ts
-const today: SQL<Date>;
-```
-
-SQL template today value.
 
 ## Functions
 
