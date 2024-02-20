@@ -1,63 +1,35 @@
 # src
 
-<a id="anyselect" name="anyselect"></a>
-
 ## Table of Contents
 
-- [AnySelect](#anyselect)
-  - [See](#see)
-- [InferColumnType\<T>](#infercolumntypet)
-  - [Type parameters](#type-parameters)
-- [InferDataType\<T>](#inferdatatypet)
-  - [Type parameters](#type-parameters-1)
-- [Schema](#schema)
-- [Select](#select)
-  - [See](#see-1)
-- [currentTimestamp](#currenttimestamp)
-  - [Example](#example)
-- [fal](#fal)
-- [no](#no)
-  - [See](#see-2)
-- [nul](#nul)
-- [tru](#tru)
-- [yes](#yes)
-  - [See](#see-3)
-- [bool()](#bool)
-  - [Type parameters](#type-parameters-2)
-  - [Parameters](#parameters)
-  - [Returns](#returns)
-- [cases()](#cases)
-  - [Parameters](#parameters-1)
-  - [Returns](#returns-1)
-  - [Example](#example-1)
-  - [Example](#example-2)
-- [coalesce()](#coalesce)
-  - [Type parameters](#type-parameters-3)
-  - [Parameters](#parameters-2)
-  - [Returns](#returns-2)
-- [distinct()](#distinct)
-  - [Type parameters](#type-parameters-4)
-  - [Parameters](#parameters-3)
-  - [Returns](#returns-3)
-- [getColumns()](#getcolumns)
-  - [Type parameters](#type-parameters-5)
-  - [Parameters](#parameters-4)
-  - [Returns](#returns-4)
-  - [See](#see-4)
-- [getNameOrAlias()](#getnameoralias)
-  - [Type parameters](#type-parameters-6)
-  - [Parameters](#parameters-5)
-  - [Returns](#returns-5)
-- [paginate()](#paginate)
-  - [Type parameters](#type-parameters-7)
-  - [Parameters](#parameters-6)
-  - [Returns](#returns-6)
-- [withSchema()](#withschema)
-  - [Type parameters](#type-parameters-8)
-  - [Parameters](#parameters-7)
-  - [Returns](#returns-7)
+- [Type Aliases](#type-aliases)
+  - [AnySelect](#anyselect)
+  - [InferColumnType\<T>](#infercolumntypet)
+  - [InferDataType\<T>](#inferdatatypet)
+  - [Schema](#schema)
+  - [Select](#select)
+- [Variables](#variables)
+  - [currentTimestamp](#currenttimestamp)
+  - [fal](#fal)
+  - [no](#no)
+  - [nul](#nul)
+  - [tru](#tru)
+  - [yes](#yes)
+- [Functions](#functions)
+  - [bool()](#bool)
+  - [cases()](#cases)
+  - [coalesce()](#coalesce)
+  - [distinct()](#distinct)
+  - [getColumns()](#getcolumns)
+  - [getNameOrAlias()](#getnameoralias)
+  - [paginate()](#paginate)
+  - [withSchema()](#withschema)
 
-## AnySelect
+## Type Aliases
+
+<a id="anyselect" name="anyselect"></a>
+
+### AnySelect
 
 ```ts
 type AnySelect: SetOptional<AnyPgSelect | AnyMySqlSelect | AnySQLiteSelect, "where">;
@@ -65,7 +37,7 @@ type AnySelect: SetOptional<AnyPgSelect | AnyMySqlSelect | AnySQLiteSelect, "whe
 
 Dialect agnostic AnySelect.
 
-### See
+#### See
 
 - AnyPgSelect
 - AnyMySqlSelect
@@ -75,7 +47,7 @@ Dialect agnostic AnySelect.
 
 <a id="infercolumntypet" name="infercolumntypet"></a>
 
-## InferColumnType\<T>
+### InferColumnType\<T>
 
 ```ts
 type InferColumnType<T>: AnyColumn<Pick<ReturnType<T>["_"], "data" | "dataType">>;
@@ -83,15 +55,17 @@ type InferColumnType<T>: AnyColumn<Pick<ReturnType<T>["_"], "data" | "dataType">
 
 Infer type of table column.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends (...`config`: `never`\[]) => `ColumnBuilderBase`
+| Type parameter                                               |
+| :----------------------------------------------------------- |
+| `T` extends (...`config`: `never`\[]) => `ColumnBuilderBase` |
 
 ---
 
 <a id="inferdatatypet" name="inferdatatypet"></a>
 
-## InferDataType\<T>
+### InferDataType\<T>
 
 ```ts
 type InferDataType<T>: T extends Table ? InferSelectModel<T> : T extends Column ? T["_"]["notNull"] extends true ? T["_"]["dataType"] : T["_"]["dataType"] | null : T extends View | Subquery ? T["_"]["selectedFields"] : T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : T extends Param ? T["value"] : unknown;
@@ -99,15 +73,17 @@ type InferDataType<T>: T extends Table ? InferSelectModel<T> : T extends Column 
 
 Infer any SQL wrapper's expected return data type.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends `SQLWrapper`
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
 
 ---
 
 <a id="schema" name="schema"></a>
 
-## Schema
+### Schema
 
 ```ts
 type Schema: PgSchema | MySqlSchema;
@@ -119,7 +95,7 @@ Dialect-agnostic schema. Excludes SQLite.
 
 <a id="select" name="select"></a>
 
-## Select
+### Select
 
 ```ts
 type Select: SetOptional<PgSelect | MySqlSelect | SQLiteSelect, "where">;
@@ -127,23 +103,23 @@ type Select: SetOptional<PgSelect | MySqlSelect | SQLiteSelect, "where">;
 
 Dialect agnostic select.
 
-### See
+#### See
 
 - PgSelect.
 - MySqlSelect
 - SQLiteSelect
 
----
+## Variables
 
 <a id="currenttimestamp" name="currenttimestamp"></a>
 
-## currentTimestamp
+### currentTimestamp
 
 ```ts
 const currentTimestamp: SQL<Date>;
 ```
 
-### Example
+#### Example
 
 ```sql
 current_timestamp();
@@ -153,7 +129,7 @@ current_timestamp();
 
 <a id="fal" name="fal"></a>
 
-## fal
+### fal
 
 ```ts
 const fal: SQL<false>;
@@ -165,7 +141,7 @@ SQL template false value.
 
 <a id="no" name="no"></a>
 
-## no
+### no
 
 ```ts
 const no: SQL<false> = fal;
@@ -173,7 +149,7 @@ const no: SQL<false> = fal;
 
 SQL template alias false value.
 
-### See
+#### See
 
 fal
 
@@ -181,7 +157,7 @@ fal
 
 <a id="nul" name="nul"></a>
 
-## nul
+### nul
 
 ```ts
 const nul: SQL<null>;
@@ -193,7 +169,7 @@ SQL template null value.
 
 <a id="tru" name="tru"></a>
 
-## tru
+### tru
 
 ```ts
 const tru: SQL<true>;
@@ -205,7 +181,7 @@ SQL template true value.
 
 <a id="yes" name="yes"></a>
 
-## yes
+### yes
 
 ```ts
 const yes: SQL<true> = tru;
@@ -213,15 +189,15 @@ const yes: SQL<true> = tru;
 
 SQL template alias for true value.
 
-### See
+#### See
 
 tru
 
----
+## Functions
 
 <a id="bool" name="bool"></a>
 
-## bool()
+### bool()
 
 ```ts
 bool<T>(value: T): SQL<T>
@@ -229,15 +205,19 @@ bool<T>(value: T): SQL<T>
 
 SQL template boolean value.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends `boolean`
+| Type parameter        |
+| :-------------------- |
+| `T` extends `boolean` |
 
-### Parameters
+#### Parameters
 
-• **value**: `T`
+| Parameter | Type |
+| :-------- | :--- |
+| `value`   | `T`  |
 
-### Returns
+#### Returns
 
 `SQL`<`T`>
 
@@ -245,7 +225,7 @@ SQL template boolean value.
 
 <a id="cases" name="cases"></a>
 
-## cases()
+### cases()
 
 ```ts
 cases(...cases: [...(undefined | [SQLWrapper, unknown])[], unknown][] | (undefined | [SQLWrapper, unknown])[]): SQL | undefined
@@ -253,22 +233,23 @@ cases(...cases: [...(undefined | [SQLWrapper, unknown])[], unknown][] | (undefin
 
 Case condition chain.
 
-### Parameters
+#### Parameters
 
-• ...**cases**: \[`...(undefined | [SQLWrapper, unknown])[]`, `unknown`]\[] | (`undefined` |
-\[`SQLWrapper`, `unknown`])\[]
+| Parameter  | Type             |
+| :--------- | :--------------- | ---------------------------------------- | ------------ | ------------------------------ |
+| ...`cases` | \[`...(undefined | [SQLWrapper, unknown])[]`, `unknown`]\[] | (`undefined` | \[`SQLWrapper`, `unknown`])\[] |
 
-### Returns
+#### Returns
 
 `SQL` | `undefined`
 
-### Example
+#### Example
 
 ```ts
 cs([eq(...), 2], 3)
 ```
 
-### Example
+#### Example
 
 ```sql
 CASE statements END;
@@ -278,7 +259,7 @@ CASE statements END;
 
 <a id="coalesce" name="coalesce"></a>
 
-## coalesce()
+### coalesce()
 
 ```ts
 coalesce<T>(...values: T): CoalesceSQL<T, true, never>
@@ -286,15 +267,19 @@ coalesce<T>(...values: T): CoalesceSQL<T, true, never>
 
 SQL coalesce.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends `SQL`<`unknown`>\[]
+| Type parameter                  |
+| :------------------------------ |
+| `T` extends `SQL`<`unknown`>\[] |
 
-### Parameters
+#### Parameters
 
-• ...**values**: `T`
+| Parameter   | Type |
+| :---------- | :--- |
+| ...`values` | `T`  |
 
-### Returns
+#### Returns
 
 `CoalesceSQL`<`T`, `true`, `never`>
 
@@ -302,7 +287,7 @@ SQL coalesce.
 
 <a id="distinct" name="distinct"></a>
 
-## distinct()
+### distinct()
 
 ```ts
 distinct<T>(statement: T): SQL<InferDataType<T>>
@@ -310,15 +295,19 @@ distinct<T>(statement: T): SQL<InferDataType<T>>
 
 Distinct keyword.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends `SQLWrapper`
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
 
-### Parameters
+#### Parameters
 
-• **statement**: `T`
+| Parameter   | Type |
+| :---------- | :--- |
+| `statement` | `T`  |
 
-### Returns
+#### Returns
 
 `SQL`<[`InferDataType`](README.md#inferdatatypet)<`T`>>
 
@@ -326,7 +315,7 @@ Distinct keyword.
 
 <a id="getcolumns" name="getcolumns"></a>
 
-## getColumns()
+### getColumns()
 
 ```ts
 getColumns<T>(table: T): T extends Table ? T["_"]["columns"] : T extends View ? T["_"]["selectedFields"] : T extends Subquery ? T["_"]["selectedFields"] : T extends AnySelect ? T["_"]["selectedFields"] : never
@@ -334,23 +323,25 @@ getColumns<T>(table: T): T extends Table ? T["_"]["columns"] : T extends View ? 
 
 Should replace `getTableColumns` to allow for more input versatility.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> |
-[`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> |
-`Subquery`<`string`, `unknown`>
+| Type parameter                                                          |
+| :---------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | [`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
 
-### Parameters
+#### Parameters
 
-• **table**: `T`
+| Parameter | Type |
+| :-------- | :--- |
+| `table`   | `T`  |
 
-### Returns
+#### Returns
 
 `T` extends `Table` ? `T`\[`"_"`]\[`"columns"`] : `T` extends `View` ?
 `T`\[`"_"`]\[`"selectedFields"`] : `T` extends `Subquery` ? `T`\[`"_"`]\[`"selectedFields"`] : `T`
 extends [`AnySelect`](README.md#anyselect) ? `T`\[`"_"`]\[`"selectedFields"`] : `never`
 
-### See
+#### See
 
 https://github.com/drizzle-team/drizzle-orm/pull/1789
 
@@ -358,23 +349,25 @@ https://github.com/drizzle-team/drizzle-orm/pull/1789
 
 <a id="getnameoralias" name="getnameoralias"></a>
 
-## getNameOrAlias()
+### getNameOrAlias()
 
 ```ts
 getNameOrAlias<T>(table: T): T extends Table ? T["_"]["name"] : T extends View ? T["_"]["name"] : T extends Subquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : never
 ```
 
-### Type parameters
+#### Type parameters
 
-• **T** extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> |
-[`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> |
-`Subquery`<`string`, `unknown`>
+| Type parameter                                                          |
+| :---------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | [`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
 
-### Parameters
+#### Parameters
 
-• **table**: `T`
+| Parameter | Type |
+| :-------- | :--- |
+| `table`   | `T`  |
 
-### Returns
+#### Returns
 
 `T` extends `Table` ? `T`\[`"_"`]\[`"name"`] : `T` extends `View` ? `T`\[`"_"`]\[`"name"`] : `T`
 extends `Subquery` ? `T`\[`"_"`]\[`"alias"`] : `T` extends [`AnySelect`](README.md#anyselect) ?
@@ -384,7 +377,7 @@ extends `Subquery` ? `T`\[`"_"`]\[`"alias"`] : `T` extends [`AnySelect`](README.
 
 <a id="paginate" name="paginate"></a>
 
-## paginate()
+### paginate()
 
 ```ts
 paginate<T>(
@@ -395,19 +388,21 @@ paginate<T>(
 
 Paginate a query.
 
-### Type parameters
+#### Type parameters
 
-• **T** extends [`Select`](README.md#select)
+| Type parameter                           |
+| :--------------------------------------- |
+| `T` extends [`Select`](README.md#select) |
 
-### Parameters
+#### Parameters
 
-• **qb**: `T`
+| Parameter | Type     | Default value |
+| :-------- | :------- | :------------ |
+| `qb`      | `T`      | `undefined`   |
+| `page`    | `number` | `undefined`   |
+| `size`    | `number` | `20`          |
 
-• **page**: `number`
-
-• **size**: `number`= `20`
-
-### Returns
+#### Returns
 
 `PgSelect` | `MySqlSelect` | `SQLiteSelect`
 
@@ -415,7 +410,7 @@ Paginate a query.
 
 <a id="withschema" name="withschema"></a>
 
-## withSchema()
+### withSchema()
 
 ```ts
 withSchema<A, T, S>(ressource:     (this: ThisWithSchema, ...args: A) => T, schema: S): (...args: A) => T
@@ -424,34 +419,33 @@ withSchema<A, T, S>(ressource:     (this: ThisWithSchema, ...args: A) => T, sche
 Indicate if a custom type, a function, or a value belongs to a schema, ex. a different extensions
 schema.
 
-### Type parameters
+#### Type parameters
 
-• **A** extends `unknown`\[]
+| Type parameter           |
+| :----------------------- | ------------------------------------------------------------------------------------ |
+| `A` extends `unknown`\[] |
+| `T` extends `SQLWrapper` | `ColumnBuilderBase`<`ColumnBuilderBaseConfig`<`ColumnDataType`, `string`>, `object`> |
+| `S` extends `string`     | [`Schema`](README.md#schema)                                                         |
 
-• **T** extends `SQLWrapper` | `ColumnBuilderBase`<`ColumnBuilderBaseConfig`<`ColumnDataType`,
-`string`>, `object`>
+#### Parameters
 
-• **S** extends `string` | [`Schema`](README.md#schema)
+| Parameter   | Type                                              | Description                                                                                                                        |
+| :---------- | :------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `ressource` | (`this`: `ThisWithSchema`, ...`args`: `A`) => `T` | The column type, function, or etc. for which to specify the schema where the<br /> related extension was created in your database. |
+| `schema`    | `S`                                               | -                                                                                                                                  |
 
-### Parameters
-
-• **ressource**
-
-The column type, function, or etc. for which to specify the schema where the related extension was
-created in your database.
-
-• **schema**: `S`
-
-### Returns
+#### Returns
 
 `Function`
 
 The ressource with bound to the specified schema.
 
-> #### Parameters
+> ##### Parameters
 >
-> • ...**args**: `A`
+> | Parameter | Type |
+> | :-------- | :--- |
+> | ...`args` | `A`  |
 >
-> #### Returns
+> ##### Returns
 >
 > `T`

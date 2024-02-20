@@ -1,14 +1,15 @@
 # src/sqlite
 
-<a id="random" name="random"></a>
-
 ## Table of Contents
 
-- [random()](#random)
-  - [Returns](#returns)
-  - [Example](#example)
+- [Functions](#functions)
+  - [random()](#random)
 
-## random()
+## Functions
+
+<a id="random" name="random"></a>
+
+### random()
 
 ```ts
 random(): SQL<number>
@@ -16,13 +17,13 @@ random(): SQL<number>
 
 SQLite random function.
 
-### Returns
+#### Returns
 
 `SQL`<`number`>
 
 Random random integer between -9223372036854775808 and +9223372036854775807.
 
-### Example
+#### Example
 
 ```sql
 random();

@@ -1,14 +1,15 @@
 # src/mysql
 
-<a id="random" name="random"></a>
-
 ## Table of Contents
 
-- [random()](#random)
-  - [Returns](#returns)
-  - [Example](#example)
+- [Functions](#functions)
+  - [random()](#random)
 
-## random()
+## Functions
+
+<a id="random" name="random"></a>
+
+### random()
 
 ```ts
 random(): SQL<number>
@@ -16,13 +17,13 @@ random(): SQL<number>
 
 MySQL random function.
 
-### Returns
+#### Returns
 
 `SQL`<`number`>
 
 Random number between 0 and 1.
 
-### Example
+#### Example
 
 ```sql
 rand();
