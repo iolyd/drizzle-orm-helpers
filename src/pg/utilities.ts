@@ -1,5 +1,5 @@
-import type { AnyColumn } from 'drizzle-orm';
-import { SQL, sql } from 'drizzle-orm';
+import type { AnyColumn, SQL } from 'drizzle-orm';
+import { isSQLWrapper, sql } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
 import type { InferDataType } from '..';
 import { PG_DIALECT } from '../internals';
@@ -42,10 +42,9 @@ export const generatedTsvector = customType<{
 	};
 }>({
 	dataType(config) {
-		const cfgname =
-			config.language instanceof SQL
-				? PG_DIALECT.sqlToQuery(config.language.inlineParams()).sql
-				: config.language;
+		const cfgname = isSQLWrapper(config.language)
+			? PG_DIALECT.sqlToQuery(config.language.inlineParams()).sql
+			: config.language;
 		if (config.weighted) {
 			const weighted = config.sources.map((input, index) => {
 				const weight = String.fromCharCode(index + 65);
