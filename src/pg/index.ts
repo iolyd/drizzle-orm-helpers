@@ -5,6 +5,7 @@ export * from './pgcrypto';
 export * from './pgtrgm';
 export * from './postgis';
 
+export * from './constants';
 export * from './custom-types';
 export * from './functions';
 export * from './operators';

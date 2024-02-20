@@ -2,7 +2,7 @@ import { customType } from 'drizzle-orm/pg-core';
 import parseDate from 'postgres-date';
 import * as range from 'postgres-range';
 import type { RangeBoundType, Regconfig } from './constants';
-import { RANGE_BOUND_BRACKETS } from './constants';
+import { RANGE_BOUND_BRACKETS } from './internals';
 
 /**
  * Implements Postgres regconfig. Useful for text search language config storage.

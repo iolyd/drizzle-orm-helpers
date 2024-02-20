@@ -44,24 +44,9 @@ export const REGCONFIGS = {
 
 export type Regconfig = ValueOf<typeof REGCONFIGS>;
 
-export const RANGE_EMPTY = [null, null] as [null, null];
-
-export type RangeEmpty = typeof RANGE_EMPTY;
-
 export const RANGE_BOUND_TYPES = {
 	INCLUSIVE: 'inclusive',
 	EXCLUSIVE: 'exclusive',
 } as const;
 
 export type RangeBoundType = ValueOf<typeof RANGE_BOUND_TYPES>;
-
-export const RANGE_BOUND_BRACKETS = {
-	LOWER: {
-		[RANGE_BOUND_TYPES.INCLUSIVE]: '[',
-		[RANGE_BOUND_TYPES.EXCLUSIVE]: '(',
-	},
-	UPPER: {
-		[RANGE_BOUND_TYPES.INCLUSIVE]: ']',
-		[RANGE_BOUND_TYPES.EXCLUSIVE]: ')',
-	},
-} satisfies Record<'UPPER' | 'LOWER', Record<RangeBoundType, string>>;

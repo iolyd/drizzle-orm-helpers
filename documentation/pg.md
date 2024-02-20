@@ -2,7 +2,12 @@
 
 ## Table of Contents
 
+- [Type Aliases](#type-aliases)
+  - [RangeBoundType](#rangeboundtype)
+  - [Regconfig](#regconfig)
 - [Variables](#variables)
+  - [RANGE_BOUND_TYPES](#range_bound_types)
+  - [REGCONFIGS](#regconfigs)
   - [emptyArray](#emptyarray)
   - [emptyJsonArray](#emptyjsonarray)
   - [emptyJsonObject](#emptyjsonobject)
@@ -48,7 +53,7 @@
   - [numrangeSchema()](#numrangeschema)
   - [overlaps()](#overlaps)
   - [random()](#random)
-  - [regconfig()](#regconfig)
+  - [regconfig()](#regconfig-1)
   - [rowToJson()](#rowtojson)
   - [setweight()](#setweight)
   - [similar()](#similar)
@@ -62,7 +67,97 @@
   - [tsrangeSchema()](#tsrangeschema)
   - [tsvector()](#tsvector)
 
+## Type Aliases
+
+<a id="rangeboundtype" name="rangeboundtype"></a>
+
+### RangeBoundType
+
+```ts
+type RangeBoundType: ValueOf<typeof RANGE_BOUND_TYPES>;
+```
+
+---
+
+<a id="regconfig" name="regconfig"></a>
+
+### Regconfig
+
+```ts
+type Regconfig: ValueOf<typeof REGCONFIGS>;
+```
+
 ## Variables
+
+<a id="range_bound_types" name="range_bound_types"></a>
+
+### RANGE_BOUND_TYPES
+
+```ts
+const RANGE_BOUND_TYPES: Object;
+```
+
+#### Type declaration
+
+| Member      | Type          | Value       |
+| :---------- | :------------ | :---------- |
+| `EXCLUSIVE` | `"exclusive"` | 'exclusive' |
+| `INCLUSIVE` | `"inclusive"` | 'inclusive' |
+
+---
+
+<a id="regconfigs" name="regconfigs"></a>
+
+### REGCONFIGS
+
+```ts
+const REGCONFIGS: Object;
+```
+
+Postgres regconfig cfgnames.
+
+#### Example
+
+```sql
+SELECT json_object_agg(upper(cfgname), cfgname)
+FROM pg_catalog.pg_ts_config;
+```
+
+#### Type declaration
+
+| Member       | Type           | Value        |
+| :----------- | :------------- | :----------- |
+| `ARABIC`     | `"arabic"`     | 'arabic'     |
+| `ARMENIAN`   | `"armenian"`   | 'armenian'   |
+| `BASQUE`     | `"basque"`     | 'basque'     |
+| `CATALAN`    | `"catalan"`    | 'catalan'    |
+| `DANISH`     | `"danish"`     | 'danish'     |
+| `DUTCH`      | `"dutch"`      | 'dutch'      |
+| `ENGLISH`    | `"english"`    | 'english'    |
+| `FINNISH`    | `"finnish"`    | 'finnish'    |
+| `FRENCH`     | `"french"`     | 'french'     |
+| `GERMAN`     | `"german"`     | 'german'     |
+| `GREEK`      | `"greek"`      | 'greek'      |
+| `HINDI`      | `"hindi"`      | 'hindi'      |
+| `HUNGARIAN`  | `"hungarian"`  | 'hungarian'  |
+| `INDONESIAN` | `"indonesian"` | 'indonesian' |
+| `IRISH`      | `"irish"`      | 'irish'      |
+| `ITALIAN`    | `"italian"`    | 'italian'    |
+| `LITHUANIAN` | `"lithuanian"` | 'lithuanian' |
+| `NEPALI`     | `"nepali"`     | 'nepali'     |
+| `NORWEGIAN`  | `"norwegian"`  | 'norwegian'  |
+| `PORTUGUESE` | `"portuguese"` | 'portuguese' |
+| `ROMANIAN`   | `"romanian"`   | 'romanian'   |
+| `RUSSIAN`    | `"russian"`    | 'russian'    |
+| `SERBIAN`    | `"serbian"`    | 'serbian'    |
+| `SIMPLE`     | `"simple"`     | 'simple'     |
+| `SPANISH`    | `"spanish"`    | 'spanish'    |
+| `SWEDISH`    | `"swedish"`    | 'swedish'    |
+| `TAMIL`      | `"tamil"`      | 'tamil'      |
+| `TURKISH`    | `"turkish"`    | 'turkish'    |
+| `YIDDISH`    | `"yiddish"`    | 'yiddish'    |
+
+---
 
 <a id="emptyarray" name="emptyarray"></a>
 
@@ -858,13 +953,13 @@ Tsvector type for generated columns used notably for fuzzy string search.
 
 #### Parameters
 
-| Parameter               | Type        |
-| :---------------------- | :---------- | ------------------ |
-| `dbName`                | `TName`     |
-| `fieldConfig`           | `Object`    |
-| `fieldConfig.language`  | `Regconfig` | `SQL`<`Regconfig`> |
-| `fieldConfig.sources`   | `string`\[] |
-| `fieldConfig.weighted`? | `boolean`   |
+| Parameter               | Type                               |
+| :---------------------- | :--------------------------------- | ----------------------------------------- |
+| `dbName`                | `TName`                            |
+| `fieldConfig`           | `Object`                           |
+| `fieldConfig.language`  | [`Regconfig`](src/pg.md#regconfig) | `SQL`<[`Regconfig`](src/pg.md#regconfig)> |
+| `fieldConfig.sources`   | `string`\[]                        |
+| `fieldConfig.weighted`? | `boolean`                          |
 
 #### Returns
 
@@ -954,7 +1049,7 @@ get_current_ts_config();
 
 #### Returns
 
-`SQL`<`Regconfig`>
+`SQL`<[`Regconfig`](src/pg.md#regconfig)>
 
 ---
 
@@ -1438,7 +1533,7 @@ random();
 
 ---
 
-<a id="regconfig" name="regconfig"></a>
+<a id="regconfig-1" name="regconfig-1"></a>
 
 ### regconfig()
 
@@ -1465,14 +1560,14 @@ Implements Postgres regconfig. Useful for text search language config storage.
 
 `PgCustomColumnBuilder`<`Object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `Regconfig`        |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `unknown`          |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+> | Member        | Type                               |
+> | :------------ | :--------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                 |
+> | `data`        | [`Regconfig`](src/pg.md#regconfig) |
+> | `dataType`    | `"custom"`                         |
+> | `driverParam` | `unknown`                          |
+> | `enumValues`  | `undefined`                        |
+> | `name`        | `TName`                            |
 
 #### See
 
@@ -1639,7 +1734,7 @@ toTsquery(text: unknown, text:     Object): SQL<string>
 | `text`            | `unknown`    | Source text to convert into a text search query. |
 | `text`            | `Object`     | Source text to convert into a text search query. |
 | `text.plain`?     | `boolean`    | -                                                |
-| `text.regconfig`? | `SQLWrapper` | `Regconfig`                                      | -   |
+| `text.regconfig`? | `SQLWrapper` | [`Regconfig`](src/pg.md#regconfig)               | -   |
 
 #### Returns
 
@@ -1661,7 +1756,7 @@ toTsvector(text: unknown, text:     Object): SQL<string>
 | :---------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------- | --- |
 | `text`            | `unknown`    | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
 | `text`            | `Object`     | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
-| `text.regconfig`? | `SQLWrapper` | `Regconfig`                                                                                                           | -   |
+| `text.regconfig`? | `SQLWrapper` | [`Regconfig`](src/pg.md#regconfig)                                                                                    | -   |
 
 #### Returns
 
