@@ -24,8 +24,9 @@
 		"./package.json": "./package.json"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^6.21.0",
-		"@typescript-eslint/parser": "^6.21.0",
+		"@types/geojson": "^7946.0.14",
+		"@typescript-eslint/eslint-plugin": "^7.0.2",
+		"@typescript-eslint/parser": "^7.0.2",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-drizzle": "^0.2.3",
@@ -33,19 +34,29 @@
 		"prettier-plugin-jsdoc": "^1.3.0",
 		"remark-github": "^12.0.0",
 		"remark-toc": "^9.0.0",
-		"tsup": "^8.0.1",
+		"tsup": "^8.0.2",
 		"type-fest": "^4.10.2",
-		"typedoc": "^0.25.7",
+		"typedoc": "^0.25.8",
 		"typedoc-plugin-markdown": "4.0.0-next.53",
 		"typedoc-plugin-remark": "0.0.1-next.2",
 		"typescript": "^5.3.3",
-		"unified-prettier": "^2.0.0"
+		"unified-prettier": "^2.0.1"
 	},
 	"peerDependencies": {
-		"drizzle-orm": "^0.29.3"
+		"drizzle-orm": "^0.29.3",
+		"zod": "^3.22.4"
+	},
+	"peerDependenciesMeta": {
+		"zod": {
+			"optional": true
+		}
 	},
 	"scripts": {
 		"doc": "pnpm typedoc && mv doc/documentation.md documentation.md && rm -rf doc",
 		"prepublishOnly": "pnpm tsup && pnpm doc"
+	},
+	"dependencies": {
+		"postgres-date": "^2.1.0",
+		"postgres-range": "^1.1.4"
 	}
 }

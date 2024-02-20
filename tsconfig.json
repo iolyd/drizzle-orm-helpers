@@ -16,6 +16,7 @@
 		"strictPropertyInitialization": true,
 		"target": "ESNext",
 		"useUnknownInCatchVariables": true,
+		"verbatimModuleSyntax": true,
 		"checkJs": true
 	},
 	"exclude": ["dist"]

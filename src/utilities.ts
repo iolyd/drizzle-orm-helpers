@@ -1,24 +1,19 @@
-import {
+import type {
 	AnyColumn,
 	Column,
 	ColumnBuilderBase,
+	InferSelectModel,
+	Param,
 	SQL,
 	SQLWrapper,
-	Subquery,
-	SubqueryConfig,
-	Table,
-	View,
-	ViewBaseConfig,
-	eq,
-	is,
-	sql,
 } from 'drizzle-orm';
-import { AnyMySqlSelect, MySqlSelect } from 'drizzle-orm/mysql-core';
-import { AnyPgSelect, PgSelect } from 'drizzle-orm/pg-core';
-import { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
-import { SetOptional } from 'type-fest';
-import { PAGE_SIZE_DEFAULT, Regconfig } from './constants';
-import { cs, wn } from './expressions';
+import { Subquery, SubqueryConfig, Table, View, ViewBaseConfig, is } from 'drizzle-orm';
+import type { AnyMySqlSelect, MySqlSchema, MySqlSelect } from 'drizzle-orm/mysql-core';
+import type { AnyPgSelect, PgSchema, PgSelect } from 'drizzle-orm/pg-core';
+import type { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
+import type { SetOptional } from 'type-fest';
+import type { ThisWithSchema } from './internals';
+import { SCHEMA_SYMBOL } from './internals';
 
 /**
  * Dialect agnostic select.
@@ -28,6 +23,11 @@ import { cs, wn } from './expressions';
  * @see SQLiteSelect
  */
 export type Select = SetOptional<PgSelect | MySqlSelect | SQLiteSelect, 'where'>;
+
+/**
+ * Dialect-agnostic schema. Excludes SQLite.
+ */
+export type Schema = PgSchema | MySqlSchema;
 
 /**
  * Dialect agnostic AnySelect.
@@ -46,17 +46,23 @@ export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase>
 >;
 
 /**
- * Infer SQL template or column data type.
+ * Infer any SQL wrapper's expected return data type.
  */
-export type InferDataType<T extends Column | SQL | SQL.Aliased> = T extends Column
-	? T['_']['notNull'] extends true
-		? T['_']['dataType']
-		: T['_']['dataType'] | null
-	: T extends SQL<infer U>
-		? U
-		: T extends SQL.Aliased<infer U>
-			? U
-			: never;
+export type InferDataType<T extends SQLWrapper> = T extends Table
+	? InferSelectModel<T>
+	: T extends Column
+		? T['_']['notNull'] extends true
+			? T['_']['dataType']
+			: T['_']['dataType'] | null
+		: T extends View | Subquery
+			? T['_']['selectedFields']
+			: T extends SQL<infer U>
+				? U
+				: T extends SQL.Aliased<infer U>
+					? U
+					: T extends Param
+						? T['value']
+						: unknown;
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
@@ -112,47 +118,25 @@ export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
 }
 
 /**
- * @example
- *
- * ```
- * const regconfig = createRegconfig({...})
- * ```
- *
- * @param languageTags Lookup dictionnary used as a reference to match your app's language tags with
- *   Postgres's regconfig language names.
- */
-export function RegconfigMatcher<T extends Record<string, Regconfig>>(languageTags: T) {
-	const languageTagsArr = Object.keys(languageTags);
-	/**
-	 * Use this sql switch to retrieve an sql langauge tag statement's corresponding regconfig name.
-	 */
-	return function getRegconfig(languageTag: SQLWrapper) {
-		return cs(
-			...languageTagsArr.map((tag) =>
-				wn(eq(languageTag, tag), sql`${languageTags[tag]}::regconfig`)
-			)
-		).mapWith(String) as SQL<Regconfig | null>;
-	};
-}
-
-/**
- * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
- *
- * @param columns Record of columns to get from the conflict's `excluded` table.
- */
-export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
-	return (Object.keys(columns) as (keyof T)[]).reduce(
-		(acc, curr) => {
-			acc[curr] = sql.raw(`excluded.${columns[curr].name}`) as SQL<InferDataType<T[typeof curr]>>;
-			return acc;
-		},
-		<{ [K in keyof T]: SQL<InferDataType<T[K]>> }>{}
-	);
-}
-
-/**
  * Paginate a query.
  */
-export function paginate<T extends Select>(qb: T, page: number, size: number = PAGE_SIZE_DEFAULT) {
+export function paginate<T extends Select>(qb: T, page: number, size: number = 20) {
 	return qb.limit(size).offset(page * size);
+}
+
+/**
+ * Indicate if a custom type, a function, or a value belongs to a schema, ex. a different extensions
+ * schema.
+ *
+ * @param ressource The column type, function, or etc. for which to specify the schema where the
+ *   related extension was created in your database.
+ * @param scehma The Drizzle-ORM schema or the schema name.
+ * @returns The ressource with bound to the specified schema.
+ */
+export function withSchema<
+	A extends unknown[] | never,
+	T extends ColumnBuilderBase | SQLWrapper,
+	S extends Schema | string,
+>(ressource: (this: ThisWithSchema, ...args: A) => T, schema: S) {
+	return ressource.bind({ [SCHEMA_SYMBOL]: schema });
 }

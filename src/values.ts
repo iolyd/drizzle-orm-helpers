@@ -1,19 +1,4 @@
-import { SQL, sql } from 'drizzle-orm';
-
-/**
- * Empty record as SQL json.
- */
-export const emptyJsonObject = sql<object>`'{}'::json`;
-
-/**
- * Empty array as SQL json.
- */
-export const emptyJsonArray = sql<[never]>`'[]'::json`;
-
-/**
- * Empty SQL array (not json typed)
- */
-export const emptyArray = sql<SQL<[]>>`{}`;
+import { sql } from 'drizzle-orm';
 
 /**
  * SQL template true value.
@@ -52,11 +37,10 @@ export function bool<T extends boolean>(value: T) {
 export const nul = sql<null>`null`;
 
 /**
- * SQL template infinity value.
+ * @example
+ *
+ * ```sql
+ * current_timestamp();
+ * ```
  */
-export const infinity = sql<typeof Infinity>`infinity`;
-
-/**
- * SQL template today value.
- */
-export const today = sql<Date>`today`;
+export const currentTimestamp = sql<Date>`current_timestamp`;

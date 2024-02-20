@@ -1,14 +1,4 @@
-import { PgDialect } from 'drizzle-orm/pg-core';
 import { ValueOf } from 'type-fest';
-
-export const PG_DIALECT = new PgDialect();
-
-export const PAGE_SIZE_DEFAULT = 20;
-
-export const NANOID_SIZE_DEFAULT = 15;
-
-export const NANOID_ALPHABET_DEFAULT =
-	'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 /**
  * Postgres regconfig cfgnames.
@@ -54,43 +44,9 @@ export const REGCONFIGS = {
 
 export type Regconfig = ValueOf<typeof REGCONFIGS>;
 
-/**
- * Common coordinate projection systems and their Spatial Reference System ID (EPSG).
- *
- * @example
- *
- * ```sql
- * SELECT * FROM extensions.spatial_ref_sys;
- * ```
- *
- * @todo Add more aliased systems.
- */
-export const SRIDS = {
-	/**
-	 * Lat/Lon globe-based coordinate system. Uses degrees to represent spheroid position.
-	 */
-	WGS84: 4326,
-	/**
-	 * Lat/Lon flat-map coordinates in meters. Generally the default system used for web apps.
-	 */
-	WEB_MERCATOR: 3857,
-} as const;
+export const RANGE_EMPTY = [null, null] as [null, null];
 
-export type Srid = ValueOf<typeof SRIDS> | `${ValueOf<typeof SRIDS>}`;
-
-/**
- * GeoJSON geometry types accepted by PostGIS.
- */
-export const GEOMETRY_TYPES = {
-	Point: 'Point',
-	LineString: 'LineString',
-	Polygon: 'Polygon',
-	MultiPoint: 'MultiPoint',
-	MultiLineString: 'MultiLineString',
-	MultiPolygon: 'MultiPolygon',
-};
-
-export type GeometryType = ValueOf<typeof GEOMETRY_TYPES>;
+export type RangeEmpty = typeof RANGE_EMPTY;
 
 export const RANGE_BOUND_TYPES = {
 	INCLUSIVE: 'inclusive',

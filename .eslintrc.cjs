@@ -1,10 +1,6 @@
 module.exports = {
 	root: true,
-	extends: [
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-		'prettier',
-	],
+	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
 	parser: '@typescript-eslint/parser',
 	plugins: ['@typescript-eslint', 'eslint-plugin-drizzle'],
 	parserOptions: {
@@ -18,6 +14,7 @@ module.exports = {
 	},
 	rules: {
 		'curly': ['error', 'all'],
+		'@typescript-eslint/consistent-type-imports': 'error',
 		'@typescript-eslint/no-unused-vars': [
 			'error',
 			{ ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' },

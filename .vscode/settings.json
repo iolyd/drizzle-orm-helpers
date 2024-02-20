@@ -10,6 +10,11 @@
 		"default": true,
 		"MD033": false
 	},
+	"[sql]": {
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false,
+		"editor.formatOnType": false
+	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.quoteStyle": "single"
 }
