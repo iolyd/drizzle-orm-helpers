@@ -1,12 +1,11 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-	entry: ['src/index.ts'],
+	entry: ['./src/index.ts', './src/pg/index.ts', './src/mysql/index.ts', './src/sqlite/index.ts'],
 	format: ['cjs', 'esm'],
 	treeshake: true,
 	outDir: 'dist',
 	dts: true,
-	// experimentalDts: true,
 	sourcemap: true,
 	clean: true,
 	bundle: true,

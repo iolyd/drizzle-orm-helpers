@@ -1,6 +1,7 @@
 import { customType } from 'drizzle-orm/pg-core';
 import type { GeoJsonGeometryTypes, Geometry } from 'geojson';
 import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
+import { SRIDS, type Srid } from './constants';
 
 // type CoordinateBase = [longitude: number, latitude: number];
 
@@ -73,24 +74,43 @@ import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
 // 	})(name, config);
 // };
 
-export function geometry<
+export function geography<
 	TName extends string,
-	TGeometry extends GeoJsonGeometryTypes,
-	TConfig extends {
-		type: TGeometry;
-		z?: boolean;
-		m?: boolean;
-	},
->(this: ThisWithSchema, name: TName, config: TConfig) {
+	TGeography extends GeoJsonGeometryTypes,
+	TZ extends boolean,
+	TM extends boolean,
+	TSrid extends Srid,
+>(this: ThisWithSchema, name: TName, config?: { type?: TGeography; z?: TZ; m?: TM; srid?: TSrid }) {
 	const schemaPrefix = getSchemaPrefix.call(this);
+	const z = config?.z ? 'Z' : '';
+	const m = config?.m ? 'M' : '';
+	const srid = config?.srid ? `,${config.srid}` : '';
+	const basetype = config?.type ? config.type : z || m || srid ? 'Geography' : '';
+	const type = `${basetype}${z}${m}`;
 	return customType<{
-		data: Extract<Geometry, { type: TGeometry }>;
+		data: Extract<Geometry, { type: TGeography }>;
 		driverData: string;
-		config: TConfig;
-		configRequired: true;
+		config: typeof config;
 	}>({
-		dataType(config) {},
-		toDriver(value) {},
-		fromDriver(value) {},
-	})(name, config);
+		dataType() {
+			const paren = type ? `(${type}${srid})` : '';
+			return `${schemaPrefix}geography${paren}`;
+		},
+		toDriver(value) {
+			return `ST_Transform(ST_GeomFromGeoJSON(${JSON.stringify(value)}),${srid ?? SRIDS.WEB_MERCATOR})::geography`;
+		},
+		fromDriver(value) {
+			try {
+				const parsed = JSON.parse(value);
+				if (config?.type && parsed.type !== config.type) {
+					throw new Error(`Expected geometry type ${config.type}, got ${parsed.type}`);
+				}
+				return parsed;
+			} catch (err) {
+				throw new Error(`Failed to parse geometry`, {
+					cause: err,
+				});
+			}
+		},
+	})(`${schemaPrefix}ST_AsGeoJSON("${name}") as ${name}`, config);
 }

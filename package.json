@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"type": "module",
 	"name": "drizzle-orm-helpers",
-	"version": "0.3.2",
+	"version": "0.4.0",
 	"files": [
 		"dist",
 		"package.json",
@@ -16,12 +16,27 @@
 		"url": "https://github.com/iolyd/drizzle-orm-helpers.git"
 	},
 	"exports": {
+		"./package.json": "./package.json",
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
 			"require": "./dist/index.cjs"
 		},
-		"./package.json": "./package.json"
+		"./pg": {
+			"types": "./dist/pg/index.d.ts",
+			"import": "./dist/pg/index.js",
+			"require": "./dist/pg/index.cjs"
+		},
+		"./mysql": {
+			"types": "./dist/mysql/index.d.ts",
+			"import": "./dist/mysql/index.js",
+			"require": "./dist/mysql/index.cjs"
+		},
+		"./sqlite": {
+			"types": "./dist/sqlite/index.d.ts",
+			"import": "./dist/sqlite/index.js",
+			"require": "./dist/sqlite/index.cjs"
+		}
 	},
 	"devDependencies": {
 		"@types/geojson": "^7946.0.14",
@@ -52,8 +67,8 @@
 		}
 	},
 	"scripts": {
-		"doc": "pnpm typedoc && mv doc/documentation.md documentation.md && rm -rf doc",
-		"prepublishOnly": "pnpm tsup && pnpm doc"
+		"doc": "pnpm typedoc && mv documentation/src/* documentation/ && rm -rf documentation/src",
+		"prepublishOnly": "pnpm tsup"
 	},
 	"dependencies": {
 		"postgres-date": "^2.1.0",
