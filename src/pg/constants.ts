@@ -1,4 +1,5 @@
 import type { ValueOf } from 'type-fest';
+import type { RangeValue } from '.';
 
 /**
  * Postgres regconfig cfgnames.
@@ -50,3 +51,8 @@ export const RANGE_BOUND_TYPES = {
 } as const;
 
 export type RangeBoundType = ValueOf<typeof RANGE_BOUND_TYPES>;
+
+/**
+ * Value for app-side representation of empty postgres ranges.
+ */
+export const RANGE_EMPTY = { lower: null, upper: null } satisfies RangeValue;

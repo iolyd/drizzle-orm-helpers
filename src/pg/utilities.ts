@@ -5,6 +5,8 @@ import type { InferDataType } from '..';
 import { PG_DIALECT } from '../internals';
 import type { Regconfig } from './constants';
 
+export type RangeValue<T = void> = { upper: T | null; lower: T | null };
+
 /**
  * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
  *

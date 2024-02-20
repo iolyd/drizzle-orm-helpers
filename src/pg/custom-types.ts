@@ -1,6 +1,7 @@
 import { customType } from 'drizzle-orm/pg-core';
 import parseDate from 'postgres-date';
 import * as range from 'postgres-range';
+import { RANGE_EMPTY, type RangeValue } from '.';
 import type { RangeBoundType, Regconfig } from './constants';
 import { RANGE_BOUND_BRACKETS } from './internals';
 
@@ -23,8 +24,6 @@ export const tsvector = customType<{ data: string }>({
 		return 'tsvector';
 	},
 });
-
-type RangeValue<T> = { upper: T | null; lower: T | null };
 
 /**
  * Implements Postgres timestamp range.
@@ -59,7 +58,7 @@ export function tsrange<
 				return parseDate(value);
 			});
 			if (parsed.isEmpty()) {
-				return { lower: null, upper: null } as TData;
+				return RANGE_EMPTY as TData;
 			}
 			return { lower: parsed.lower, upper: parsed.upper } as TData;
 		},
@@ -111,7 +110,7 @@ export function daterange<
 				return parseDate(value);
 			});
 			if (parsed.isEmpty()) {
-				return { lower: null, upper: null } as TData;
+				return RANGE_EMPTY as TData;
 			}
 			return { lower: parsed.lower, upper: parsed.upper } as TData;
 		},
@@ -161,7 +160,7 @@ export function intrange<
 				return parseInt(value, 10);
 			});
 			if (parsed.isEmpty()) {
-				return { lower: null, upper: null };
+				return RANGE_EMPTY;
 			}
 			return { lower: parsed.lower, upper: parsed.upper };
 		},
@@ -200,7 +199,7 @@ export function numrange<
 				return parseFloat(value);
 			});
 			if (parsed.isEmpty()) {
-				return { lower: null, upper: null };
+				return RANGE_EMPTY;
 			}
 			return { lower: parsed.lower, upper: parsed.upper };
 		},

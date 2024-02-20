@@ -4,10 +4,13 @@
 
 - [Type Aliases](#type-aliases)
   - [RangeBoundType](#rangeboundtype)
+  - [RangeValue\<T>](#rangevaluet)
   - [Regconfig](#regconfig)
 - [Variables](#variables)
   - [RANGE_BOUND_TYPES](#range_bound_types)
+  - [RANGE_EMPTY](#range_empty)
   - [REGCONFIGS](#regconfigs)
+  - [empty](#empty)
   - [emptyArray](#emptyarray)
   - [emptyJsonArray](#emptyjsonarray)
   - [emptyJsonObject](#emptyjsonobject)
@@ -79,6 +82,29 @@ type RangeBoundType: ValueOf<typeof RANGE_BOUND_TYPES>;
 
 ---
 
+<a id="rangevaluet" name="rangevaluet"></a>
+
+### RangeValue\<T>
+
+```ts
+type RangeValue<T>: Object;
+```
+
+#### Type parameters
+
+| Type parameter | Value  |
+| :------------- | :----- |
+| `T`            | `void` |
+
+#### Type declaration
+
+| Member  | Type |
+| :------ | :--- | ------ |
+| `lower` | `T`  | `null` |
+| `upper` | `T`  | `null` |
+
+---
+
 <a id="regconfig" name="regconfig"></a>
 
 ### Regconfig
@@ -103,6 +129,25 @@ const RANGE_BOUND_TYPES: Object;
 | :---------- | :------------ | :---------- |
 | `EXCLUSIVE` | `"exclusive"` | 'exclusive' |
 | `INCLUSIVE` | `"inclusive"` | 'inclusive' |
+
+---
+
+<a id="range_empty" name="range_empty"></a>
+
+### RANGE_EMPTY
+
+```ts
+const RANGE_EMPTY: Object;
+```
+
+Value for app-side representation of empty postgres ranges.
+
+#### Type declaration
+
+| Member  | Type   | Value |
+| :------ | :----- | :---- |
+| `lower` | `null` | null  |
+| `upper` | `null` | null  |
 
 ---
 
@@ -156,6 +201,18 @@ FROM pg_catalog.pg_ts_config;
 | `TAMIL`      | `"tamil"`      | 'tamil'      |
 | `TURKISH`    | `"turkish"`    | 'turkish'    |
 | `YIDDISH`    | `"yiddish"`    | 'yiddish'    |
+
+---
+
+<a id="empty" name="empty"></a>
+
+### empty
+
+```ts
+const empty: SQL<string>;
+```
+
+Postgres value returned for empty ranges.
 
 ---
 
@@ -723,11 +780,11 @@ Implements postgres date range.
 
 #### Type parameters
 
-| Type parameter             | Value                                                                                    |
-| :------------------------- | :--------------------------------------------------------------------------------------- | ------- |
-| `TName` extends `string`   | -                                                                                        |
-| `TConfig` extends `Object` | -                                                                                        |
-| `TData`                    | `TConfig`\[`"mode"`] extends `"string"` ? `RangeValue`<`string`> : `RangeValue`<`number` | `Date`> |
+| Type parameter             | Value                                                                                                                                      |
+| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `TName` extends `string`   | -                                                                                                                                          |
+| `TConfig` extends `Object` | -                                                                                                                                          |
+| `TData`                    | `TConfig`\[`"mode"`] extends `"string"` ? [`RangeValue`](src/pg.md#rangevaluet)<`string`> : [`RangeValue`](src/pg.md#rangevaluet)<`number` | `Date`> |
 
 #### Parameters
 
@@ -1103,14 +1160,14 @@ Implements postgres int4range and int8range types.
 
 `PgCustomColumnBuilder`<`Object`>
 
-> | Member        | Type                   |
-> | :------------ | :--------------------- |
-> | `columnType`  | `"PgCustomColumn"`     |
-> | `data`        | `RangeValue`<`number`> |
-> | `dataType`    | `"custom"`             |
-> | `driverParam` | `string`               |
-> | `enumValues`  | `undefined`            |
-> | `name`        | `TName`                |
+> | Member        | Type                                            |
+> | :------------ | :---------------------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                              |
+> | `data`        | [`RangeValue`](src/pg.md#rangevaluet)<`number`> |
+> | `dataType`    | `"custom"`                                      |
+> | `driverParam` | `string`                                        |
+> | `enumValues`  | `undefined`                                     |
+> | `name`        | `TName`                                         |
 
 #### See
 
@@ -1438,14 +1495,14 @@ Implements postgres numrange type.
 
 `PgCustomColumnBuilder`<`Object`>
 
-> | Member        | Type                   |
-> | :------------ | :--------------------- |
-> | `columnType`  | `"PgCustomColumn"`     |
-> | `data`        | `RangeValue`<`number`> |
-> | `dataType`    | `"custom"`             |
-> | `driverParam` | `string`               |
-> | `enumValues`  | `undefined`            |
-> | `name`        | `TName`                |
+> | Member        | Type                                            |
+> | :------------ | :---------------------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                              |
+> | `data`        | [`RangeValue`](src/pg.md#rangevaluet)<`number`> |
+> | `dataType`    | `"custom"`                                      |
+> | `driverParam` | `string`                                        |
+> | `enumValues`  | `undefined`                                     |
+> | `name`        | `TName`                                         |
 
 #### See
 
@@ -1799,11 +1856,11 @@ Implements Postgres timestamp range.
 
 #### Type parameters
 
-| Type parameter             | Value                                                                                    |
-| :------------------------- | :--------------------------------------------------------------------------------------- | ------- |
-| `TName` extends `string`   | -                                                                                        |
-| `TConfig` extends `Object` | -                                                                                        |
-| `TData`                    | `TConfig`\[`"mode"`] extends `"string"` ? `RangeValue`<`string`> : `RangeValue`<`number` | `Date`> |
+| Type parameter             | Value                                                                                                                                      |
+| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `TName` extends `string`   | -                                                                                                                                          |
+| `TConfig` extends `Object` | -                                                                                                                                          |
+| `TData`                    | `TConfig`\[`"mode"`] extends `"string"` ? [`RangeValue`](src/pg.md#rangevaluet)<`string`> : [`RangeValue`](src/pg.md#rangevaluet)<`number` | `Date`> |
 
 #### Parameters
 

@@ -17,6 +17,11 @@ export const emptyJsonArray = sql<[never]>`'[]'::json`;
 export const emptyArray = sql<SQL<[]>>`{}`;
 
 /**
+ * Postgres value returned for empty ranges.
+ */
+export const empty = sql`empty`.mapWith(String);
+
+/**
  * SQL template infinity value.
  */
 export const infinity = sql<typeof Infinity>`infinity`;
