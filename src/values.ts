@@ -11,20 +11,6 @@ export const tru = sql<true>`'true'`;
 export const fal = sql<false>`'false'`;
 
 /**
- * SQL template alias for true value.
- *
- * @see tru
- */
-export const yes = tru;
-
-/**
- * SQL template alias false value.
- *
- * @see fal
- */
-export const no = fal;
-
-/**
  * SQL template boolean value.
  */
 export function bool<T extends boolean>(value: T) {
