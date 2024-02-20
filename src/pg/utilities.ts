@@ -1,6 +1,6 @@
 import type { AnyColumn } from 'drizzle-orm';
 import { SQL, sql } from 'drizzle-orm';
-import { customType } from 'drizzle-orm/mysql-core';
+import { customType } from 'drizzle-orm/pg-core';
 import type { InferDataType } from '..';
 import { PG_DIALECT } from '../internals';
 import type { Regconfig } from './constants';
