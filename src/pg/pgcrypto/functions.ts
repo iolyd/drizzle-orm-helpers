@@ -51,7 +51,7 @@ export function nanoid(
 		params.push(`size => ${size}`);
 	}
 	if (alphabet) {
-		params.push(`alphabet => ${alphabet}`);
+		params.push(`alphabet => '${alphabet}'`);
 	}
 	if (additionalBytesFactor) {
 		params.push(`additionalBytesFactor => ${additionalBytesFactor}`);
