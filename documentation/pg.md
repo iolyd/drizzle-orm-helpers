@@ -283,7 +283,7 @@ Aggregate sql values into an sql array.
 ### citext()
 
 ```ts
-citext<TName>(this: ThisWithSchema, name: TName): PgCustomColumnBuilder<Object>
+citext<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<Object>
 ```
 
 Ci-text postgres column type.
@@ -296,10 +296,10 @@ Ci-text postgres column type.
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
-| `name`    | `TName`          |
+| Parameter      | Type      |
+| :------------- | :-------- |
+| `dbName`       | `TName`   |
+| `fieldConfig`? | `unknown` |
 
 #### Returns
 
@@ -383,7 +383,7 @@ cube @> cube → boolean
 ### cube()
 
 ```ts
-cube<TName>(this: ThisWithSchema, name: TName): PgCustomColumnBuilder<Object>
+cube<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<Object>
 ```
 
 Postgres cube column type with customizable amount of dimensions.
@@ -396,10 +396,10 @@ Postgres cube column type with customizable amount of dimensions.
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
-| `name`    | `TName`          |
+| Parameter      | Type      |
+| :------------- | :-------- |
+| `dbName`       | `TName`   |
+| `fieldConfig`? | `unknown` |
 
 #### Returns
 
@@ -425,17 +425,16 @@ https://www.postgresql.org/docs/current/cube.html
 ### cubeDim()
 
 ```ts
-cubeDim(this: ThisWithSchema, cube: SQLWrapper): SQL<number>
+cubeDim(cube: SQLWrapper): SQL<number>
 ```
 
 Returns the number of dimensions of the cube.
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
-| `cube`    | `SQLWrapper`     |
+| Parameter | Type         |
+| :-------- | :----------- |
+| `cube`    | `SQLWrapper` |
 
 #### Returns
 
@@ -455,7 +454,7 @@ cube_dim('(1,2),(3,4)') → 2
 ### cubeDistance()
 
 ```ts
-cubeDistance(this: ThisWithSchema, ...cubes: [SQLWrapper, SQLWrapper]): SQL<number>
+cubeDistance(...cubes: [SQLWrapper, SQLWrapper]): SQL<number>
 ```
 
 Returns the distance between two cubes. If both cubes are points, this is the normal distance
@@ -465,7 +464,6 @@ function.
 
 | Parameter  | Type                          |
 | :--------- | :---------------------------- |
-| `this`     | `ThisWithSchema`              |
 | ...`cubes` | \[`SQLWrapper`, `SQLWrapper`] |
 
 #### Returns
@@ -486,7 +484,7 @@ cube_distance('(1,2)', '(3,4)') → 2.8284271247461903
 ### cubeEnlarge()
 
 ```ts
-cubeEnlarge(this: ThisWithSchema): void
+cubeEnlarge(): void
 ```
 
 Increases the size of the cube by the specified radius r in at least n dimensions. If the radius is
@@ -498,12 +496,6 @@ when r
 0), then extra dimensions are added to make n altogether; 0 is used as the initial value for the
 extra coordinates. This function is useful for creating bounding boxes around a point for searching
 for nearby points.
-
-#### Parameters
-
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
 
 #### Returns
 
@@ -523,16 +515,10 @@ cube_enlarge('(1,2),(3,4)', 0.5, 3) → (0.5, 1.5, -0.5),(3.5, 4.5, 0.5)
 ### cubeInter()
 
 ```ts
-cubeInter(this: ThisWithSchema): void
+cubeInter(): void
 ```
 
 Produces the intersection of two cubes.
-
-#### Parameters
-
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
 
 #### Returns
 
@@ -552,17 +538,16 @@ cube_inter('(1,2)', '(3,4)') → (3, 4),(1, 2)
 ### cubeIsPoint()
 
 ```ts
-cubeIsPoint(this: ThisWithSchema, cube: SQLWrapper): SQL<boolean>
+cubeIsPoint(cube: SQLWrapper): SQL<boolean>
 ```
 
 Returns true if the cube is a point, that is, the two defining corners are the same.
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
-| `cube`    | `SQLWrapper`     |
+| Parameter | Type         |
+| :-------- | :----------- |
+| `cube`    | `SQLWrapper` |
 
 #### Returns
 
@@ -582,16 +567,10 @@ cube_is_point(cube(1,1)) → t
 ### cubeLowerLeftCoord()
 
 ```ts
-cubeLowerLeftCoord(this: ThisWithSchema): void
+cubeLowerLeftCoord(): void
 ```
 
 Returns the n-th coordinate value for the lower left corner of the cube.
-
-#### Parameters
-
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
 
 #### Returns
 
@@ -611,18 +590,12 @@ cube_ll_coord('(1,2),(3,4)', 2) → 2
 ### cubeSubset()
 
 ```ts
-cubeSubset(this: ThisWithSchema): void
+cubeSubset(): void
 ```
 
 Makes a new cube from an existing cube, using a list of dimension indexes from an array. Can be used
 to extract the endpoints of a single dimension, or to drop dimensions, or to reorder them as
 desired.
-
-#### Parameters
-
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
 
 #### Returns
 
@@ -643,16 +616,10 @@ cube_subset(cube('(1,3,5),(6,7,8)'), ARRAY[3,2,1,1]) → (5, 3, 1, 1),(8, 7, 6, 
 ### cubeUnion()
 
 ```ts
-cubeUnion(this: ThisWithSchema): void
+cubeUnion(): void
 ```
 
 Produces the union of two cubes.
-
-#### Parameters
-
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
 
 #### Returns
 
@@ -672,18 +639,12 @@ cube_union('(1,2)', '(3,4)') → (1, 2),(3, 4)
 ### cubeUpperRightCoord()
 
 ```ts
-cubeUpperRightCoord(this: ThisWithSchema): void
+cubeUpperRightCoord(): void
 ```
 
 ```
 Returns the n-th coordinate value for the upper right corner of the cube.
 ```
-
-#### Parameters
-
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
 
 #### Returns
 
@@ -703,15 +664,14 @@ cube_ur_coord('(1,2),(3,4)', 2) → 4
 ### daitch_mokotoff()
 
 ```ts
-daitch_mokotoff(this: ThisWithSchema, source: string | SQLWrapper): SQL<string[]>
+daitch_mokotoff(source: string | SQLWrapper): SQL<string[]>
 ```
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- | ------------ |
-| `this`    | `ThisWithSchema` |
-| `source`  | `string`         | `SQLWrapper` |
+| Parameter | Type     |
+| :-------- | :------- | ------------ |
+| `source`  | `string` | `SQLWrapper` |
 
 #### Returns
 
@@ -810,15 +770,14 @@ daterangeSchema<TMode, TData>(__namedParameters:     Object): ZodObject<Object, 
 ### difference()
 
 ```ts
-difference(this: ThisWithSchema, ...texts: [string | SQLWrapper, string | SQLWrapper]): SQL<number>
+difference(...texts: [string | SQLWrapper, string | SQLWrapper]): SQL<number>
 ```
 
 #### Parameters
 
-| Parameter  | Type             |
-| :--------- | :--------------- | ---------------------- | ------------- |
-| `this`     | `ThisWithSchema` |
-| ...`texts` | \[`string`       | `SQLWrapper`, `string` | `SQLWrapper`] |
+| Parameter  | Type       |
+| :--------- | :--------- | ---------------------- | ------------- |
+| ...`texts` | \[`string` | `SQLWrapper`, `string` | `SQLWrapper`] |
 
 #### Returns
 
@@ -1002,10 +961,7 @@ or stay up to date on support for `generatedAs()`.
 ### geography()
 
 ```ts
-geography<TName, TGeography, TZ, TM, TSrid>(
-   this: ThisWithSchema,
-   name: TName,
-config?:     Object): PgCustomColumnBuilder<Object>
+geography<TName, TGeography, TZ, TM, TSrid>(name: TName, config?:     Object): PgCustomColumnBuilder<Object>
 ```
 
 #### Type parameters
@@ -1020,28 +976,27 @@ config?:     Object): PgCustomColumnBuilder<Object>
 
 #### Parameters
 
-| Parameter      | Type             |
-| :------------- | :--------------- |
-| `this`         | `ThisWithSchema` |
-| `name`         | `TName`          |
-| `config`?      | `Object`         |
-| `config.m`?    | `TM`             |
-| `config.srid`? | `TSrid`          |
-| `config.type`? | `TGeography`     |
-| `config.z`?    | `TZ`             |
+| Parameter      | Type         |
+| :------------- | :----------- |
+| `name`         | `TName`      |
+| `config`?      | `Object`     |
+| `config.m`?    | `TM`         |
+| `config.srid`? | `TSrid`      |
+| `config.type`? | `TGeography` |
+| `config.z`?    | `TZ`         |
 
 #### Returns
 
 `PgCustomColumnBuilder`<`Object`>
 
-> | Member        | Type                                               |
-> | :------------ | :------------------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                                 |
-> | `data`        |                                                    | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
-> | `dataType`    | `"custom"`                                         |
-> | `driverParam` | `string`                                           |
-> | `enumValues`  | `undefined`                                        |
-> | `name`        | \`${string}ST\_AsGeoJSON("${TName}") as ${TName}\` |
+> | Member        | Type                                     |
+> | :------------ | :--------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                       |
+> | `data`        |                                          | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
+> | `dataType`    | `"custom"`                               |
+> | `driverParam` | `string`                                 |
+> | `enumValues`  | `undefined`                              |
+> | `name`        | \`ST_AsGeoJSON("${TName}") as ${TName}\` |
 
 ---
 
@@ -1313,7 +1268,7 @@ SQL json_strip_nulls.
 ### makeCube()
 
 ```ts
-makeCube<T>(this: ThisWithSchema, ...args: T): SQL<number[]>
+makeCube<T>(...args: T): SQL<number[]>
 ```
 
 Makes a one dimensional cube with both coordinates the same.
@@ -1328,10 +1283,9 @@ Makes a one dimensional cube with both coordinates the same.
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- |
-| `this`    | `ThisWithSchema` |
-| ...`args` | `T`              |
+| Parameter | Type |
+| :-------- | :--- |
+| ...`args` | `T`  |
 
 #### Returns
 
@@ -1400,7 +1354,7 @@ cube('(1,2),(3,4)'::cube, 5, 6) → (1, 2, 5),(3, 4, 6)
 ### nanoid()
 
 ```ts
-nanoid(this: ThisWithSchema, __namedParameters: Object & Object | Object): SQL<string>
+nanoid(__namedParameters: Object & Object | Object): SQL<string>
 ```
 
 Generate a nanoid using a postgres implementation of the nanoid function.
@@ -1409,7 +1363,6 @@ Generate a nanoid using a postgres implementation of the nanoid function.
 
 | Parameter           | Type                |
 | :------------------ | :------------------ | -------- |
-| `this`              | `ThisWithSchema`    |
 | `__namedParameters` | `Object` & `Object` | `Object` |
 
 #### Returns
@@ -1660,15 +1613,14 @@ similar(): void
 ### soundex()
 
 ```ts
-soundex(this: ThisWithSchema, text: string | SQLWrapper): SQL<string>
+soundex(text: string | SQLWrapper): SQL<string>
 ```
 
 #### Parameters
 
-| Parameter | Type             |
-| :-------- | :--------------- | ------------ |
-| `this`    | `ThisWithSchema` |
-| `text`    | `string`         | `SQLWrapper` |
+| Parameter | Type     |
+| :-------- | :------- | ------------ |
+| `text`    | `string` | `SQLWrapper` |
 
 #### Returns
 

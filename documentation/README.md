@@ -21,7 +21,6 @@
   - [getColumns()](#getcolumns)
   - [getNameOrAlias()](#getnameoralias)
   - [paginate()](#paginate)
-  - [withSchema()](#withschema)
 
 ## Type Aliases
 
@@ -371,47 +370,3 @@ Paginate a query.
 #### Returns
 
 `PgSelect` | `MySqlSelect` | `SQLiteSelect`
-
----
-
-<a id="withschema" name="withschema"></a>
-
-### withSchema()
-
-```ts
-withSchema<A, T, S>(ressource:     (this: ThisWithSchema, ...args: A) => T, schema: S): (...args: A) => T
-```
-
-Indicate if a custom type, a function, or a value belongs to a schema, ex. a different extensions
-schema.
-
-#### Type parameters
-
-| Type parameter           |
-| :----------------------- | ------------------------------------------------------------------------------------ |
-| `A` extends `unknown`\[] |
-| `T` extends `SQLWrapper` | `ColumnBuilderBase`<`ColumnBuilderBaseConfig`<`ColumnDataType`, `string`>, `object`> |
-| `S` extends `string`     | [`Schema`](README.md#schema)                                                         |
-
-#### Parameters
-
-| Parameter   | Type                                              | Description                                                                                                                        |
-| :---------- | :------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
-| `ressource` | (`this`: `ThisWithSchema`, ...`args`: `A`) => `T` | The column type, function, or etc. for which to specify the schema where the<br /> related extension was created in your database. |
-| `schema`    | `S`                                               | -                                                                                                                                  |
-
-#### Returns
-
-`Function`
-
-The ressource with bound to the specified schema.
-
-> ##### Parameters
->
-> | Parameter | Type |
-> | :-------- | :--- |
-> | ...`args` | `A`  |
->
-> ##### Returns
->
-> `T`
