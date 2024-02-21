@@ -9,9 +9,7 @@
 -- Check the current search_path
 SHOW search_path;
 
--- Append your extension schema(s) to the search_path
-ALTER DATABASE postgres
-SET search_path = CONCAT(current_setting('search_path'), ',extensions');
+ALTER DATABASE [database name]
+SET search_path = "$user", public, extensions;
 
--- Verify the updated search_path
 SHOW search_path;

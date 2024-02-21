@@ -2,8 +2,6 @@
 
 import type { SQLWrapper } from 'drizzle-orm';
 import { StringChunk, sql } from 'drizzle-orm';
-import type { ThisWithSchema } from '../../internals';
-import { getSchemaPrefix } from '../../internals';
 
 /**
  * Makes a one dimensional cube with both coordinates the same.
@@ -72,12 +70,12 @@ export function makeCube<
 		| [number[], number[]]
 		| [SQLWrapper, number]
 		| [SQLWrapper, number, number],
->(this: ThisWithSchema, ...args: T) {
+>(...args: T) {
 	const params = sql.join(
 		args.map((c) => sql`${c}`),
 		new StringChunk(',')
 	);
-	return sql<number[]>`${getSchemaPrefix.call(this)}cube(${params})`;
+	return sql<number[]>`cube(${params})`;
 }
 
 /**
@@ -90,8 +88,8 @@ export function makeCube<
  * cube_dim('(1,2),(3,4)') → 2
  * ```
  */
-export function cubeDim(this: ThisWithSchema, cube: SQLWrapper) {
-	return sql`${getSchemaPrefix.call(this)}cube_dim(${cube})`.mapWith(Number);
+export function cubeDim(cube: SQLWrapper) {
+	return sql`cube_dim(${cube})`.mapWith(Number);
 }
 
 /**
@@ -104,7 +102,7 @@ export function cubeDim(this: ThisWithSchema, cube: SQLWrapper) {
  * cube_ll_coord('(1,2),(3,4)', 2) → 2
  * ```
  */
-export function cubeLowerLeftCoord(this: ThisWithSchema) {}
+export function cubeLowerLeftCoord() {}
 
 /**
  * ```
@@ -118,7 +116,7 @@ export function cubeLowerLeftCoord(this: ThisWithSchema) {}
  * cube_ur_coord('(1,2),(3,4)', 2) → 4
  * ```
  */
-export function cubeUpperRightCoord(this: ThisWithSchema) {}
+export function cubeUpperRightCoord() {}
 
 /**
  * Returns true if the cube is a point, that is, the two defining corners are the same.
@@ -130,8 +128,8 @@ export function cubeUpperRightCoord(this: ThisWithSchema) {}
  * cube_is_point(cube(1,1)) → t
  * ```
  */
-export function cubeIsPoint(this: ThisWithSchema, cube: SQLWrapper) {
-	return sql`${getSchemaPrefix.call(this)}cube_is_point(${cube})`.mapWith(Boolean);
+export function cubeIsPoint(cube: SQLWrapper) {
+	return sql`cube_is_point(${cube})`.mapWith(Boolean);
 }
 
 /**
@@ -145,9 +143,9 @@ export function cubeIsPoint(this: ThisWithSchema, cube: SQLWrapper) {
  * cube_distance('(1,2)', '(3,4)') → 2.8284271247461903
  * ```
  */
-export function cubeDistance(this: ThisWithSchema, ...cubes: [SQLWrapper, SQLWrapper]) {
+export function cubeDistance(...cubes: [SQLWrapper, SQLWrapper]) {
 	const params = sql.join(cubes, new StringChunk(','));
-	return sql`${getSchemaPrefix.call(this)}cube_distance(${params})`.mapWith(Number);
+	return sql`cube_distance(${params})`.mapWith(Number);
 }
 
 /**
@@ -163,7 +161,7 @@ export function cubeDistance(this: ThisWithSchema, ...cubes: [SQLWrapper, SQLWra
  * cube_subset(cube('(1,3,5),(6,7,8)'), ARRAY[3,2,1,1]) → (5, 3, 1, 1),(8, 7, 6, 6)
  * ```
  */
-export function cubeSubset(this: ThisWithSchema) {}
+export function cubeSubset() {}
 
 /**
  * Produces the union of two cubes.
@@ -175,7 +173,7 @@ export function cubeSubset(this: ThisWithSchema) {}
  * cube_union('(1,2)', '(3,4)') → (1, 2),(3, 4)
  * ```
  */
-export function cubeUnion(this: ThisWithSchema) {}
+export function cubeUnion() {}
 
 /**
  * Produces the intersection of two cubes.
@@ -187,7 +185,7 @@ export function cubeUnion(this: ThisWithSchema) {}
  * cube_inter('(1,2)', '(3,4)') → (3, 4),(1, 2)
  * ```
  */
-export function cubeInter(this: ThisWithSchema) {}
+export function cubeInter() {}
 
 /**
  * Increases the size of the cube by the specified radius r in at least n dimensions. If the radius
@@ -206,4 +204,4 @@ export function cubeInter(this: ThisWithSchema) {}
  * cube_enlarge('(1,2),(3,4)', 0.5, 3) → (0.5, 1.5, -0.5),(3.5, 4.5, 0.5)
  * ```
  */
-export function cubeEnlarge(this: ThisWithSchema) {}
+export function cubeEnlarge() {}

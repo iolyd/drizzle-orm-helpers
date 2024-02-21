@@ -1,6 +1,5 @@
 import { customType } from 'drizzle-orm/pg-core';
 import type { GeoJsonGeometryTypes, Geometry } from 'geojson';
-import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
 import { SRIDS, type Srid } from './constants';
 
 // type CoordinateBase = [longitude: number, latitude: number];
@@ -80,8 +79,7 @@ export function geography<
 	TZ extends boolean,
 	TM extends boolean,
 	TSrid extends Srid,
->(this: ThisWithSchema, name: TName, config?: { type?: TGeography; z?: TZ; m?: TM; srid?: TSrid }) {
-	const schemaPrefix = getSchemaPrefix.call(this);
+>(name: TName, config?: { type?: TGeography; z?: TZ; m?: TM; srid?: TSrid }) {
 	const z = config?.z ? 'Z' : '';
 	const m = config?.m ? 'M' : '';
 	const srid = config?.srid ? `,${config.srid}` : '';
@@ -94,7 +92,7 @@ export function geography<
 	}>({
 		dataType() {
 			const paren = type ? `(${type}${srid})` : '';
-			return `${schemaPrefix}geography${paren}`;
+			return `geography${paren}`;
 		},
 		toDriver(value) {
 			return `ST_Transform(ST_GeomFromGeoJSON(${JSON.stringify(value)}),${srid ?? SRIDS.WEB_MERCATOR})::geography`;
@@ -112,5 +110,5 @@ export function geography<
 				});
 			}
 		},
-	})(`${schemaPrefix}ST_AsGeoJSON("${name}") as ${name}`, config);
+	})(`ST_AsGeoJSON("${name}") as ${name}`, config);
 }

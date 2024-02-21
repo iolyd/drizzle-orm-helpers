@@ -12,8 +12,6 @@ import type { AnyMySqlSelect, MySqlSchema, MySqlSelect } from 'drizzle-orm/mysql
 import type { AnyPgSelect, PgSchema, PgSelect } from 'drizzle-orm/pg-core';
 import type { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import type { SetOptional } from 'type-fest';
-import type { ThisWithSchema } from './internals';
-import { SCHEMA_SYMBOL } from './internals';
 
 /**
  * Dialect agnostic select.
@@ -122,21 +120,4 @@ export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
  */
 export function paginate<T extends Select>(qb: T, page: number, size: number = 20) {
 	return qb.limit(size).offset(page * size);
-}
-
-/**
- * Indicate if a custom type, a function, or a value belongs to a schema, ex. a different extensions
- * schema.
- *
- * @param ressource The column type, function, or etc. for which to specify the schema where the
- *   related extension was created in your database.
- * @param scehma The Drizzle-ORM schema or the schema name.
- * @returns The ressource with bound to the specified schema.
- */
-export function withSchema<
-	A extends unknown[] | never,
-	T extends ColumnBuilderBase | SQLWrapper,
-	S extends Schema | string,
->(ressource: (this: ThisWithSchema, ...args: A) => T, schema: S) {
-	return ressource.bind({ [SCHEMA_SYMBOL]: schema });
 }

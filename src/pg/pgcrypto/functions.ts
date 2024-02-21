@@ -1,5 +1,4 @@
 import { sql } from 'drizzle-orm';
-import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
 
 /**
  * Generate a nanoid using a postgres implementation of the nanoid function.
@@ -18,36 +17,31 @@ import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
  * @todo Stay up to date when default values will accept 'sql' without having to pass param to
  *   sql.raw()
  */
-export function nanoid(
-	this: ThisWithSchema,
-	{
-		optimized,
-		size,
-		alphabet,
-		additionalBytesFactor,
-		mask,
-		step,
-	}: {
-		size?: number;
-		alphabet?: string;
-	} & (
-		| {
-				optimized?: false;
-				additionalBytesFactor?: number;
-				mask?: never;
-				step?: never;
-		  }
-		| {
-				optimized: true;
-				additionalBytesFactor?: never;
-				mask?: number;
-				step?: number;
-		  }
-	) = {}
-) {
-	const schemaPrefix = getSchemaPrefix.call(this);
-	console.log('Inside nanoid type', this, schemaPrefix);
-	const params = [];
+export function nanoid({
+	optimized,
+	size,
+	alphabet,
+	additionalBytesFactor,
+	mask,
+	step,
+}: {
+	size?: number;
+	alphabet?: string;
+} & (
+	| {
+			optimized?: false;
+			additionalBytesFactor?: number;
+			mask?: never;
+			step?: never;
+	  }
+	| {
+			optimized: true;
+			additionalBytesFactor?: never;
+			mask?: number;
+			step?: number;
+	  }
+) = {}) {
+	const params: string[] = [];
 	if (size) {
 		params.push(`size => ${size}`);
 	}
@@ -69,5 +63,5 @@ export function nanoid(
 	// 	sql.join(chunks, new StringChunk(', ')),
 	// 	new StringChunk(')'),
 	// ]).mapWith(String);
-	return sql.raw(`${schemaPrefix}${fname}(${params.join(',')})`).mapWith(String);
+	return sql.raw(`${fname}(${params.join(',')})`).mapWith(String);
 }
