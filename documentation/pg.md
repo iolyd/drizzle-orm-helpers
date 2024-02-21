@@ -1418,7 +1418,12 @@ Generate a nanoid using a postgres implementation of the nanoid function.
 
 #### See
 
-[Postgres implementation of the nanoid generator](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
+- [Postgres implementation of the nanoid generator](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
+- https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571
+
+#### Todo
+
+Stay up to date when default values will accept 'sql' without having to pass param to sql.raw()
 
 ---
 

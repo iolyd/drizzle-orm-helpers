@@ -1,5 +1,4 @@
-import type { SQLChunk } from 'drizzle-orm';
-import { SQL, StringChunk, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
 
 /**
@@ -15,6 +14,9 @@ import { getSchemaPrefix, type ThisWithSchema } from '../../internals';
  * @param config.mask
  * @param config.step
  * @see {@link https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql Postgres implementation of the nanoid generator}
+ * @see https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571
+ * @todo Stay up to date when default values will accept 'sql' without having to pass param to
+ *   sql.raw()
  */
 export function nanoid(
 	this: ThisWithSchema,
@@ -43,26 +45,28 @@ export function nanoid(
 		  }
 	) = {}
 ) {
-	const chunks: SQLChunk[] = [];
+	const schemaPrefix = getSchemaPrefix.call(this);
+	const params = [];
 	if (size) {
-		chunks.push(sql`size => ${size}`);
+		params.push(`size => ${size}`);
 	}
 	if (alphabet) {
-		chunks.push(sql`alphabet => ${alphabet}`);
+		params.push(`alphabet => ${alphabet}`);
 	}
 	if (additionalBytesFactor) {
-		chunks.push(sql`additionalBytesFactor => ${additionalBytesFactor}`);
+		params.push(`additionalBytesFactor => ${additionalBytesFactor}`);
 	}
 	if (mask) {
-		chunks.push(sql`mask => ${mask}`);
+		params.push(`mask => ${mask}`);
 	}
 	if (step) {
-		chunks.push(sql`step => ${step}`);
+		params.push(`step => ${step}`);
 	}
-	const fn = optimized ? 'nanoid_optimized' : 'nanoid';
-	return new SQL([
-		new StringChunk(`${getSchemaPrefix.call(this)}${fn}(`),
-		sql.join(chunks, new StringChunk(', ')),
-		new StringChunk(')'),
-	]).mapWith(String);
+	const fname = optimized ? 'nanoid_optimized' : 'nanoid';
+	// return new SQL([
+	// 	new StringChunk(`${getSchemaPrefix.call(this)}${fname}(`),
+	// 	sql.join(chunks, new StringChunk(', ')),
+	// 	new StringChunk(')'),
+	// ]).mapWith(String);
+	return sql.raw(`${schemaPrefix}${fname}(${params.join(',')})`).mapWith(String);
 }
