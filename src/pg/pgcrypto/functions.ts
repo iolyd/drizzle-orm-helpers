@@ -46,6 +46,7 @@ export function nanoid(
 	) = {}
 ) {
 	const schemaPrefix = getSchemaPrefix.call(this);
+	console.log('Inside nanoid type', this, schemaPrefix);
 	const params = [];
 	if (size) {
 		params.push(`size => ${size}`);

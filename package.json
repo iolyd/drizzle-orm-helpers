@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"type": "module",
 	"name": "drizzle-orm-helpers",
-	"version": "0.4.9",
+	"version": "0.4.10",
 	"files": [
 		"dist",
 		"package.json",
@@ -50,6 +50,7 @@
 		"remark-github": "^12.0.0",
 		"remark-toc": "^9.0.0",
 		"tsup": "^8.0.2",
+		"tsx": "^4.7.1",
 		"type-fest": "^4.10.2",
 		"typedoc": "^0.25.8",
 		"typedoc-plugin-markdown": "4.0.0-next.53",
