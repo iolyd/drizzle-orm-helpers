@@ -1,6 +1,8 @@
-import type { SQLWrapper } from 'drizzle-orm';
-import { SQL, StringChunk, isSQLWrapper, sql } from 'drizzle-orm';
-import type { InferDataType } from '.';
+import type { SQL, SQLWrapper } from 'drizzle-orm';
+import { StringChunk, bindIfParam, sql } from 'drizzle-orm';
+import type { TupleToUnion } from 'type-fest';
+import { type InferDataType } from '.';
+import type { NonUndefinable } from './internals';
 
 /**
  * Distinct keyword.
@@ -15,42 +17,48 @@ export function distinct<T extends SQLWrapper>(statement: T) {
  * @example
  *
  * ```ts
- * cs([eq(...), 2], 3)
+ * cases([[eq(thing, other), 2]], 3);
  * ```
  *
  * @example
  *
  * ```sql
- * CASE statements END;
+ * CASE
+ *  WHEN thing = other THEN 2
+ *  ELSE 3
+ * END;
  * ```
+ *
+ * @todo Implement smarter typing to identify confirmable early returns with truthy conditions.
  */
-export function cases(
-	...cases:
-		| [...([SQLWrapper, unknown] | undefined)[], unknown][]
-		| ([SQLWrapper, unknown] | undefined)[]
-): SQL | undefined;
-export function cases(
-	...unfilteredCases:
-		| [...([SQLWrapper, unknown] | undefined)[], unknown][]
-		| ([SQLWrapper, unknown] | undefined)[]
-): SQL | undefined {
-	const cases = unfilteredCases.filter((c): c is Exclude<typeof c, undefined> => c !== undefined);
-	if (cases.length === 0) {
-		return undefined;
-	}
-	const fallback =
-		!Array.isArray(cases[cases.length - 1]) || !isSQLWrapper(cases[cases.length - 1])
-			? cases.pop()
-			: undefined;
-	const chunks = cases.map(
-		(c) =>
-			new SQL([new StringChunk('when '), sql`${c[0]}`, new StringChunk(' then '), sql`${c[1]}`])
+export function cases<
+	const C extends ([SQLWrapper, unknown] | undefined)[],
+	const F,
+	T = NonUndefinable<TupleToUnion<C>>,
+	R =
+		| (T extends [infer T0, infer T1]
+				? T0 extends SQL<false | null | 0 | 'f' | 'F' | '0'>
+					? never
+					: T1 extends SQLWrapper
+						? InferDataType<T1>
+						: T1
+				: never)
+		| (F extends void ? never : F extends SQLWrapper ? InferDataType<F> : F),
+>(conditionals: C, fallback?: F) {
+	const chunks = conditionals.reduce(
+		(acc, curr) => {
+			if (curr) {
+				acc.push(sql`when ${curr[0]} then ${bindIfParam(curr[1], curr[0])}`);
+			}
+			return acc;
+		},
+		<SQL<unknown>[]>[]
 	);
 	if (fallback) {
-		chunks.push(new SQL([new StringChunk('else '), sql`${fallback}`]));
+		chunks.push(sql`else ${fallback}`);
 	}
 	return sql.join(
-		[new StringChunk('(case'), ...chunks, new StringChunk('end)')],
+		[new StringChunk('(case'), ...chunks, new StringChunk(')')],
 		new StringChunk(' ')
-	);
+	) as SQL<R>;
 }
