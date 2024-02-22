@@ -5,16 +5,10 @@ import { customType } from 'drizzle-orm/pg-core';
  *
  * @see https://www.postgresql.org/docs/current/cube.html
  */
-export const cube = customType<
-	| {
-			data: number[];
-			driverData: number[];
-	  }
-	| {
-			data: number[][];
-			driverData: number[][];
-	  }
->({
+export const cube = customType<{
+	data: number[] | [number[], number[]];
+	driverData: number[] | [number[], number[]];
+}>({
 	dataType() {
 		return `cube`;
 	},
