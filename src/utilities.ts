@@ -4,11 +4,10 @@ import type {
 	ColumnBuilderBase,
 	InferSelectModel,
 	Param,
-	SQL,
 	SQLWrapper,
 	WithSubquery,
 } from 'drizzle-orm';
-import { Subquery, SubqueryConfig, Table, View, ViewBaseConfig, is } from 'drizzle-orm';
+import { SQL, Subquery, SubqueryConfig, Table, View, ViewBaseConfig, is } from 'drizzle-orm';
 import type { AnyMySqlSelect, MySqlSchema, MySqlSelect } from 'drizzle-orm/mysql-core';
 import type { AnyPgSelect, PgSchema, PgSelect } from 'drizzle-orm/pg-core';
 import type { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
@@ -66,22 +65,27 @@ export type InferDataType<T extends SQLWrapper> = T extends Table
 /**
  * Infer table columns or (sub)query fields.
  */
-export type InferColumns<T extends SQLWrapper> = T extends Table
-	? T['_']['columns']
-	: T extends View | Subquery | WithSubquery | AnySelect
-		? T['_']['selectedFields']
-		: never;
+export type InferColumns<T extends Table | View | Subquery | WithSubquery | AnySelect> =
+	T extends Table
+		? T['_']['columns']
+		: T extends View | Subquery | WithSubquery | AnySelect
+			? T['_']['selectedFields']
+			: never;
 
 /**
  * Infer a table's name or a (sub)query's alias.
  */
-export type InferNameOrAlias<T extends SQLWrapper> = T extends Table | View
+export type InferNameOrAlias<
+	T extends Table | View | Subquery | WithSubquery | AnySelect | SQL.Aliased,
+> = T extends Table | View
 	? T['_']['name']
 	: T extends Subquery | WithSubquery
 		? T['_']['alias']
 		: T extends AnySelect
 			? T['_']['tableName']
-			: never;
+			: T extends SQL.Aliased
+				? T['fieldAlias']
+				: never;
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
@@ -107,9 +111,9 @@ export function getColumns<T extends Table | View | Subquery | WithSubquery | An
 /**
  * Get a table's name or a (sub)query's alias.
  */
-export function getNameOrAlias<T extends Table | View | Subquery | WithSubquery | AnySelect>(
-	table: T
-): InferNameOrAlias<T> {
+export function getNameOrAlias<
+	T extends Table | View | Subquery | WithSubquery | AnySelect | SQL.Aliased,
+>(table: T): InferNameOrAlias<T> {
 	return is(table, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(table as any)[(Table as any).Symbol.Name]
@@ -119,8 +123,10 @@ export function getNameOrAlias<T extends Table | View | Subquery | WithSubquery 
 			: is(table, Subquery)
 				? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 					(table as any)[SubqueryConfig].alias
-				: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(table as any).tableName;
+				: is(table, SQL.Aliased)
+					? table.fieldAlias
+					: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+						(table as any).tableName;
 }
 
 /**

@@ -1558,8 +1558,8 @@ Since it is a json method, it should return an unwrapped (raw) type instead of a
 #### Type parameters
 
 | Type parameter                                                          |
-| :---------------------------------------------------------------------- | ------------------------------- | ----------------------------------------------- |
-| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Subquery`<`string`, `unknown`> | `View`<`string`, `boolean`, `ColumnsSelection`> |
+| :---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
+| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
 
 #### Parameters
 
