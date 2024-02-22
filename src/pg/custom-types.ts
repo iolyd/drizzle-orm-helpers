@@ -14,6 +14,9 @@ export const regconfig = customType<{ data: Regconfig }>({
 	dataType() {
 		return 'regconfig';
 	},
+	toDriver(value) {
+		return `${value}::regconfig`;
+	},
 });
 
 /**

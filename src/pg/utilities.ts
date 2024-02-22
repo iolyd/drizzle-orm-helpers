@@ -1,9 +1,8 @@
-import type { AnyColumn, SQL } from 'drizzle-orm';
+import type { AnyColumn, SQL, SQLWrapper } from 'drizzle-orm';
 import { isSQLWrapper, sql } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
 import type { InferDataType } from '..';
 import { PG_DIALECT } from '../internals';
-import type { Regconfig } from './constants';
 
 export type RangeValue<T = void> = { upper: T | null; lower: T | null };
 
@@ -26,7 +25,8 @@ export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
  * Tsvector type for generated columns used notably for fuzzy string search.
  *
  * @param config.sources Array of source columns to generate the ts vector from.
- * @param config.langauge Language of the vector, used for stemming. (regconfig cfgname).
+ * @param config.langauge Regconfig column or sql value (conditional values, or other) to use for
+ *   the vector, used for stemming. (regconfig cfgname).
  * @param config.weighted If true, concatenated sources will be weighted by their order.
  * @see https://github.com/drizzle-team/drizzle-orm/issues/247
  * @todo Implementation isn't clean. Figure out a better way to map the language name and column
@@ -37,13 +37,13 @@ export const generatedTsvector = customType<{
 	configRequired: true;
 	config: {
 		sources: string[];
-		language: Regconfig | SQL<Regconfig>;
+		language: string | SQLWrapper;
 		weighted?: boolean;
 	};
 }>({
 	dataType(config) {
 		const cfgname = isSQLWrapper(config.language)
-			? PG_DIALECT.sqlToQuery(config.language.inlineParams()).sql
+			? PG_DIALECT.sqlToQuery(config.language.getSQL()).sql
 			: config.language;
 		if (config.weighted) {
 			const weighted = config.sources.map((input, index) => {
