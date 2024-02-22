@@ -924,13 +924,13 @@ Tsvector type for generated columns used notably for fuzzy string search.
 
 #### Parameters
 
-| Parameter               | Type                               |
-| :---------------------- | :--------------------------------- | ----------------------------------------- |
-| `dbName`                | `TName`                            |
-| `fieldConfig`           | `Object`                           |
-| `fieldConfig.language`  | [`Regconfig`](src/pg.md#regconfig) | `SQL`<[`Regconfig`](src/pg.md#regconfig)> |
-| `fieldConfig.sources`   | `string`\[]                        |
-| `fieldConfig.weighted`? | `boolean`                          |
+| Parameter               | Type        |
+| :---------------------- | :---------- | ------------ |
+| `dbName`                | `TName`     |
+| `fieldConfig`           | `Object`    |
+| `fieldConfig.language`  | `string`    | `SQLWrapper` |
+| `fieldConfig.sources`   | `string`\[] |
+| `fieldConfig.weighted`? | `boolean`   |
 
 #### Returns
 
