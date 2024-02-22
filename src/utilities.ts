@@ -63,13 +63,9 @@ export type InferDataType<T extends SQLWrapper> = T extends Table
 						: unknown;
 
 /**
- * Should replace `getTableColumns` to allow for more input versatility.
- *
- * @see https://github.com/drizzle-team/drizzle-orm/pull/1789
+ * Infer table columns or (sub)query fields.
  */
-export function getColumns<T extends Table | View | Subquery | AnySelect>(
-	table: T
-): T extends Table
+export type InferColumns<T extends SQLWrapper> = T extends Table
 	? T['_']['columns']
 	: T extends View
 		? T['_']['selectedFields']
@@ -77,7 +73,29 @@ export function getColumns<T extends Table | View | Subquery | AnySelect>(
 			? T['_']['selectedFields']
 			: T extends AnySelect
 				? T['_']['selectedFields']
-				: never {
+				: never;
+
+/**
+ * Infer a table's name or a (sub)query's alias.
+ */
+export type InferNameOrAlias<T extends SQLWrapper> = T extends Table
+	? T['_']['name']
+	: T extends View
+		? T['_']['name']
+		: T extends Subquery
+			? T['_']['alias']
+			: T extends AnySelect
+				? T['_']['tableName']
+				: never;
+
+/**
+ * Should replace `getTableColumns` to allow for more input versatility.
+ *
+ * @see https://github.com/drizzle-team/drizzle-orm/pull/1789
+ */
+export function getColumns<T extends Table | View | Subquery | AnySelect>(
+	table: T
+): InferColumns<T> {
 	return is(table, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(table as any)[(Table as any).Symbol.Columns]
@@ -91,17 +109,12 @@ export function getColumns<T extends Table | View | Subquery | AnySelect>(
 					(table as any)._.selectedFields;
 }
 
+/**
+ * Get a table's name or a (sub)query's alias.
+ */
 export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
 	table: T
-): T extends Table
-	? T['_']['name']
-	: T extends View
-		? T['_']['name']
-		: T extends Subquery
-			? T['_']['alias']
-			: T extends AnySelect
-				? T['_']['tableName']
-				: never {
+): InferNameOrAlias<T> {
 	return is(table, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(table as any)[(Table as any).Symbol.Name]
