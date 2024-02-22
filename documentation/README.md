@@ -5,7 +5,9 @@
 - [Type Aliases](#type-aliases)
   - [AnySelect](#anyselect)
   - [InferColumnType\<T>](#infercolumntypet)
+  - [InferColumns\<T>](#infercolumnst)
   - [InferDataType\<T>](#inferdatatypet)
+  - [InferNameOrAlias\<T>](#infernameoraliast)
   - [Schema](#schema)
   - [Select](#select)
 - [Variables](#variables)
@@ -60,6 +62,24 @@ Infer type of table column.
 
 ---
 
+<a id="infercolumnst" name="infercolumnst"></a>
+
+### InferColumns\<T>
+
+```ts
+type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View ? T["_"]["selectedFields"] : T extends Subquery ? T["_"]["selectedFields"] : T extends AnySelect ? T["_"]["selectedFields"] : never;
+```
+
+Infer table columns or (sub)query fields.
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
+
+---
+
 <a id="inferdatatypet" name="inferdatatypet"></a>
 
 ### InferDataType\<T>
@@ -69,6 +89,24 @@ type InferDataType<T>: T extends Table ? InferSelectModel<T> : T extends Column 
 ```
 
 Infer any SQL wrapper's expected return data type.
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
+
+---
+
+<a id="infernameoraliast" name="infernameoraliast"></a>
+
+### InferNameOrAlias\<T>
+
+```ts
+type InferNameOrAlias<T>: T extends Table ? T["_"]["name"] : T extends View ? T["_"]["name"] : T extends Subquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : never;
+```
+
+Infer a table's name or a (sub)query's alias.
 
 #### Type parameters
 
@@ -304,7 +342,7 @@ Distinct keyword.
 ### getColumns()
 
 ```ts
-getColumns<T>(table: T): T extends Table ? T["_"]["columns"] : T extends View ? T["_"]["selectedFields"] : T extends Subquery ? T["_"]["selectedFields"] : T extends AnySelect ? T["_"]["selectedFields"] : never
+getColumns<T>(table: T): InferColumns<T>
 ```
 
 Should replace `getTableColumns` to allow for more input versatility.
@@ -323,9 +361,7 @@ Should replace `getTableColumns` to allow for more input versatility.
 
 #### Returns
 
-`T` extends `Table` ? `T`\[`"_"`]\[`"columns"`] : `T` extends `View` ?
-`T`\[`"_"`]\[`"selectedFields"`] : `T` extends `Subquery` ? `T`\[`"_"`]\[`"selectedFields"`] : `T`
-extends [`AnySelect`](README.md#anyselect) ? `T`\[`"_"`]\[`"selectedFields"`] : `never`
+[`InferColumns`](README.md#infercolumnst)<`T`>
 
 #### See
 
@@ -338,8 +374,10 @@ https://github.com/drizzle-team/drizzle-orm/pull/1789
 ### getNameOrAlias()
 
 ```ts
-getNameOrAlias<T>(table: T): T extends Table ? T["_"]["name"] : T extends View ? T["_"]["name"] : T extends Subquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : never
+getNameOrAlias<T>(table: T): InferNameOrAlias<T>
 ```
+
+Get a table's name or a (sub)query's alias.
 
 #### Type parameters
 
@@ -355,9 +393,7 @@ getNameOrAlias<T>(table: T): T extends Table ? T["_"]["name"] : T extends View ?
 
 #### Returns
 
-`T` extends `Table` ? `T`\[`"_"`]\[`"name"`] : `T` extends `View` ? `T`\[`"_"`]\[`"name"`] : `T`
-extends `Subquery` ? `T`\[`"_"`]\[`"alias"`] : `T` extends [`AnySelect`](README.md#anyselect) ?
-`T`\[`"_"`]\[`"tableName"`] : `never`
+[`InferNameOrAlias`](README.md#infernameoraliast)<`T`>
 
 ---
 
