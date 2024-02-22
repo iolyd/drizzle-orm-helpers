@@ -406,11 +406,11 @@ Postgres cube column type with customizable amount of dimensions.
 `PgCustomColumnBuilder`<`Object`>
 
 > | Member        | Type               |
-> | :------------ | :----------------- | -------------- |
+> | :------------ | :----------------- | --------------------------- |
 > | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `number`\[]        | `number`\[]\[] |
+> | `data`        | `number`\[]        | \[`number`\[], `number`\[]] |
 > | `dataType`    | `"custom"`         |
-> | `driverParam` | `number`\[]        | `number`\[]\[] |
+> | `driverParam` | `number`\[]        | \[`number`\[], `number`\[]] |
 > | `enumValues`  | `undefined`        |
 > | `name`        | `TName`            |
 
@@ -1278,7 +1278,7 @@ Makes a one dimensional cube with both coordinates the same.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `number`\[] | \[`number`] | \[`number`, `number`] | \[`number`\[], `number`\[]] |
+| `T` extends | `number`\[] | \[`number`\[], `number`\[]] | \[`number`] | \[`number`, `number`] |
 \[`SQLWrapper`, `number`] | \[`SQLWrapper`, `number`, `number`] |
 
 #### Parameters

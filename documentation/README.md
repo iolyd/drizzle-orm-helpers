@@ -193,32 +193,53 @@ SQL template boolean value.
 ### cases()
 
 ```ts
-cases(...cases: [...(undefined | [SQLWrapper, unknown])[], unknown][] | (undefined | [SQLWrapper, unknown])[]): SQL | undefined
+cases<C, F, T, R>(conditionals: C, fallback?: F): SQL<R>
 ```
 
 Case condition chain.
 
+#### Type parameters
+
+| Type parameter           | Value                                           |
+| :----------------------- | :---------------------------------------------- | --- |
+| `C` extends (`undefined` | \[`SQLWrapper`, `unknown`])\[]                  | -   |
+| `F`                      | -                                               |
+| `T`                      | `NonUndefinable`<`TupleToUnion`<`C`>>           |
+| `R`                      | `T` extends \[`T0`, `T1`] ? `T0` extends `SQL`< |
+
+| `null` | `false` | `0` | `"0"` | `"f"` | `"F"`> ? `never` : `T1` extends `SQLWrapper` ?
+[`InferDataType`](README.md#inferdatatypet)<`T1`> : `T1` : `never` | `F` extends `void` ? `never` :
+`F` extends `SQLWrapper` ? [`InferDataType`](README.md#inferdatatypet)<`F`> : `F` |
+
 #### Parameters
 
-| Parameter  | Type             |
-| :--------- | :--------------- | ---------------------------------------- | ------------ | ------------------------------ |
-| ...`cases` | \[`...(undefined | [SQLWrapper, unknown])[]`, `unknown`]\[] | (`undefined` | \[`SQLWrapper`, `unknown`])\[] |
+| Parameter      | Type |
+| :------------- | :--- |
+| `conditionals` | `C`  |
+| `fallback`?    | `F`  |
 
 #### Returns
 
-`SQL` | `undefined`
+`SQL`<`R`>
 
 #### Example
 
 ```ts
-cs([eq(...), 2], 3)
+cases([[eq(thing, other), 2]], 3);
 ```
 
 #### Example
 
 ```sql
-CASE statements END;
+CASE
+ WHEN thing = other THEN 2
+ ELSE 3
+END;
 ```
+
+#### Todo
+
+Implement smarter typing to identify confirmable early returns with truthy conditions.
 
 ---
 
