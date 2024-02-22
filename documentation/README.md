@@ -67,7 +67,7 @@ Infer type of table column.
 ### InferColumns\<T>
 
 ```ts
-type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View ? T["_"]["selectedFields"] : T extends Subquery ? T["_"]["selectedFields"] : T extends AnySelect ? T["_"]["selectedFields"] : never;
+type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View | Subquery | WithSubquery | AnySelect ? T["_"]["selectedFields"] : never;
 ```
 
 Infer table columns or (sub)query fields.
@@ -103,7 +103,7 @@ Infer any SQL wrapper's expected return data type.
 ### InferNameOrAlias\<T>
 
 ```ts
-type InferNameOrAlias<T>: T extends Table ? T["_"]["name"] : T extends View ? T["_"]["name"] : T extends Subquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : never;
+type InferNameOrAlias<T>: T extends Table | View ? T["_"]["name"] : T extends Subquery | WithSubquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : never;
 ```
 
 Infer a table's name or a (sub)query's alias.
@@ -349,9 +349,12 @@ Should replace `getTableColumns` to allow for more input versatility.
 
 #### Type parameters
 
-| Type parameter                                                          |
-| :---------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------- | ------------------------------- |
-| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | [`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
+| Type parameter |
+| :------------- |
+
+| `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> |
+[`AnySelect`](README.md#anyselect) | `Subquery`<`string`, `unknown`> | `View`<`string`, `boolean`,
+`ColumnsSelection`> | `WithSubquery`<`string`, `unknown`> |
 
 #### Parameters
 
@@ -381,9 +384,12 @@ Get a table's name or a (sub)query's alias.
 
 #### Type parameters
 
-| Type parameter                                                          |
-| :---------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------- | ------------------------------- |
-| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | [`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
+| Type parameter |
+| :------------- |
+
+| `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> |
+[`AnySelect`](README.md#anyselect) | `Subquery`<`string`, `unknown`> | `View`<`string`, `boolean`,
+`ColumnsSelection`> | `WithSubquery`<`string`, `unknown`> |
 
 #### Parameters
 

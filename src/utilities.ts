@@ -6,6 +6,7 @@ import type {
 	Param,
 	SQL,
 	SQLWrapper,
+	WithSubquery,
 } from 'drizzle-orm';
 import { Subquery, SubqueryConfig, Table, View, ViewBaseConfig, is } from 'drizzle-orm';
 import type { AnyMySqlSelect, MySqlSchema, MySqlSelect } from 'drizzle-orm/mysql-core';
@@ -67,33 +68,27 @@ export type InferDataType<T extends SQLWrapper> = T extends Table
  */
 export type InferColumns<T extends SQLWrapper> = T extends Table
 	? T['_']['columns']
-	: T extends View
+	: T extends View | Subquery | WithSubquery | AnySelect
 		? T['_']['selectedFields']
-		: T extends Subquery
-			? T['_']['selectedFields']
-			: T extends AnySelect
-				? T['_']['selectedFields']
-				: never;
+		: never;
 
 /**
  * Infer a table's name or a (sub)query's alias.
  */
-export type InferNameOrAlias<T extends SQLWrapper> = T extends Table
+export type InferNameOrAlias<T extends SQLWrapper> = T extends Table | View
 	? T['_']['name']
-	: T extends View
-		? T['_']['name']
-		: T extends Subquery
-			? T['_']['alias']
-			: T extends AnySelect
-				? T['_']['tableName']
-				: never;
+	: T extends Subquery | WithSubquery
+		? T['_']['alias']
+		: T extends AnySelect
+			? T['_']['tableName']
+			: never;
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
  *
  * @see https://github.com/drizzle-team/drizzle-orm/pull/1789
  */
-export function getColumns<T extends Table | View | Subquery | AnySelect>(
+export function getColumns<T extends Table | View | Subquery | WithSubquery | AnySelect>(
 	table: T
 ): InferColumns<T> {
 	return is(table, Table)
@@ -112,7 +107,7 @@ export function getColumns<T extends Table | View | Subquery | AnySelect>(
 /**
  * Get a table's name or a (sub)query's alias.
  */
-export function getNameOrAlias<T extends Table | View | Subquery | AnySelect>(
+export function getNameOrAlias<T extends Table | View | Subquery | WithSubquery | AnySelect>(
 	table: T
 ): InferNameOrAlias<T> {
 	return is(table, Table)

@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"type": "module",
 	"name": "drizzle-orm-helpers",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"files": [
 		"dist",
 		"package.json",
