@@ -95,7 +95,7 @@ export function geography<
 			return `geography${paren}`;
 		},
 		toDriver(value) {
-			return `ST_Transform(ST_GeomFromGeoJSON(${JSON.stringify(value)}),${srid ?? SRIDS.WEB_MERCATOR})::geography`;
+			return `st_transform(st_geomfromgeojson(${JSON.stringify(value)}),${srid ?? SRIDS.WEB_MERCATOR})::geography`;
 		},
 		fromDriver(value) {
 			try {
@@ -110,5 +110,5 @@ export function geography<
 				});
 			}
 		},
-	})(`ST_AsGeoJSON("${name}") as ${name}`, config);
+	})(`st_asgeojson"("${name}") as "${name}`, config);
 }
