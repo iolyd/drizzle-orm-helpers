@@ -44,6 +44,20 @@ export function getNow() {
 }
 
 /**
+ * True if all input values are true, otherwise false.
+ */
+export function boolAnd(...expression: SQLWrapper[]) {
+	return sql<boolean>`bool_and(${sql.join(expression, new StringChunk(', '))})`;
+}
+
+/**
+ * True if at least one input value is true, otherwise false.
+ */
+export function boolOr(...expression: SQLWrapper[]) {
+	return sql<boolean>`bool_or(${sql.join(expression, new StringChunk(', '))})`;
+}
+
+/**
  * SQL json_strip_nulls.
  */
 export function jsonStripNulls<T>(json: SQL<T> | SQL.Aliased<T>) {
@@ -118,6 +132,12 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 /**
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
+ *
+ * @example
+ *
+ * ```sql
+ * json_object_agg(...)
+ * ```
  */
 export function jsonObjectAgg<
 	K extends AnyColumn,
@@ -132,8 +152,32 @@ export function jsonObjectAgg<
 		: V extends SQL
 			? InferDataType<V>
 			: never,
->(key: K, value: V) {
-	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
+>(name: K, value: V) {
+	return sql<Record<TK, TV>>`json_object_agg(${name}, ${value})`;
+}
+
+/**
+ * @example
+ *
+ * ```sql
+ * jsonb_object_agg(...)
+ * ```
+ */
+export function jsonbObjectAgg<
+	K extends AnyColumn,
+	V extends SQL | SQL.Aliased | AnyTable<TableConfig>,
+	TK extends string | number = null extends InferDataType<K>
+		? never
+		: InferDataType<K> extends string | number
+			? InferDataType<K>
+			: never,
+	TV = V extends AnyTable<TableConfig>
+		? InferSelectModel<V>
+		: V extends SQL
+			? InferDataType<V>
+			: never,
+>(name: K, value: V) {
+	return sql<Record<TK, TV>>`jsonb_object_agg(${name}, ${value})`;
 }
 
 /**
