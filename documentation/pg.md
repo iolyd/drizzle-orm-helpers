@@ -40,6 +40,7 @@
   - [extract()](#extract)
   - [generatedTsvector()](#generatedtsvector)
   - [geography()](#geography)
+  - [geometry()](#geometry)
   - [getCurrentTsConfig()](#getcurrenttsconfig)
   - [getNow()](#getnow)
   - [intrange()](#intrange)
@@ -1011,6 +1012,13 @@ or stay up to date on support for `generatedAs()`.
 geography<TName, TGeography, TZ, TM, TSrid>(name: TName, config?:     Object): PgCustomColumnBuilder<Object>
 ```
 
+PostGIS column type for generic or specific geographies.
+
+**⚠️ Warning ⚠️**
+
+Uses a nasty trick to get the data back as properly formatted GeoJSON rather than WKT. Expect things
+to break.
+
 #### Type parameters
 
 | Type parameter           |
@@ -1044,6 +1052,67 @@ geography<TName, TGeography, TZ, TM, TSrid>(name: TName, config?:     Object): P
 > | `driverParam` | `string`                                   |
 > | `enumValues`  | `undefined`                                |
 > | `name`        | \`st_asgeojson"("${TName}") as "${TName}\` |
+
+#### See
+
+Unstable until better support for custom type custom select is available (e.g.
+https://github.com/drizzle-team/drizzle-orm/pull/1423)
+
+---
+
+<a id="geometry" name="geometry"></a>
+
+### geometry()
+
+```ts
+geometry<TName, TGeometry, TZ, TM, TSrid>(name: TName, config?:     Object): PgCustomColumnBuilder<Object>
+```
+
+- PostGIS column type for generic or specific geometries.
+
+**⚠️ Warning ⚠️**
+
+Uses a nasty trick to get the data back as properly formatted GeoJSON rather than WKT. Expect things
+to break.
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `TName` extends `string` |
+
+| `TGeometry` extends | `"Point"` | `"MultiPoint"` | `"LineString"` | `"MultiLineString"` |
+`"Polygon"` | `"MultiPolygon"` | `"GeometryCollection"` | | `TZ` extends `boolean` | | `TM` extends
+`boolean` | | `TSrid` extends `Srid` |
+
+#### Parameters
+
+| Parameter      | Type        |
+| :------------- | :---------- |
+| `name`         | `TName`     |
+| `config`?      | `Object`    |
+| `config.m`?    | `TM`        |
+| `config.srid`? | `TSrid`     |
+| `config.type`? | `TGeometry` |
+| `config.z`?    | `TZ`        |
+
+#### Returns
+
+`PgCustomColumnBuilder`<`Object`>
+
+> | Member        | Type                                       |
+> | :------------ | :----------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                         |
+> | `data`        |                                            | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
+> | `dataType`    | `"custom"`                                 |
+> | `driverParam` | `string`                                   |
+> | `enumValues`  | `undefined`                                |
+> | `name`        | \`st_asgeojson"("${TName}") as "${TName}\` |
+
+#### See
+
+Unstable until better support for custom type custom select is available (e.g.
+https://github.com/drizzle-team/drizzle-orm/pull/1423)
 
 ---
 
