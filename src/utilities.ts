@@ -2,15 +2,33 @@ import type {
 	AnyColumn,
 	Column,
 	ColumnBuilderBase,
+	ColumnsSelection,
 	InferSelectModel,
 	Param,
 	SQLWrapper,
 	WithSubquery,
 } from 'drizzle-orm';
 import { SQL, Subquery, SubqueryConfig, Table, View, ViewBaseConfig, is } from 'drizzle-orm';
-import type { AnyMySqlSelect, MySqlSchema, MySqlSelect } from 'drizzle-orm/mysql-core';
-import type { AnyPgSelect, PgSchema, PgSelect } from 'drizzle-orm/pg-core';
-import type { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
+import type {
+	AnyMySqlSelect,
+	MySqlSchema,
+	MySqlSelect,
+	SubqueryWithSelection as MySqlSubqueryWithSelection,
+	WithSubqueryWithSelection as MySqlWithSubqueryWithSelection,
+} from 'drizzle-orm/mysql-core';
+import type {
+	AnyPgSelect,
+	PgSchema,
+	PgSelect,
+	SubqueryWithSelection as PgSubqueryWithSelection,
+	WithSubqueryWithSelection as PgWithSubqueryWithSelection,
+} from 'drizzle-orm/pg-core';
+import type {
+	AnySQLiteSelect,
+	SQLiteSelect,
+	SubqueryWithSelection as SQLiteSubqueryWithSelection,
+	WithSubqueryWithSelection as SQLiteWithSubqueryWithSelection,
+} from 'drizzle-orm/sqlite-core';
 import type { SetOptional } from 'type-fest';
 
 /**
@@ -26,6 +44,22 @@ export type Select = SetOptional<PgSelect | MySqlSelect | SQLiteSelect, 'where'>
  * Dialect-agnostic schema. Excludes SQLite.
  */
 export type Schema = PgSchema | MySqlSchema;
+
+/**
+ * Dialect-agnostic subquery with selection.
+ */
+export type SubqueryWithSelection<TSelection extends ColumnsSelection, TName extends string> =
+	| MySqlSubqueryWithSelection<TSelection, TName>
+	| PgSubqueryWithSelection<TSelection, TName>
+	| SQLiteSubqueryWithSelection<TSelection, TName>;
+
+/**
+ * Dialect-agnostic with subquery with selection.
+ */
+export type WithSubqueryWithSelection<TSelection extends ColumnsSelection, TAlias extends string> =
+	| PgWithSubqueryWithSelection<TSelection, TAlias>
+	| SQLiteWithSubqueryWithSelection<TSelection, TAlias>
+	| MySqlWithSubqueryWithSelection<TSelection, TAlias>;
 
 /**
  * Dialect agnostic AnySelect.
@@ -65,12 +99,22 @@ export type InferDataType<T extends SQLWrapper> = T extends Table
 /**
  * Infer table columns or (sub)query fields.
  */
-export type InferColumns<T extends Table | View | Subquery | WithSubquery | AnySelect> =
-	T extends Table
-		? T['_']['columns']
-		: T extends View | Subquery | WithSubquery | AnySelect
-			? T['_']['selectedFields']
-			: never;
+export type InferColumns<
+	T extends
+		| Table
+		| View
+		| SubqueryWithSelection<ColumnsSelection, string>
+		| WithSubqueryWithSelection<ColumnsSelection, string>
+		| AnySelect,
+> = T extends Table
+	? T['_']['columns']
+	: T extends
+				| View
+				| SubqueryWithSelection<ColumnsSelection, string>
+				| WithSubqueryWithSelection<ColumnsSelection, string>
+				| AnySelect
+		? T['_']['selectedFields']
+		: never;
 
 /**
  * Infer a table's name or a (sub)query's alias.
@@ -92,9 +136,14 @@ export type InferNameOrAlias<
  *
  * @see https://github.com/drizzle-team/drizzle-orm/pull/1789
  */
-export function getColumns<T extends Table | View | Subquery | WithSubquery | AnySelect>(
-	table: T
-): InferColumns<T> {
+export function getColumns<
+	T extends
+		| Table
+		| View
+		| SubqueryWithSelection<ColumnsSelection, string>
+		| WithSubqueryWithSelection<ColumnsSelection, string>
+		| AnySelect,
+>(table: T): InferColumns<T> {
 	return is(table, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(table as any)[(Table as any).Symbol.Columns]
