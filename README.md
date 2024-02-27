@@ -9,9 +9,13 @@
 
 <br />
 
-Collection of unofficial helpers for use with Drizzle ORM. Most helpers provided are oriented
-towards Postgres and should be seen as temporary, awaiting remplacements in official Drizzle
-package(s).
+This is a collection of unofficial typescript-friendly helpers for use with Drizzle ORM. Provided
+items include common SQL/dialect-specific values, functions, operators, and column types. Note that
+most the work is currently oriented towards Postgres and that most "solutions" provided by this
+package should be seen as provisory, in wait of being replaced by implementations provided
+officially and with more stability through Drizzle-ORM package(s).
+
+## Documentation
 
 A crude auto-generated
 [**documentation** is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation/README.md).
