@@ -16,6 +16,8 @@
   - [emptyJsonObject](#emptyjsonobject)
 - [Functions](#functions)
   - [arrayAgg()](#arrayagg)
+  - [boolAnd()](#booland)
+  - [boolOr()](#boolor)
   - [citext()](#citext)
   - [contained()](#contained)
   - [contains()](#contains)
@@ -47,6 +49,7 @@
   - [jsonBuildObject()](#jsonbuildobject)
   - [jsonObjectAgg()](#jsonobjectagg)
   - [jsonStripNulls()](#jsonstripnulls)
+  - [jsonbObjectAgg()](#jsonbobjectagg)
   - [makeCube()](#makecube)
   - [nanoid()](#nanoid)
   - [numrange()](#numrange)
@@ -275,6 +278,50 @@ Aggregate sql values into an sql array.
 
 `SQL`<`null` | `T` extends `SQL`<`unknown`> | `Aliased`<`unknown`> ?
 [`InferDataType`](README.md#inferdatatypet)<`T`>\[] : `T`\[]>
+
+---
+
+<a id="booland" name="booland"></a>
+
+### boolAnd()
+
+```ts
+boolAnd(...expression: SQLWrapper[]): SQL<boolean>
+```
+
+True if all input values are true, otherwise false.
+
+#### Parameters
+
+| Parameter       | Type            |
+| :-------------- | :-------------- |
+| ...`expression` | `SQLWrapper`\[] |
+
+#### Returns
+
+`SQL`<`boolean`>
+
+---
+
+<a id="boolor" name="boolor"></a>
+
+### boolOr()
+
+```ts
+boolOr(...expression: SQLWrapper[]): SQL<boolean>
+```
+
+True if at least one input value is true, otherwise false.
+
+#### Parameters
+
+| Parameter       | Type            |
+| :-------------- | :-------------- |
+| ...`expression` | `SQLWrapper`\[] |
+
+#### Returns
+
+`SQL`<`boolean`>
 
 ---
 
@@ -989,14 +1036,14 @@ geography<TName, TGeography, TZ, TM, TSrid>(name: TName, config?:     Object): P
 
 `PgCustomColumnBuilder`<`Object`>
 
-> | Member        | Type                                     |
-> | :------------ | :--------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                       |
-> | `data`        |                                          | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
-> | `dataType`    | `"custom"`                               |
-> | `driverParam` | `string`                                 |
-> | `enumValues`  | `undefined`                              |
-> | `name`        | \`ST_AsGeoJSON("${TName}") as ${TName}\` |
+> | Member        | Type                                       |
+> | :------------ | :----------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
+> | `columnType`  | `"PgCustomColumn"`                         |
+> | `data`        |                                            | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
+> | `dataType`    | `"custom"`                                 |
+> | `driverParam` | `string`                                   |
+> | `enumValues`  | `undefined`                                |
+> | `name`        | \`st_asgeojson"("${TName}") as "${TName}\` |
 
 ---
 
@@ -1207,7 +1254,7 @@ return an object with unwrapped value types instead of SQL wrapped types.
 ### jsonObjectAgg()
 
 ```ts
-jsonObjectAgg<K, V, TK, TV>(key: K, value: V): SQL<Record<TK, TV>>
+jsonObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
 ```
 
 Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped type
@@ -1226,12 +1273,18 @@ instead of an SQL wrapped type.
 
 | Parameter | Type |
 | :-------- | :--- |
-| `key`     | `K`  |
+| `name`    | `K`  |
 | `value`   | `V`  |
 
 #### Returns
 
 `SQL`<`Record`<`TK`, `TV`>>
+
+#### Example
+
+```sql
+json_object_agg(...)
+```
 
 ---
 
@@ -1260,6 +1313,42 @@ SQL json_strip_nulls.
 #### Returns
 
 `SQL`<`SetNonNullable`<`T`, keyof `T`>>
+
+---
+
+<a id="jsonbobjectagg" name="jsonbobjectagg"></a>
+
+### jsonbObjectAgg()
+
+```ts
+jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
+```
+
+#### Type parameters
+
+| Type parameter               | Value                                                                                        |
+| :--------------------------- | :------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `K` extends `AnyColumn`      | -                                                                                            |
+| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                         | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                                                                                    |
+| `TK` extends `string`        | `number`                                                                                     | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? `InferDataType<K>` : `never`                                                                                              |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string | number]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null         | V["\_"]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never` |
+
+#### Parameters
+
+| Parameter | Type |
+| :-------- | :--- |
+| `name`    | `K`  |
+| `value`   | `V`  |
+
+#### Returns
+
+`SQL`<`Record`<`TK`, `TV`>>
+
+#### Example
+
+```sql
+jsonb_object_agg(...)
+```
 
 ---
 

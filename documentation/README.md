@@ -10,6 +10,8 @@
   - [InferNameOrAlias\<T>](#infernameoraliast)
   - [Schema](#schema)
   - [Select](#select)
+  - [SubqueryWithSelection\<TSelection, TName>](#subquerywithselectiontselection-tname)
+  - [WithSubqueryWithSelection\<TSelection, TAlias>](#withsubquerywithselectiontselection-talias)
 - [Variables](#variables)
   - [currentTimestamp](#currenttimestamp)
   - [fal](#fal)
@@ -67,7 +69,7 @@ Infer type of table column.
 ### InferColumns\<T>
 
 ```ts
-type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View | Subquery | WithSubquery | AnySelect ? T["_"]["selectedFields"] : never;
+type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View | SubqueryWithSelection<ColumnsSelection, string> | WithSubqueryWithSelection<ColumnsSelection, string> | AnySelect ? T["_"]["selectedFields"] : never;
 ```
 
 Infer table columns or (sub)query fields.
@@ -77,8 +79,11 @@ Infer table columns or (sub)query fields.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `Table` | `View` | `Subquery` | `WithSubquery` | [`AnySelect`](README.md#anyselect)
-|
+| `T` extends | `Table` | `View` |
+[`SubqueryWithSelection`](README.md#subquerywithselectiontselectiontname)<`ColumnsSelection`,
+`string`> |
+[`WithSubqueryWithSelection`](README.md#withsubquerywithselectiontselectiontalias)<`ColumnsSelection`,
+`string`> | [`AnySelect`](README.md#anyselect) |
 
 ---
 
@@ -147,6 +152,44 @@ Dialect agnostic select.
 - PgSelect.
 - MySqlSelect
 - SQLiteSelect
+
+---
+
+<a id="subquerywithselectiontselectiontname" name="subquerywithselectiontselectiontname"></a>
+
+### SubqueryWithSelection\<TSelection, TName>
+
+```ts
+type SubqueryWithSelection<TSelection, TName>: MySqlSubqueryWithSelection<TSelection, TName> | PgSubqueryWithSelection<TSelection, TName> | SQLiteSubqueryWithSelection<TSelection, TName>;
+```
+
+Dialect-agnostic subquery with selection.
+
+#### Type parameters
+
+| Type parameter                          |
+| :-------------------------------------- |
+| `TSelection` extends `ColumnsSelection` |
+| `TName` extends `string`                |
+
+---
+
+<a id="withsubquerywithselectiontselectiontalias" name="withsubquerywithselectiontselectiontalias"></a>
+
+### WithSubqueryWithSelection\<TSelection, TAlias>
+
+```ts
+type WithSubqueryWithSelection<TSelection, TAlias>: PgWithSubqueryWithSelection<TSelection, TAlias> | SQLiteWithSubqueryWithSelection<TSelection, TAlias> | MySqlWithSubqueryWithSelection<TSelection, TAlias>;
+```
+
+Dialect-agnostic with subquery with selection.
+
+#### Type parameters
+
+| Type parameter                          |
+| :-------------------------------------- |
+| `TSelection` extends `ColumnsSelection` |
+| `TAlias` extends `string`               |
 
 ## Variables
 
@@ -358,7 +401,10 @@ Should replace `getTableColumns` to allow for more input versatility.
 
 | `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> |
 [`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> |
-`Subquery`<`string`, `unknown`> | `WithSubquery`<`string`, `unknown`> |
+[`SubqueryWithSelection`](README.md#subquerywithselectiontselectiontname)<`ColumnsSelection`,
+`string`> |
+[`WithSubqueryWithSelection`](README.md#withsubquerywithselectiontselectiontalias)<`ColumnsSelection`,
+`string`> |
 
 #### Parameters
 
