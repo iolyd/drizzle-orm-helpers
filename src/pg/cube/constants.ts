@@ -5,7 +5,6 @@ export const DISTANCE_TYPES = {
 	TAXICAB: 'taxicab',
 	CHEBYSHEV: 'chebyshev',
 } as const;
-
 export type DistanceType = ValueOf<typeof DISTANCE_TYPES>;
 
 export const DISTANCE_TYPES_OPERATORS = {
