@@ -21,5 +21,4 @@ export const SRIDS = {
 	 */
 	WEB_MERCATOR: 3857,
 } as const;
-
 export type Srid = ValueOf<typeof SRIDS> | `${ValueOf<typeof SRIDS>}`;

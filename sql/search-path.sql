@@ -6,7 +6,7 @@
  * This ensures we don't have to constantly prefix column types or functions
  * with the extensions schema name.
  */
--- Check the current search_path
+ 
 SHOW search_path;
 
 ALTER DATABASE [database name]
