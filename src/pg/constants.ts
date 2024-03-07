@@ -56,3 +56,25 @@ export type RangeBoundType = ValueOf<typeof RANGE_BOUND_TYPES>;
  * Value for app-side representation of empty postgres ranges.
  */
 export const RANGE_EMPTY = { lower: null, upper: null } satisfies RangeValue;
+
+export const INTERVAL_UNITS = {
+	YEARS: 'years',
+	MONTHS: 'months',
+	WEEKS: 'weeks',
+	DAYS: 'days',
+	HOURS: 'hours',
+	MINUTES: 'minutes',
+	SECONDS: 'seconds',
+} as const;
+
+export type IntervalUnit = ValueOf<typeof INTERVAL_UNITS>;
+
+export const INTERVAL_UNITS_ARR_ORDERED = [
+	INTERVAL_UNITS.YEARS,
+	INTERVAL_UNITS.MONTHS,
+	INTERVAL_UNITS.WEEKS,
+	INTERVAL_UNITS.DAYS,
+	INTERVAL_UNITS.HOURS,
+	INTERVAL_UNITS.MINUTES,
+	INTERVAL_UNITS.SECONDS,
+] as const;

@@ -1,6 +1,6 @@
-import type { AnyColumn, SQL, SQLWrapper } from 'drizzle-orm';
-import { isSQLWrapper, sql } from 'drizzle-orm';
+import { SQL, StringChunk, isSQLWrapper, sql, type AnyColumn, type SQLWrapper } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
+import { INTERVAL_UNITS_ARR_ORDERED, type IntervalUnit } from '.';
 import type { InferDataType } from '..';
 import { PG_DIALECT } from '../internals';
 
@@ -57,3 +57,23 @@ export const generatedTsvector = customType<{
 		}
 	},
 });
+
+/**
+ * Create an interval value by passing a value deconstructed into time units.
+ */
+export function interval<T extends Partial<Record<IntervalUnit, number>>>(value: T) {
+	const units = INTERVAL_UNITS_ARR_ORDERED.reduce(
+		(acc, curr) => {
+			if (value[curr] != null) {
+				acc.push(new SQL([sql`${value[curr]}`, new StringChunk(` curr`)]));
+			}
+			return acc;
+		},
+		<SQL[]>[]
+	);
+	return new SQL([
+		new StringChunk('('),
+		sql.join(units, new StringChunk(' ')),
+		new StringChunk(')'),
+	]).mapWith(String);
+}
