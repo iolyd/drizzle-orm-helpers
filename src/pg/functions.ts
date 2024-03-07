@@ -39,7 +39,7 @@ export function random() {
  * now();
  * ```
  */
-export function getNow() {
+export function now() {
 	return sql<Date>`now()`;
 }
 
@@ -265,7 +265,34 @@ export function toTsquery(
 	return new SQL([start, sql.join(chunks, new StringChunk(' ')), end]).mapWith(String);
 }
 
+/**
+ * The function setweight can be used to label the entries of a tsvector with a given weight, where
+ * a weight is one of the letters A, B, C, or D. This is typically used to mark entries coming from
+ * different parts of a document, such as title versus body. Later, this information can be used for
+ * ranking of search results.
+ *
+ * Because to_tsvector(NULL) will return NULL, it is recommended to use coalesce whenever a field
+ * might be null.
+ */
 export function setweight(tsvector: SQLWrapper, weight: string | number) {
 	const char = typeof weight === 'string' ? weight : String.fromCharCode(weight + 65);
 	return sql`setweight(${tsvector}, ${char})`.mapWith(String);
+}
+
+/**
+ * Subtract arguments, producing a “symbolic” result that uses years and months, rather than just
+ * days.
+ *
+ * @example
+ *
+ * ```sql
+ * -- age ( timestamp, timestamp ) → interval
+ * age(timestamp '2001-04-10', timestamp '1957-06-13') → 43 years 9 mons 27 days
+ * ```
+ */
+export function age<TOrigin extends SQLWrapper | Date, TTarget extends SQLWrapper | Date>(
+	origin: TOrigin,
+	target: TTarget
+) {
+	return sql`age(${origin},${target})`.mapWith(String);
 }
