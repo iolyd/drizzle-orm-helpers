@@ -65,7 +65,7 @@ export function interval<T extends Partial<Record<IntervalUnit, number>>>(value:
 	const units = INTERVAL_UNITS_ARR_ORDERED.reduce(
 		(acc, curr) => {
 			if (value[curr] != null) {
-				acc.push(new SQL([sql`${value[curr]}`, new StringChunk(` curr`)]));
+				acc.push(new SQL([sql`${value[curr]}`, new StringChunk(` ${curr}`)]));
 			}
 			return acc;
 		},
