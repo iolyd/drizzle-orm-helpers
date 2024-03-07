@@ -40,8 +40,8 @@
 	},
 	"devDependencies": {
 		"@types/geojson": "^7946.0.14",
-		"@typescript-eslint/eslint-plugin": "^7.1.0",
-		"@typescript-eslint/parser": "^7.1.0",
+		"@typescript-eslint/eslint-plugin": "^7.1.1",
+		"@typescript-eslint/parser": "^7.1.1",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-drizzle": "^0.2.3",
@@ -51,11 +51,11 @@
 		"remark-toc": "^9.0.0",
 		"tsup": "^8.0.2",
 		"tsx": "^4.7.1",
-		"type-fest": "^4.10.3",
-		"typedoc": "^0.25.9",
+		"type-fest": "^4.11.1",
+		"typedoc": "^0.25.11",
 		"typedoc-plugin-markdown": "4.0.0-next.53",
 		"typedoc-plugin-remark": "0.0.1-next.2",
-		"typescript": "^5.3.3",
+		"typescript": "^5.4.2",
 		"unified-prettier": "^2.0.1"
 	},
 	"peerDependencies": {
