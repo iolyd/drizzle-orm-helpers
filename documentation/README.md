@@ -18,13 +18,17 @@
   - [nul](#nul)
   - [tru](#tru)
 - [Functions](#functions)
+  - [add()](#add)
   - [bool()](#bool)
   - [cases()](#cases)
   - [coalesce()](#coalesce)
   - [distinct()](#distinct)
+  - [divide()](#divide)
   - [getColumns()](#getcolumns)
   - [getNameOrAlias()](#getnameoralias)
+  - [multiply()](#multiply)
   - [paginate()](#paginate)
+  - [subtract()](#subtract)
 
 ## Type Aliases
 
@@ -245,6 +249,35 @@ SQL template true value.
 
 ## Functions
 
+<a id="add" name="add"></a>
+
+### add()
+
+```ts
+add<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+```
+
+Add values.
+
+#### Type parameters
+
+| Type parameter        |
+| :-------------------- | ---------------- |
+| `T` extends (`number` | `SQLWrapper`)\[] |
+
+#### Parameters
+
+| Parameter   | Type |
+| :---------- | :--- |
+| ...`values` | `T`  |
+
+#### Returns
+
+`SQL`<`T`\[`number`] extends `SQLWrapper` ?
+[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
+
+---
+
 <a id="bool" name="bool"></a>
 
 ### bool()
@@ -384,6 +417,35 @@ Distinct keyword.
 
 ---
 
+<a id="divide" name="divide"></a>
+
+### divide()
+
+```ts
+divide<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+```
+
+Subtract values.
+
+#### Type parameters
+
+| Type parameter        |
+| :-------------------- | ---------------- |
+| `T` extends (`number` | `SQLWrapper`)\[] |
+
+#### Parameters
+
+| Parameter   | Type |
+| :---------- | :--- |
+| ...`values` | `T`  |
+
+#### Returns
+
+`SQL`<`T`\[`number`] extends `SQLWrapper` ?
+[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
+
+---
+
 <a id="getcolumns" name="getcolumns"></a>
 
 ### getColumns()
@@ -399,8 +461,8 @@ Should replace `getTableColumns` to allow for more input versatility.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> |
-[`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> |
+| `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`,
+`boolean`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) |
 [`SubqueryWithSelection`](README.md#subquerywithselectiontselectiontname)<`ColumnsSelection`,
 `string`> |
 [`WithSubqueryWithSelection`](README.md#withsubquerywithselectiontselectiontalias)<`ColumnsSelection`,
@@ -438,8 +500,8 @@ Get a table's name or a (sub)query's alias.
 | :------------- |
 
 | `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Aliased`<`unknown`> |
-[`AnySelect`](README.md#anyselect) | `View`<`string`, `boolean`, `ColumnsSelection`> |
-`Subquery`<`string`, `unknown`> | `WithSubquery`<`string`, `unknown`> |
+`View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
+[`AnySelect`](README.md#anyselect) | `WithSubquery`<`string`, `unknown`> |
 
 #### Parameters
 
@@ -450,6 +512,35 @@ Get a table's name or a (sub)query's alias.
 #### Returns
 
 [`InferNameOrAlias`](README.md#infernameoraliast)<`T`>
+
+---
+
+<a id="multiply" name="multiply"></a>
+
+### multiply()
+
+```ts
+multiply<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+```
+
+Subtract values.
+
+#### Type parameters
+
+| Type parameter        |
+| :-------------------- | ---------------- |
+| `T` extends (`number` | `SQLWrapper`)\[] |
+
+#### Parameters
+
+| Parameter   | Type |
+| :---------- | :--- |
+| ...`values` | `T`  |
+
+#### Returns
+
+`SQL`<`T`\[`number`] extends `SQLWrapper` ?
+[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
 
 ---
 
@@ -483,3 +574,32 @@ Paginate a query.
 #### Returns
 
 `PgSelect` | `MySqlSelect` | `SQLiteSelect`
+
+---
+
+<a id="subtract" name="subtract"></a>
+
+### subtract()
+
+```ts
+subtract<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+```
+
+Subtract values.
+
+#### Type parameters
+
+| Type parameter        |
+| :-------------------- | ---------------- |
+| `T` extends (`number` | `SQLWrapper`)\[] |
+
+#### Parameters
+
+| Parameter   | Type |
+| :---------- | :--- |
+| ...`values` | `T`  |
+
+#### Returns
+
+`SQL`<`T`\[`number`] extends `SQLWrapper` ?
+[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>

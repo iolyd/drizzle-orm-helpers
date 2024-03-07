@@ -3,10 +3,13 @@
 ## Table of Contents
 
 - [Type Aliases](#type-aliases)
+  - [IntervalUnit](#intervalunit)
   - [RangeBoundType](#rangeboundtype)
   - [RangeValue\<T>](#rangevaluet)
   - [Regconfig](#regconfig)
 - [Variables](#variables)
+  - [INTERVAL_UNITS](#interval_units)
+  - [INTERVAL_UNITS_ARR_ORDERED](#interval_units_arr_ordered)
   - [RANGE_BOUND_TYPES](#range_bound_types)
   - [RANGE_EMPTY](#range_empty)
   - [REGCONFIGS](#regconfigs)
@@ -15,6 +18,7 @@
   - [emptyJsonArray](#emptyjsonarray)
   - [emptyJsonObject](#emptyjsonobject)
 - [Functions](#functions)
+  - [age()](#age)
   - [arrayAgg()](#arrayagg)
   - [boolAnd()](#booland)
   - [boolOr()](#boolor)
@@ -42,7 +46,7 @@
   - [geography()](#geography)
   - [geometry()](#geometry)
   - [getCurrentTsConfig()](#getcurrenttsconfig)
-  - [getNow()](#getnow)
+  - [interval()](#interval)
   - [intrange()](#intrange)
   - [intrangeSchema()](#intrangeschema)
   - [jsonAgg()](#jsonagg)
@@ -53,6 +57,7 @@
   - [jsonbObjectAgg()](#jsonbobjectagg)
   - [makeCube()](#makecube)
   - [nanoid()](#nanoid)
+  - [now()](#now)
   - [numrange()](#numrange)
   - [numrangeSchema()](#numrangeschema)
   - [overlaps()](#overlaps)
@@ -72,6 +77,16 @@
   - [tsvector()](#tsvector)
 
 ## Type Aliases
+
+<a id="intervalunit" name="intervalunit"></a>
+
+### IntervalUnit
+
+```ts
+type IntervalUnit: ValueOf<typeof INTERVAL_UNITS>;
+```
+
+---
 
 <a id="rangeboundtype" name="rangeboundtype"></a>
 
@@ -115,6 +130,46 @@ type Regconfig: ValueOf<typeof REGCONFIGS>;
 ```
 
 ## Variables
+
+<a id="interval_units" name="interval_units"></a>
+
+### INTERVAL_UNITS
+
+```ts
+const INTERVAL_UNITS: Object;
+```
+
+#### Type declaration
+
+| Member    | Type        | Value     |
+| :-------- | :---------- | :-------- |
+| `DAYS`    | `"days"`    | 'days'    |
+| `HOURS`   | `"hours"`   | 'hours'   |
+| `MINUTES` | `"minutes"` | 'minutes' |
+| `MONTHS`  | `"months"`  | 'months'  |
+| `SECONDS` | `"seconds"` | 'seconds' |
+| `WEEKS`   | `"weeks"`   | 'weeks'   |
+| `YEARS`   | `"years"`   | 'years'   |
+
+---
+
+<a id="interval_units_arr_ordered" name="interval_units_arr_ordered"></a>
+
+### INTERVAL_UNITS_ARR_ORDERED
+
+```ts
+const INTERVAL_UNITS_ARR_ORDERED: readonly [
+  'years',
+  'months',
+  'weeks',
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+];
+```
+
+---
 
 <a id="range_bound_types" name="range_bound_types"></a>
 
@@ -252,6 +307,43 @@ const emptyJsonObject: SQL<object>;
 Empty record as SQL json.
 
 ## Functions
+
+<a id="age" name="age"></a>
+
+### age()
+
+```ts
+age<TOrigin, TTarget>(origin: TOrigin, target: TTarget): SQL<string>
+```
+
+Subtract arguments, producing a “symbolic” result that uses years and months, rather than just days.
+
+#### Type parameters
+
+| Type parameter                 |
+| :----------------------------- | ------ |
+| `TOrigin` extends `SQLWrapper` | `Date` |
+| `TTarget` extends `SQLWrapper` | `Date` |
+
+#### Parameters
+
+| Parameter | Type      |
+| :-------- | :-------- |
+| `origin`  | `TOrigin` |
+| `target`  | `TTarget` |
+
+#### Returns
+
+`SQL`<`string`>
+
+#### Example
+
+```sql
+-- age ( timestamp, timestamp ) → interval
+age(timestamp '2001-04-10', timestamp '1957-06-13') → 43 years 9 mons 27 days
+```
+
+---
 
 <a id="arrayagg" name="arrayagg"></a>
 
@@ -1136,25 +1228,31 @@ get_current_ts_config();
 
 ---
 
-<a id="getnow" name="getnow"></a>
+<a id="interval" name="interval"></a>
 
-### getNow()
+### interval()
 
 ```ts
-getNow(): SQL<Date>
+interval<T>(value: T): SQL<string>
 ```
 
-Get the current time (dynamically).
+Create an interval value by passing a value deconstructed into time units.
+
+#### Type parameters
+
+| Type parameter                                                                      |
+| :---------------------------------------------------------------------------------- |
+| `T` extends `Partial`<`Record`<[`IntervalUnit`](src/pg.md#intervalunit), `number`>> |
+
+#### Parameters
+
+| Parameter | Type |
+| :-------- | :--- |
+| `value`   | `T`  |
 
 #### Returns
 
-`SQL`<`Date`>
-
-#### Example
-
-```sql
-now();
-```
+`SQL`<`string`>
 
 ---
 
@@ -1241,8 +1339,8 @@ Json_agg.
 #### Type parameters
 
 | Type parameter                                                                           |
-| :--------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------- | ------------------------------- |
-| `T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | [`AnySelect`](README.md#anyselect) | `Subquery`<`string`, `unknown`> |
+| :--------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- | ---------------------------------- |
+| `T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Subquery`<`string`, `unknown`> | [`AnySelect`](README.md#anyselect) |
 
 #### Parameters
 
@@ -1331,12 +1429,12 @@ instead of an SQL wrapped type.
 
 #### Type parameters
 
-| Type parameter               | Value                                                                                        |
-| :--------------------------- | :------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `K` extends `AnyColumn`      | -                                                                                            |
-| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                         | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                                                                                         |
-| `TK` extends `string`        | `number`                                                                                     | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? `InferDataType<K>` : `never`                                                                                                   |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string | number]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null         | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never` |
+| Type parameter               | Value                                                                                                                                                                                                                       |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `K` extends `AnyColumn`      | -                                                                                                                                                                                                                           |
+| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                        | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                |
+| `TK` extends `string`        | `number`                                                                                                                                                                                                                    | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? [`InferDataType`](README.md#inferdatatypet) : `never` |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never`     |
 
 #### Parameters
 
@@ -1395,12 +1493,12 @@ jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
 
 #### Type parameters
 
-| Type parameter               | Value                                                                                        |
-| :--------------------------- | :------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `K` extends `AnyColumn`      | -                                                                                            |
-| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                         | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                                                                                         |
-| `TK` extends `string`        | `number`                                                                                     | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? `InferDataType<K>` : `never`                                                                                                   |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string | number]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null         | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never` |
+| Type parameter               | Value                                                                                                                                                                                                                       |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `K` extends `AnyColumn`      | -                                                                                                                                                                                                                           |
+| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                        | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                |
+| `TK` extends `string`        | `number`                                                                                                                                                                                                                    | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? [`InferDataType`](README.md#inferdatatypet) : `never` |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never`     |
 
 #### Parameters
 
@@ -1535,6 +1633,28 @@ Generate a nanoid using a postgres implementation of the nanoid function.
 #### Todo
 
 Stay up to date when default values will accept 'sql' without having to pass param to sql.raw()
+
+---
+
+<a id="now" name="now"></a>
+
+### now()
+
+```ts
+now(): SQL<Date>
+```
+
+Get the current time (dynamically).
+
+#### Returns
+
+`SQL`<`Date`>
+
+#### Example
+
+```sql
+now();
+```
 
 ---
 
@@ -1738,6 +1858,14 @@ Since it is a json method, it should return an unwrapped (raw) type instead of a
 ```ts
 setweight(tsvector: SQLWrapper, weight: string | number): SQL<string>
 ```
+
+The function setweight can be used to label the entries of a tsvector with a given weight, where a
+weight is one of the letters A, B, C, or D. This is typically used to mark entries coming from
+different parts of a document, such as title versus body. Later, this information can be used for
+ranking of search results.
+
+Because to_tsvector(NULL) will return NULL, it is recommended to use coalesce whenever a field might
+be null.
 
 #### Parameters
 
