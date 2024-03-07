@@ -72,8 +72,8 @@ export function interval<T extends Partial<Record<IntervalUnit, number>>>(value:
 		<SQL[]>[]
 	);
 	return new SQL([
-		new StringChunk('('),
+		new StringChunk("(interval '"),
 		sql.join(units, new StringChunk(' ')),
-		new StringChunk(')'),
+		new StringChunk("')"),
 	]).mapWith(String);
 }
