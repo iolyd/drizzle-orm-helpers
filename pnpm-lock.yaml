@@ -8,6 +8,12 @@ dependencies:
   drizzle-orm:
     specifier: '>=0.30.0'
     version: 0.30.1
+  postgres-date:
+    specifier: ^2.1.0
+    version: 2.1.0
+  postgres-range:
+    specifier: ^1.1.4
+    version: 1.1.4
   zod:
     specifier: '>=3.22.4'
     version: 3.22.4
@@ -31,12 +37,6 @@ devDependencies:
   eslint-plugin-drizzle:
     specifier: ^0.2.3
     version: 0.2.3(eslint@8.57.0)
-  postgres-date:
-    specifier: ^2.1.0
-    version: 2.1.0
-  postgres-range:
-    specifier: ^1.1.4
-    version: 1.1.4
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -1956,11 +1956,11 @@ packages:
   /postgres-date@2.1.0:
     resolution: {integrity: sha512-K7Juri8gtgXVcDfZttFKVmhglp7epKb1K4pgrkLxehjqkrgPhfG6OO8LHLkfaqkbpjNRnra018XwAr1yQFWGcA==}
     engines: {node: '>=12'}
-    dev: true
+    dev: false
 
   /postgres-range@1.1.4:
     resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
-    dev: true
+    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
