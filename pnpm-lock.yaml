@@ -6,16 +6,10 @@ settings:
 
 dependencies:
   drizzle-orm:
-    specifier: ^0.29.3
-    version: 0.29.3
-  postgres-date:
-    specifier: ^2.1.0
-    version: 2.1.0
-  postgres-range:
-    specifier: ^1.1.4
-    version: 1.1.4
+    specifier: '>=0.30.0'
+    version: 0.30.1
   zod:
-    specifier: ^3.22.4
+    specifier: '>=3.22.4'
     version: 3.22.4
 
 devDependencies:
@@ -37,6 +31,12 @@ devDependencies:
   eslint-plugin-drizzle:
     specifier: ^0.2.3
     version: 0.2.3(eslint@8.57.0)
+  postgres-date:
+    specifier: ^2.1.0
+    version: 2.1.0
+  postgres-range:
+    specifier: ^1.1.4
+    version: 1.1.4
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^4.7.1
     version: 4.7.1
   type-fest:
-    specifier: ^4.11.1
-    version: 4.11.1
+    specifier: ^4.12.0
+    version: 4.12.0
   typedoc:
     specifier: ^0.25.11
     version: 0.25.11(typescript@5.4.2)
@@ -930,13 +930,14 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /drizzle-orm@0.29.3:
-    resolution: {integrity: sha512-uSE027csliGSGYD0pqtM+SAQATMREb3eSM/U8s6r+Y0RFwTKwftnwwSkqx3oS65UBgqDOM0gMTl5UGNpt6lW0A==}
+  /drizzle-orm@0.30.1:
+    resolution: {integrity: sha512-5P6CXl4XyWtDDiYOX/jYOJp1HTUmBlXRAwaq+muUOgaSykMEy5sJesCxceMT0oCGvxeWkKfSXo5owLnfKwCIdw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
       '@libsql/client': '*'
       '@neondatabase/serverless': '>=0.1'
+      '@op-engineering/op-sqlite': '>=2'
       '@opentelemetry/api': ^1.4.1
       '@planetscale/database': '>=1'
       '@types/better-sqlite3': '*'
@@ -963,6 +964,8 @@ packages:
       '@libsql/client':
         optional: true
       '@neondatabase/serverless':
+        optional: true
+      '@op-engineering/op-sqlite':
         optional: true
       '@opentelemetry/api':
         optional: true
@@ -1953,11 +1956,11 @@ packages:
   /postgres-date@2.1.0:
     resolution: {integrity: sha512-K7Juri8gtgXVcDfZttFKVmhglp7epKb1K4pgrkLxehjqkrgPhfG6OO8LHLkfaqkbpjNRnra018XwAr1yQFWGcA==}
     engines: {node: '>=12'}
-    dev: false
+    dev: true
 
   /postgres-range@1.1.4:
     resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
-    dev: false
+    dev: true
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -2336,8 +2339,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /type-fest@4.11.1:
-    resolution: {integrity: sha512-MFMf6VkEVZAETidGGSYW2B1MjXbGX+sWIywn2QPEaJ3j08V+MwVRHMXtf2noB8ENJaD0LIun9wh5Z6OPNf1QzQ==}
+  /type-fest@4.12.0:
+    resolution: {integrity: sha512-5Y2/pp2wtJk8o08G0CMkuFPCO354FGwk/vbidxrdhRGZfd0tFnb4Qb8anp9XxXriwBgVPjdWbKpGl4J9lJY2jQ==}
     engines: {node: '>=16'}
     dev: true
 
