@@ -62,6 +62,7 @@
   - [numrangeSchema()](#numrangeschema)
   - [overlaps()](#overlaps)
   - [random()](#random)
+  - [range()](#range)
   - [regconfig()](#regconfig-1)
   - [rowToJson()](#rowtojson)
   - [setweight()](#setweight)
@@ -1778,6 +1779,38 @@ Random number between 0 and 1.
 ```sql
 random();
 ```
+
+---
+
+<a id="range" name="range"></a>
+
+### range()
+
+```ts
+range<T>(tuple: [T, T], __namedParameters:     Object): SQL<T>
+```
+
+Using canonical form of included lower bound and excluded upper bound. See
+https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
+
+#### Type parameters
+
+| Type parameter       |
+| :------------------- | ------ |
+| `T` extends `number` | `Date` |
+
+#### Parameters
+
+| Parameter                       | Type                                         |
+| :------------------------------ | :------------------------------------------- |
+| `tuple`                         | \[`T`, `T`]                                  |
+| `__namedParameters`             | `Object`                                     |
+| `__namedParameters.lowerBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
+| `__namedParameters.upperBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
+
+#### Returns
+
+`SQL`<`T`>
 
 ---
 

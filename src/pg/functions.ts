@@ -13,7 +13,8 @@ import type {
 import { SQL, StringChunk, bindIfParam, isSQLWrapper, sql } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
 import type { AnySelect, InferDataType } from '..';
-import type { Regconfig } from './constants';
+import type { RangeBoundType, Regconfig } from './constants';
+import { RANGE_BOUND_BRACKETS } from './internals';
 
 /**
  * Postgres random function.
@@ -295,4 +296,20 @@ export function age<TOrigin extends SQLWrapper | Date, TTarget extends SQLWrappe
 	target: TTarget
 ) {
 	return sql`age(${origin},${target})`.mapWith(String);
+}
+
+/**
+ * Using canonical form of included lower bound and excluded upper bound. See
+ * https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
+ */
+export function range<T extends number | Date>(
+	tuple: [T, T],
+	{
+		lowerBound = 'inclusive',
+		upperBound = 'exclusive',
+	}: { lowerBound?: RangeBoundType; upperBound?: RangeBoundType } = {}
+) {
+	const lb = RANGE_BOUND_BRACKETS.LOWER[lowerBound];
+	const ub = RANGE_BOUND_BRACKETS.UPPER[upperBound];
+	return sql<T>`${lb}${tuple[0]},${tuple[1]}${ub}`;
 }
