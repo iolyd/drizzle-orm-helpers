@@ -311,5 +311,5 @@ export function range<T extends number | Date>(
 ) {
 	const lb = RANGE_BOUND_BRACKETS.LOWER[lowerBound];
 	const ub = RANGE_BOUND_BRACKETS.UPPER[upperBound];
-	return sql<T>`${lb}${tuple[0]},${tuple[1]}${ub}`;
+	return sql<[T, T]>`${lb}${tuple[0]},${tuple[1]}${ub}`;
 }
