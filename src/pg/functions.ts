@@ -303,7 +303,7 @@ export function age<TOrigin extends SQLWrapper | Date, TTarget extends SQLWrappe
  * https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
  */
 export function range<
-	T extends [number | undefined, number | undefined] | [Date | undefined, Date | undefined],
+	const T extends [number | undefined, number | undefined] | [Date | undefined, Date | undefined],
 >(
 	tuple: T,
 	{
