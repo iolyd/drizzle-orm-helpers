@@ -302,8 +302,10 @@ export function age<TOrigin extends SQLWrapper | Date, TTarget extends SQLWrappe
  * Using canonical form of included lower bound and excluded upper bound. See
  * https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
  */
-export function range<T extends number | Date>(
-	tuple: [T, T],
+export function range<
+	T extends [number | undefined, number | undefined] | [Date | undefined, Date | undefined],
+>(
+	tuple: T,
 	{
 		lowerBound = 'inclusive',
 		upperBound = 'exclusive',
@@ -311,5 +313,5 @@ export function range<T extends number | Date>(
 ) {
 	const lb = RANGE_BOUND_BRACKETS.LOWER[lowerBound];
 	const ub = RANGE_BOUND_BRACKETS.UPPER[upperBound];
-	return sql<[T, T]>`${lb}${tuple[0]},${tuple[1]}${ub}`;
+	return sql<T>`${lb}${tuple[0]},${tuple[1]}${ub}`;
 }

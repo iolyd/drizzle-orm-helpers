@@ -1787,7 +1787,7 @@ random();
 ### range()
 
 ```ts
-range<T>(tuple: [T, T], __namedParameters:     Object): SQL<[T, T]>
+range<T>(tuple: T, __namedParameters:     Object): SQL<T>
 ```
 
 Using canonical form of included lower bound and excluded upper bound. See
@@ -1795,22 +1795,22 @@ https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
 
 #### Type parameters
 
-| Type parameter       |
-| :------------------- | ------ |
-| `T` extends `number` | `Date` |
+| Type parameter            |
+| :------------------------ | --------------------- | --------- | ------------- | ------------------- | ------- |
+| `T` extends \[`undefined` | `number`, `undefined` | `number`] | \[`undefined` | `Date`, `undefined` | `Date`] |
 
 #### Parameters
 
 | Parameter                       | Type                                         |
 | :------------------------------ | :------------------------------------------- |
-| `tuple`                         | \[`T`, `T`]                                  |
+| `tuple`                         | `T`                                          |
 | `__namedParameters`             | `Object`                                     |
 | `__namedParameters.lowerBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
 | `__namedParameters.upperBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
 
 #### Returns
 
-`SQL`<\[`T`, `T`]>
+`SQL`<`T`>
 
 ---
 
