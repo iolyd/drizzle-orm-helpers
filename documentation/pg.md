@@ -1787,7 +1787,7 @@ random();
 ### range()
 
 ```ts
-range<T>(tuple: [T, T], __namedParameters:     Object): SQL<T>
+range<T>(tuple: [T, T], __namedParameters:     Object): SQL<[T, T]>
 ```
 
 Using canonical form of included lower bound and excluded upper bound. See
@@ -1810,7 +1810,7 @@ https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
 
 #### Returns
 
-`SQL`<`T`>
+`SQL`<\[`T`, `T`]>
 
 ---
 
