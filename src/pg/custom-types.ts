@@ -6,6 +6,49 @@ import type { RangeBoundType, Regconfig } from './constants';
 import { RANGE_BOUND_BRACKETS } from './internals';
 
 /**
+ * Text-based enum with runtime check and type inferrence. In other words, similar to drizzle's own
+ * `text` column with `config.enum` but this time with runtime peace-of mind.
+ *
+ * If you simply want a union-typed text without runtime safety of values, use drizzle's own `text`
+ * with the `config.enum`.
+ *
+ * @see https://orm.drizzle.team/docs/column-types/pg#text
+ */
+export function textenum<
+	TName extends string,
+	const TEnum extends string[],
+	TConfig extends {
+		enum: TEnum;
+		fallback: TConfig['enum'][number];
+	},
+>(name: TName, config: TConfig) {
+	function isEnumMember(value: unknown): value is TEnum[number] {
+		return config.enum.includes(value as TEnum[number]);
+	}
+	return customType<{
+		data: TConfig['enum'][number];
+		driverData: string;
+		config: TConfig;
+	}>({
+		dataType() {
+			return 'text';
+		},
+		fromDriver(value) {
+			if (isEnumMember(value)) {
+				return value;
+			}
+			return config.fallback;
+		},
+		toDriver(value) {
+			if (isEnumMember(value)) {
+				return value;
+			}
+			return config.fallback;
+		},
+	})(name, config);
+}
+
+/**
  * Implements Postgres regconfig. Useful for text search language config storage.
  *
  * @see https://www.postgresql.org/docs/current/textsearch-controls.html

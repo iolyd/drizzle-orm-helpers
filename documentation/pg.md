@@ -68,6 +68,7 @@
   - [setweight()](#setweight)
   - [similar()](#similar)
   - [soundex()](#soundex)
+  - [textenum()](#textenum)
   - [toJson()](#tojson)
   - [toJsonb()](#tojsonb)
   - [toTsquery()](#totsquery)
@@ -1948,6 +1949,54 @@ soundex(text: string | SQLWrapper): SQL<string>
 #### See
 
 https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-SOUNDEX
+
+---
+
+<a id="textenum" name="textenum"></a>
+
+### textenum()
+
+```ts
+textenum<TName, TEnum, TConfig>(name: TName, config: TConfig): PgCustomColumnBuilder<Object>
+```
+
+Text-based enum with runtime check and type inferrence. In other words, similar to drizzle's own
+`text` column with `config.enum` but this time with runtime peace-of mind.
+
+If you simply want a union-typed text without runtime safety of values, use drizzle's own `text`
+with the `config.enum`.
+
+#### Type parameters
+
+| Type parameter              |
+| :-------------------------- |
+| `TName` extends `string`    |
+| `TEnum` extends `string`\[] |
+| `TConfig` extends `Object`  |
+
+#### Parameters
+
+| Parameter | Type      |
+| :-------- | :-------- |
+| `name`    | `TName`   |
+| `config`  | `TConfig` |
+
+#### Returns
+
+`PgCustomColumnBuilder`<`Object`>
+
+> | Member        | Type                            |
+> | :------------ | :------------------------------ |
+> | `columnType`  | `"PgCustomColumn"`              |
+> | `data`        | `TConfig`\[`"enum"`]\[`number`] |
+> | `dataType`    | `"custom"`                      |
+> | `driverParam` | `string`                        |
+> | `enumValues`  | `undefined`                     |
+> | `name`        | `TName`                         |
+
+#### See
+
+https://orm.drizzle.team/docs/column-types/pg#text
 
 ---
 
