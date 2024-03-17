@@ -19,7 +19,7 @@ export function textenum<
 	const TEnum extends string[],
 	TConfig extends {
 		enum: TEnum;
-		fallback: TConfig['enum'][number];
+		fallback: TConfig['enum'][number] | Error;
 	},
 >(name: TName, config: TConfig) {
 	function isEnumMember(value: unknown): value is TEnum[number] {
@@ -37,11 +37,17 @@ export function textenum<
 			if (isEnumMember(value)) {
 				return value;
 			}
+			if (config.fallback instanceof Error) {
+				throw config.fallback;
+			}
 			return config.fallback;
 		},
 		toDriver(value) {
 			if (isEnumMember(value)) {
 				return value;
+			}
+			if (config.fallback instanceof Error) {
+				throw config.fallback;
 			}
 			return config.fallback;
 		},
