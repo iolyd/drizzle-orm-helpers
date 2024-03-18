@@ -105,12 +105,18 @@ export type InferDataType<T extends SQLWrapper> = T extends Table
 /**
  * Infer table columns or (sub)query fields.
  */
-export type InferColumns<T extends Table | View | Subquery | WithSubquery | AnySelect> =
-	T extends Table
-		? T['_']['columns']
-		: T extends View | Subquery | WithSubquery | AnySelect
-			? T['_']['selectedFields']
-			: never;
+export type InferColumns<
+	T extends
+		| Table
+		| View
+		| Subquery<string, Record<string, unknown>>
+		| WithSubquery<string, Record<string, unknown>>
+		| AnySelect,
+> = T extends Table
+	? T['_']['columns']
+	: T extends View | Subquery | WithSubquery | AnySelect
+		? T['_']['selectedFields']
+		: never;
 
 /**
  * Infer a table's name or a (sub)query's alias.
@@ -132,9 +138,14 @@ export type InferNameOrAlias<
  *
  * @see https://github.com/drizzle-team/drizzle-orm/pull/1789
  */
-export function getColumns<T extends Table | View | Subquery | WithSubquery | AnySelect>(
-	table: T
-): InferColumns<T> {
+export function getColumns<
+	T extends
+		| Table
+		| View
+		| Subquery<string, Record<string, unknown>>
+		| WithSubquery<string, Record<string, unknown>>
+		| AnySelect,
+>(table: T): InferColumns<T> {
 	return is(table, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(table as any)[(Table as any).Symbol.Columns]

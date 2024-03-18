@@ -83,8 +83,8 @@ Infer table columns or (sub)query fields.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `Table` | `View` | `Subquery` | `WithSubquery` | [`AnySelect`](README.md#anyselect)
-|
+| `T` extends | `Table` | `View` | `Subquery`<`string`, `Record`<`string`, `unknown`>> |
+`WithSubquery`<`string`, `Record`<`string`, `unknown`>> | [`AnySelect`](README.md#anyselect) |
 
 ---
 
@@ -459,8 +459,8 @@ Should replace `getTableColumns` to allow for more input versatility.
 | :------------- |
 
 | `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`,
-`boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
-[`AnySelect`](README.md#anyselect) | `WithSubquery`<`string`, `unknown`> |
+`boolean`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) | `Subquery`<`string`,
+`Record`<`string`, `unknown`>> | `WithSubquery`<`string`, `Record`<`string`, `unknown`>> |
 
 #### Parameters
 
