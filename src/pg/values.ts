@@ -4,19 +4,19 @@ import { sql } from 'drizzle-orm';
 /**
  * Empty record as SQL json.
  */
-export const emptyJsonObject = sql<object>`'{}'::json`;
+export const $jsonObject = sql<object>`'{}'::json`;
 
 /**
  * Empty array as SQL json.
  */
-export const emptyJsonArray = sql<[never]>`'[]'::json`;
+export const $jsonArray = sql<[never]>`'[]'::json`;
 
 /**
  * Empty SQL array (not json typed)
  */
-export const emptyArray = sql<SQL<[]>>`{}`;
+export const $array = sql<SQL<[]>>`{}`;
 
 /**
  * Postgres value returned for empty ranges.
  */
-export const empty = sql`'empty'`.mapWith(String);
+export const $empty = sql`'empty'`.mapWith(String);
