@@ -73,7 +73,7 @@ Infer type of table column.
 ### InferColumns\<T>
 
 ```ts
-type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View | SubqueryWithSelection<ColumnsSelection, string> | WithSubqueryWithSelection<ColumnsSelection, string> | AnySelect ? T["_"]["selectedFields"] : never;
+type InferColumns<T>: T extends Table ? T["_"]["columns"] : T extends View | Subquery | WithSubquery | AnySelect ? T["_"]["selectedFields"] : never;
 ```
 
 Infer table columns or (sub)query fields.
@@ -83,11 +83,8 @@ Infer table columns or (sub)query fields.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `Table` | `View` |
-[`SubqueryWithSelection`](README.md#subquerywithselectiontselectiontname)<`ColumnsSelection`,
-`string`> |
-[`WithSubqueryWithSelection`](README.md#withsubquerywithselectiontselectiontalias)<`ColumnsSelection`,
-`string`> | [`AnySelect`](README.md#anyselect) |
+| `T` extends | `Table` | `View` | `Subquery` | `WithSubquery` | [`AnySelect`](README.md#anyselect)
+|
 
 ---
 
@@ -462,11 +459,8 @@ Should replace `getTableColumns` to allow for more input versatility.
 | :------------- |
 
 | `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`,
-`boolean`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) |
-[`SubqueryWithSelection`](README.md#subquerywithselectiontselectiontname)<`ColumnsSelection`,
-`string`> |
-[`WithSubqueryWithSelection`](README.md#withsubquerywithselectiontselectiontalias)<`ColumnsSelection`,
-`string`> |
+`boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
+[`AnySelect`](README.md#anyselect) | `WithSubquery`<`string`, `unknown`> |
 
 #### Parameters
 

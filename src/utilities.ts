@@ -1,14 +1,20 @@
-import type {
-	AnyColumn,
-	Column,
-	ColumnBuilderBase,
-	ColumnsSelection,
-	InferSelectModel,
-	Param,
-	SQLWrapper,
-	WithSubquery,
+import type { WithSubquery } from 'drizzle-orm';
+import {
+	SQL,
+	Subquery,
+	SubqueryConfig,
+	Table,
+	View,
+	ViewBaseConfig,
+	is,
+	type AnyColumn,
+	type Column,
+	type ColumnBuilderBase,
+	type ColumnsSelection,
+	type InferSelectModel,
+	type Param,
+	type SQLWrapper,
 } from 'drizzle-orm';
-import { SQL, Subquery, SubqueryConfig, Table, View, ViewBaseConfig, is } from 'drizzle-orm';
 import type {
 	AnyMySqlSelect,
 	MySqlSchema,
@@ -99,22 +105,12 @@ export type InferDataType<T extends SQLWrapper> = T extends Table
 /**
  * Infer table columns or (sub)query fields.
  */
-export type InferColumns<
-	T extends
-		| Table
-		| View
-		| SubqueryWithSelection<ColumnsSelection, string>
-		| WithSubqueryWithSelection<ColumnsSelection, string>
-		| AnySelect,
-> = T extends Table
-	? T['_']['columns']
-	: T extends
-				| View
-				| SubqueryWithSelection<ColumnsSelection, string>
-				| WithSubqueryWithSelection<ColumnsSelection, string>
-				| AnySelect
-		? T['_']['selectedFields']
-		: never;
+export type InferColumns<T extends Table | View | Subquery | WithSubquery | AnySelect> =
+	T extends Table
+		? T['_']['columns']
+		: T extends View | Subquery | WithSubquery | AnySelect
+			? T['_']['selectedFields']
+			: never;
 
 /**
  * Infer a table's name or a (sub)query's alias.
@@ -136,14 +132,9 @@ export type InferNameOrAlias<
  *
  * @see https://github.com/drizzle-team/drizzle-orm/pull/1789
  */
-export function getColumns<
-	T extends
-		| Table
-		| View
-		| SubqueryWithSelection<ColumnsSelection, string>
-		| WithSubqueryWithSelection<ColumnsSelection, string>
-		| AnySelect,
->(table: T): InferColumns<T> {
+export function getColumns<T extends Table | View | Subquery | WithSubquery | AnySelect>(
+	table: T
+): InferColumns<T> {
 	return is(table, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(table as any)[(Table as any).Symbol.Columns]
@@ -153,7 +144,9 @@ export function getColumns<
 			: is(table, Subquery)
 				? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 					(table as any)[SubqueryConfig].selection
-				: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+				: // is(table, WithSubquery) ?
+					// (table as any)[SubqueryConfig].selectedFields :
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					(table as any)._.selectedFields;
 }
 
