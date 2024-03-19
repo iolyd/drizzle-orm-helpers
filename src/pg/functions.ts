@@ -12,7 +12,7 @@ import type {
 } from 'drizzle-orm';
 import { SQL, StringChunk, bindIfParam, isSQLWrapper, sql } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
-import type { AnySelect, InferDataType } from '..';
+import type { AnySelect, InferData } from '..';
 import type { RangeBoundType, Regconfig } from './constants';
 import { RANGE_BOUND_BRACKETS } from './internals';
 
@@ -71,18 +71,18 @@ export function jsonStripNulls<T>(json: SQL<T> | SQL.Aliased<T>) {
 export function arrayAgg<T extends SQL | SQL.Aliased | InferSelectModel<AnyTable<TableConfig>>>(
 	raw: T
 ) {
-	return sql<(T extends SQL | SQL.Aliased ? InferDataType<T>[] : T[]) | null>`array_agg(${raw})`;
+	return sql<(T extends SQL | SQL.Aliased ? InferData<T>[] : T[]) | null>`array_agg(${raw})`;
 }
 
 /**
  * @see https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-TABLE
  */
 export function toJson<T extends SQLWrapper>(anyelement: T) {
-	return sql<InferDataType<T>>`to_json(${anyelement})`;
+	return sql<InferData<T>>`to_json(${anyelement})`;
 }
 
 export function toJsonb<T extends SQLWrapper>(anyelement: T) {
-	return sql<InferDataType<T>>`to_jsonb(${anyelement})`;
+	return sql<InferData<T>>`to_jsonb(${anyelement})`;
 }
 
 /**
@@ -90,7 +90,7 @@ export function toJsonb<T extends SQLWrapper>(anyelement: T) {
  * type.
  */
 export function rowToJson<T extends Table | View | Subquery>(row: T) {
-	return sql<InferDataType<T>>`row_to_json(${row})`;
+	return sql<InferData<T>>`row_to_json(${row})`;
 }
 
 /**
@@ -106,7 +106,7 @@ export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape
 		chunks.push(sql.raw(`'${key}',`));
 		chunks.push(sql`${value}`);
 	});
-	return sql<{ [K in keyof T]: InferDataType<T[K]> }>`json_build_object(${sql.join(chunks)})`;
+	return sql<{ [K in keyof T]: InferData<T[K]> }>`json_build_object(${sql.join(chunks)})`;
 }
 
 /**
@@ -116,7 +116,7 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 	shape: T
 ): SQL<
 	{
-		[K in keyof T]: InferDataType<T[K]> extends never ? T : InferDataType<T[K]>;
+		[K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]>;
 	}[]
 > {
 	const chunks: SQL[] = [];
@@ -143,16 +143,12 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 export function jsonObjectAgg<
 	K extends AnyColumn,
 	V extends SQL | SQL.Aliased | AnyTable<TableConfig>,
-	TK extends string | number = null extends InferDataType<K>
+	TK extends string | number = null extends InferData<K>
 		? never
-		: InferDataType<K> extends string | number
-			? InferDataType<K>
+		: InferData<K> extends string | number
+			? InferData<K>
 			: never,
-	TV = V extends AnyTable<TableConfig>
-		? InferSelectModel<V>
-		: V extends SQL
-			? InferDataType<V>
-			: never,
+	TV = V extends AnyTable<TableConfig> ? InferSelectModel<V> : V extends SQL ? InferData<V> : never,
 >(name: K, value: V) {
 	return sql<Record<TK, TV>>`json_object_agg(${name}, ${value})`;
 }
@@ -167,16 +163,12 @@ export function jsonObjectAgg<
 export function jsonbObjectAgg<
 	K extends AnyColumn,
 	V extends SQL | SQL.Aliased | AnyTable<TableConfig>,
-	TK extends string | number = null extends InferDataType<K>
+	TK extends string | number = null extends InferData<K>
 		? never
-		: InferDataType<K> extends string | number
-			? InferDataType<K>
+		: InferData<K> extends string | number
+			? InferData<K>
 			: never,
-	TV = V extends AnyTable<TableConfig>
-		? InferSelectModel<V>
-		: V extends SQL
-			? InferDataType<V>
-			: never,
+	TV = V extends AnyTable<TableConfig> ? InferSelectModel<V> : V extends SQL ? InferData<V> : never,
 >(name: K, value: V) {
 	return sql<Record<TK, TV>>`jsonb_object_agg(${name}, ${value})`;
 }
@@ -191,9 +183,9 @@ export function jsonAgg<T extends Table | Column | Subquery | AnySelect>(
 	T extends Table
 		? InferSelectModel<T>
 		: T extends Column
-			? InferDataType<T>[]
+			? InferData<T>[]
 			: T extends Subquery
-				? { [K in keyof T['_']['selectedFields']]: InferDataType<T['_']['selectedFields'][K]> }[]
+				? { [K in keyof T['_']['selectedFields']]: InferData<T['_']['selectedFields'][K]> }[]
 				: T extends AnySelect
 					? Awaited<T>
 					: never

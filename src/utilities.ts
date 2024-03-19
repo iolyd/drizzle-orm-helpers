@@ -86,12 +86,12 @@ export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase>
 /**
  * Infer any SQL wrapper's expected return data type.
  */
-export type InferDataType<T extends SQLWrapper> = T extends Table
+export type InferData<T extends SQLWrapper> = T extends Table
 	? InferSelectModel<T>
 	: T extends Column
 		? T['_']['notNull'] extends true
-			? T['_']['dataType']
-			: T['_']['dataType'] | null
+			? T['_']['data']
+			: T['_']['data'] | null
 		: T extends View | Subquery
 			? T['_']['selectedFields']
 			: T extends SQL<infer U>

@@ -1,14 +1,14 @@
 import type { SQL, SQLWrapper } from 'drizzle-orm';
 import { StringChunk, bindIfParam, sql } from 'drizzle-orm';
 import type { TupleToUnion } from 'type-fest';
-import { type InferDataType } from '.';
+import { type InferData } from '.';
 import type { NonUndefinable } from './internals';
 
 /**
  * Distinct keyword.
  */
 export function distinct<T extends SQLWrapper>(statement: T) {
-	return sql<InferDataType<T>>`distinct ${statement}`;
+	return sql<InferData<T>>`distinct ${statement}`;
 }
 
 /**
@@ -40,10 +40,10 @@ export function cases<
 				? T0 extends SQL<false | null | 0 | 'f' | 'F' | '0'>
 					? never
 					: T1 extends SQLWrapper
-						? InferDataType<T1>
+						? InferData<T1>
 						: T1
 				: never)
-		| (F extends void ? never : F extends SQLWrapper ? InferDataType<F> : F),
+		| (F extends void ? never : F extends SQLWrapper ? InferData<F> : F),
 >(conditionals: C, fallback?: F) {
 	const chunks = conditionals.reduce(
 		(acc, curr) => {

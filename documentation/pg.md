@@ -352,7 +352,7 @@ age(timestamp '2001-04-10', timestamp '1957-06-13') → 43 years 9 mons 27 days
 ### arrayAgg()
 
 ```ts
-arrayAgg<T>(raw: T): SQL<null | T extends SQL<unknown> | Aliased<unknown> ? InferDataType<T>[] : T[]>
+arrayAgg<T>(raw: T): SQL<null | T extends SQL<unknown> | Aliased<unknown> ? InferData<T>[] : T[]>
 ```
 
 Aggregate sql values into an sql array.
@@ -372,7 +372,7 @@ Aggregate sql values into an sql array.
 #### Returns
 
 `SQL`<`null` | `T` extends `SQL`<`unknown`> | `Aliased`<`unknown`> ?
-[`InferDataType`](README.md#inferdatatypet)<`T`>\[] : `T`\[]>
+[`InferData`](README.md#inferdatat)<`T`>\[] : `T`\[]>
 
 ---
 
@@ -985,7 +985,7 @@ cube <=> cube → float8
 ### excluded()
 
 ```ts
-excluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferDataType<T[K]>> }
+excluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferData<T[K]>> }
 ```
 
 Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
@@ -1004,7 +1004,7 @@ Get excluded column values in conflict cases. Useful for onConflictDoUpdate's se
 
 #### Returns
 
-`{ [K in string | number | symbol]: SQL<InferDataType<T[K]>> }`
+`{ [K in string | number | symbol]: SQL<InferData<T[K]>> }`
 
 ---
 
@@ -1333,7 +1333,7 @@ intrangeSchema(__namedParameters:     Object): ZodObject<Object, "strip", ZodTyp
 ### jsonAgg()
 
 ```ts
-jsonAgg<T>(selection: T, __namedParameters:     Object): SQL<T extends Table ? InferSelectModel<T> : T extends Column ? InferDataType<T>[] : T extends Subquery ? { [K in keyof T["_"]["selectedFields"]]: InferDataType<T["_"]["selectedFields"][K]> }[] : T extends AnySelect ? Awaited<T> : never>
+jsonAgg<T>(selection: T, __namedParameters:     Object): SQL<T extends Table ? InferSelectModel<T> : T extends Column ? InferData<T>[] : T extends Subquery ? { [K in keyof T["_"]["selectedFields"]]: InferData<T["_"]["selectedFields"][K]> }[] : T extends AnySelect ? Awaited<T> : never>
 ```
 
 Json_agg.
@@ -1355,9 +1355,9 @@ Json_agg.
 #### Returns
 
 `SQL`<`T` extends `Table` ? `InferSelectModel`<`T`> : `T` extends `Column` ?
-[`InferDataType`](README.md#inferdatatypet)<`T`>\[] : `T` extends `Subquery` ?
-`{ [K in keyof T["_"]["selectedFields"]]: InferDataType<T["_"]["selectedFields"][K]> }`\[] : `T`
-extends [`AnySelect`](README.md#anyselect) ? `Awaited`<`T`> : `never`>
+[`InferData`](README.md#inferdatat)<`T`>\[] : `T` extends `Subquery` ?
+`{ [K in keyof T["_"]["selectedFields"]]: InferData<T["_"]["selectedFields"][K]> }`\[] : `T` extends
+[`AnySelect`](README.md#anyselect) ? `Awaited`<`T`> : `never`>
 
 ---
 
@@ -1366,7 +1366,7 @@ extends [`AnySelect`](README.md#anyselect) ? `Awaited`<`T`> : `never`>
 ### jsonAggBuildObject()
 
 ```ts
-jsonAggBuildObject<T>(shape: T): SQL<{ [K in keyof T]: InferDataType<T[K]> extends never ? T : InferDataType<T[K]> }[]>
+jsonAggBuildObject<T>(shape: T): SQL<{ [K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]> }[]>
 ```
 
 Aggregate sql values into a json object.
@@ -1385,7 +1385,7 @@ Aggregate sql values into a json object.
 
 #### Returns
 
-`SQL`<`{ [K in keyof T]: InferDataType<T[K]> extends never ? T : InferDataType<T[K]> }`\[]>
+`SQL`<`{ [K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]> }`\[]>
 
 ---
 
@@ -1394,7 +1394,7 @@ Aggregate sql values into a json object.
 ### jsonBuildObject()
 
 ```ts
-jsonBuildObject<T>(shape: T): SQL<{ [K in string | number | symbol]: InferDataType<T[K]> }>
+jsonBuildObject<T>(shape: T): SQL<{ [K in string | number | symbol]: InferData<T[K]> }>
 ```
 
 Build objects using \`json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
@@ -1414,7 +1414,7 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Returns
 
-`SQL`<`{ [K in string | number | symbol]: InferDataType<T[K]> }`>
+`SQL`<`{ [K in string | number | symbol]: InferData<T[K]> }`>
 
 ---
 
@@ -1432,11 +1432,11 @@ instead of an SQL wrapped type.
 #### Type parameters
 
 | Type parameter               | Value                                                                                                                                                                                                                       |
-| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `K` extends `AnyColumn`      | -                                                                                                                                                                                                                           |
-| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                        | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                |
-| `TK` extends `string`        | `number`                                                                                                                                                                                                                    | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? [`InferDataType`](README.md#inferdatatypet) : `never` |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never`     |
+| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                        | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                    | -                                                        |
+| `TK` extends `string`        | `number`                                                                                                                                                                                                                    | `null` extends [`InferData`](README.md#inferdatat)<`K`> ? `never` : [`InferData`](README.md#inferdatat)<`K`> extends `string`     | `number` ? [`InferData`](README.md#inferdatat) : `never` |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferData`](README.md#inferdatat)<`V`> : `never` |
 
 #### Parameters
 
@@ -1496,11 +1496,11 @@ jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
 #### Type parameters
 
 | Type parameter               | Value                                                                                                                                                                                                                       |
-| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `K` extends `AnyColumn`      | -                                                                                                                                                                                                                           |
-| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                        | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                                | -                                                                |
-| `TK` extends `string`        | `number`                                                                                                                                                                                                                    | `null` extends [`InferDataType`](README.md#inferdatatypet)<`K`> ? `never` : [`InferDataType`](README.md#inferdatatypet)<`K`> extends `string` | `number` ? [`InferDataType`](README.md#inferdatatypet) : `never` |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferDataType`](README.md#inferdatatypet)<`V`> : `never`     |
+| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                        | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                    | -                                                        |
+| `TK` extends `string`        | `number`                                                                                                                                                                                                                    | `null` extends [`InferData`](README.md#inferdatat)<`K`> ? `never` : [`InferData`](README.md#inferdatat)<`K`> extends `string`     | `number` ? [`InferData`](README.md#inferdatat) : `never` |
+| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V["\_"]["columns"][Key]["_"]["notNull"] extends true ? V["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferData`](README.md#inferdatat)<`V`> : `never` |
 
 #### Parameters
 
@@ -1862,7 +1862,7 @@ https://www.postgresql.org/docs/current/textsearch-controls.html
 ### rowToJson()
 
 ```ts
-rowToJson<T>(row: T): SQL<InferDataType<T>>
+rowToJson<T>(row: T): SQL<InferData<T>>
 ```
 
 Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped type.
@@ -1881,7 +1881,7 @@ Since it is a json method, it should return an unwrapped (raw) type instead of a
 
 #### Returns
 
-`SQL`<[`InferDataType`](README.md#inferdatatypet)<`T`>>
+`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
 
 ---
 
@@ -2005,7 +2005,7 @@ https://orm.drizzle.team/docs/column-types/pg#text
 ### toJson()
 
 ```ts
-toJson<T>(anyelement: T): SQL<InferDataType<T>>
+toJson<T>(anyelement: T): SQL<InferData<T>>
 ```
 
 #### Type parameters
@@ -2022,7 +2022,7 @@ toJson<T>(anyelement: T): SQL<InferDataType<T>>
 
 #### Returns
 
-`SQL`<[`InferDataType`](README.md#inferdatatypet)<`T`>>
+`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
 
 #### See
 
@@ -2035,7 +2035,7 @@ https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-
 ### toJsonb()
 
 ```ts
-toJsonb<T>(anyelement: T): SQL<InferDataType<T>>
+toJsonb<T>(anyelement: T): SQL<InferData<T>>
 ```
 
 #### Type parameters
@@ -2052,7 +2052,7 @@ toJsonb<T>(anyelement: T): SQL<InferDataType<T>>
 
 #### Returns
 
-`SQL`<[`InferDataType`](README.md#inferdatatypet)<`T`>>
+`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
 
 ---
 

@@ -1,7 +1,7 @@
 import { SQL, StringChunk, isSQLWrapper, sql, type AnyColumn, type SQLWrapper } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
 import { INTERVAL_UNITS_ARR_ORDERED, type IntervalUnit } from '.';
-import type { InferDataType } from '..';
+import type { InferData } from '..';
 import { PG_DIALECT } from '../internals';
 
 export type RangeValue<T = void> = { upper: T | null; lower: T | null };
@@ -14,10 +14,10 @@ export type RangeValue<T = void> = { upper: T | null; lower: T | null };
 export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
 	return (Object.keys(columns) as (keyof T)[]).reduce(
 		(acc, curr) => {
-			acc[curr] = sql.raw(`excluded.${columns[curr].name}`) as SQL<InferDataType<T[typeof curr]>>;
+			acc[curr] = sql.raw(`excluded.${columns[curr].name}`) as SQL<InferData<T[typeof curr]>>;
 			return acc;
 		},
-		<{ [K in keyof T]: SQL<InferDataType<T[K]>> }>{}
+		<{ [K in keyof T]: SQL<InferData<T[K]>> }>{}
 	);
 }
 

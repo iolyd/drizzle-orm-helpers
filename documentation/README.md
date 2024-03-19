@@ -6,7 +6,7 @@
   - [AnySelect](#anyselect)
   - [InferColumnType\<T>](#infercolumntypet)
   - [InferColumns\<T>](#infercolumnst)
-  - [InferDataType\<T>](#inferdatatypet)
+  - [InferData\<T>](#inferdatat)
   - [InferNameOrAlias\<T>](#infernameoraliast)
   - [Schema](#schema)
   - [Select](#select)
@@ -88,12 +88,12 @@ Infer table columns or (sub)query fields.
 
 ---
 
-<a id="inferdatatypet" name="inferdatatypet"></a>
+<a id="inferdatat" name="inferdatat"></a>
 
-### InferDataType\<T>
+### InferData\<T>
 
 ```ts
-type InferDataType<T>: T extends Table ? InferSelectModel<T> : T extends Column ? T["_"]["notNull"] extends true ? T["_"]["dataType"] : T["_"]["dataType"] | null : T extends View | Subquery ? T["_"]["selectedFields"] : T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : T extends Param ? T["value"] : unknown;
+type InferData<T>: T extends Table ? InferSelectModel<T> : T extends Column ? T["_"]["notNull"] extends true ? T["_"]["data"] : T["_"]["data"] | null : T extends View | Subquery ? T["_"]["selectedFields"] : T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : T extends Param ? T["value"] : unknown;
 ```
 
 Infer any SQL wrapper's expected return data type.
@@ -251,7 +251,7 @@ SQL template true value.
 ### add()
 
 ```ts
-add<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+add<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
 ```
 
 Add values.
@@ -270,8 +270,8 @@ Add values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ?
-[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
+`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`T`\[`number`]>
 
 ---
 
@@ -323,8 +323,8 @@ Case condition chain.
 | `R`                      | `T` extends \[`T0`, `T1`] ? `T0` extends `SQL`< |
 
 | `null` | `false` | `0` | `"0"` | `"f"` | `"F"`> ? `never` : `T1` extends `SQLWrapper` ?
-[`InferDataType`](README.md#inferdatatypet)<`T1`> : `T1` : `never` | `F` extends `void` ? `never` :
-`F` extends `SQLWrapper` ? [`InferDataType`](README.md#inferdatatypet)<`F`> : `F` |
+[`InferData`](README.md#inferdatat)<`T1`> : `T1` : `never` | `F` extends `void` ? `never` : `F`
+extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`F`> : `F` |
 
 #### Parameters
 
@@ -391,7 +391,7 @@ SQL coalesce.
 ### distinct()
 
 ```ts
-distinct<T>(statement: T): SQL<InferDataType<T>>
+distinct<T>(statement: T): SQL<InferData<T>>
 ```
 
 Distinct keyword.
@@ -410,7 +410,7 @@ Distinct keyword.
 
 #### Returns
 
-`SQL`<[`InferDataType`](README.md#inferdatatypet)<`T`>>
+`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
 
 ---
 
@@ -419,7 +419,7 @@ Distinct keyword.
 ### divide()
 
 ```ts
-divide<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+divide<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
 ```
 
 Subtract values.
@@ -438,8 +438,8 @@ Subtract values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ?
-[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
+`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`T`\[`number`]>
 
 ---
 
@@ -514,7 +514,7 @@ Get a table's name or a (sub)query's alias.
 ### multiply()
 
 ```ts
-multiply<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+multiply<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
 ```
 
 Subtract values.
@@ -533,8 +533,8 @@ Subtract values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ?
-[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
+`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`T`\[`number`]>
 
 ---
 
@@ -576,7 +576,7 @@ Paginate a query.
 ### subtract()
 
 ```ts
-subtract<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferDataType<any[any]> : T[number]>
+subtract<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
 ```
 
 Subtract values.
@@ -595,5 +595,5 @@ Subtract values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ?
-[`InferDataType`](README.md#inferdatatypet)<`any`\[`any`]> : `T`\[`number`]>
+`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`T`\[`number`]>

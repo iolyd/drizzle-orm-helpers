@@ -1,6 +1,6 @@
 import type { SQL } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
-import type { InferDataType } from '.';
+import type { InferData } from '.';
 
 /**
  * SQL coalesce.
@@ -23,8 +23,8 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 ]
 	? CoalesceSQL<
 			T,
-			H extends SQL | SQL.Aliased ? (null extends InferDataType<H> ? true : false) : never,
-			R | RemoveNull<H extends SQL | SQL.Aliased ? InferDataType<H> : never>
+			H extends SQL | SQL.Aliased ? (null extends InferData<H> ? true : false) : never,
+			R | RemoveNull<H extends SQL | SQL.Aliased ? InferData<H> : never>
 		>
 	: N extends true
 		? SQL<R | null>
