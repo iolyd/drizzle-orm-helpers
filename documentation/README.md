@@ -111,18 +111,16 @@ Infer any SQL wrapper's expected return data type.
 ### InferNameOrAlias\<T>
 
 ```ts
-type InferNameOrAlias<T>: T extends Table | View ? T["_"]["name"] : T extends Subquery | WithSubquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : T extends SQL.Aliased ? T["fieldAlias"] : never;
+type InferNameOrAlias<T>: T extends Table | View | Column ? T["_"]["name"] : T extends Subquery | WithSubquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : T extends SQL.Aliased ? T["fieldAlias"] : T extends Placeholder ? T["name"] : never;
 ```
 
 Infer a table's name or a (sub)query's alias.
 
 #### Type parameters
 
-| Type parameter |
-| :------------- |
-
-| `T` extends | `Table` | `View` | `Subquery` | `WithSubquery` | [`AnySelect`](README.md#anyselect)
-| `SQL.Aliased` |
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
 
 ---
 
@@ -483,25 +481,22 @@ https://github.com/drizzle-team/drizzle-orm/pull/1789
 ### getNameOrAlias()
 
 ```ts
-getNameOrAlias<T>(table: T): InferNameOrAlias<T>
+getNameOrAlias<T>(query: T): InferNameOrAlias<T>
 ```
 
 Get a table's name or a (sub)query's alias.
 
 #### Type parameters
 
-| Type parameter |
-| :------------- |
-
-| `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Aliased`<`unknown`> |
-`View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `unknown`> |
-[`AnySelect`](README.md#anyselect) | `WithSubquery`<`string`, `unknown`> |
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
 
 #### Parameters
 
 | Parameter | Type |
 | :-------- | :--- |
-| `table`   | `T`  |
+| `query`   | `T`  |
 
 #### Returns
 

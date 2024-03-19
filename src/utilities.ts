@@ -1,5 +1,6 @@
-import type { WithSubquery } from 'drizzle-orm';
 import {
+	Column,
+	Placeholder,
 	SQL,
 	Subquery,
 	SubqueryConfig,
@@ -8,12 +9,12 @@ import {
 	ViewBaseConfig,
 	is,
 	type AnyColumn,
-	type Column,
 	type ColumnBuilderBase,
 	type ColumnsSelection,
 	type InferSelectModel,
 	type Param,
 	type SQLWrapper,
+	type WithSubquery,
 } from 'drizzle-orm';
 import type {
 	AnyMySqlSelect,
@@ -121,9 +122,7 @@ export type InferColumns<
 /**
  * Infer a table's name or a (sub)query's alias.
  */
-export type InferNameOrAlias<
-	T extends Table | View | Subquery | WithSubquery | AnySelect | SQL.Aliased,
-> = T extends Table | View
+export type InferNameOrAlias<T extends SQLWrapper> = T extends Table | View | Column
 	? T['_']['name']
 	: T extends Subquery | WithSubquery
 		? T['_']['alias']
@@ -131,7 +130,9 @@ export type InferNameOrAlias<
 			? T['_']['tableName']
 			: T extends SQL.Aliased
 				? T['fieldAlias']
-				: never;
+				: T extends Placeholder
+					? T['name']
+					: never;
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
@@ -164,22 +165,24 @@ export function getColumns<
 /**
  * Get a table's name or a (sub)query's alias.
  */
-export function getNameOrAlias<
-	T extends Table | View | Subquery | WithSubquery | AnySelect | SQL.Aliased,
->(table: T): InferNameOrAlias<T> {
-	return is(table, Table)
+export function getNameOrAlias<T extends SQLWrapper>(query: T): InferNameOrAlias<T> {
+	return is(query, Table)
 		? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(table as any)[(Table as any).Symbol.Name]
-		: is(table, View)
+			(query as any)[(Table as any).Symbol.Name]
+		: is(query, View)
 			? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(table as any)[ViewBaseConfig].name
-			: is(table, Subquery)
-				? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(table as any)[SubqueryConfig].alias
-				: is(table, SQL.Aliased)
-					? table.fieldAlias
-					: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-						(table as any).tableName;
+				(query as any)[ViewBaseConfig].name
+			: is(query, Column)
+				? query.name
+				: is(query, Subquery)
+					? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+						(query as any)[SubqueryConfig].alias
+					: is(query, SQL.Aliased)
+						? query.fieldAlias
+						: is(query, Placeholder)
+							? query.name
+							: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+								(query as any).tableName;
 }
 
 /**
