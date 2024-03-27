@@ -26,7 +26,10 @@
   - [divide()](#divide)
   - [getColumns()](#getcolumns)
   - [getNameOrAlias()](#getnameoralias)
+  - [greatest()](#greatest)
+  - [least()](#least)
   - [multiply()](#multiply)
+  - [nullIf()](#nullif)
   - [paginate()](#paginate)
   - [subtract()](#subtract)
 
@@ -83,8 +86,8 @@ Infer table columns or (sub)query fields.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `Table` | `View` | `Subquery`<`string`, `Record`<`string`, `unknown`>> |
-`WithSubquery`<`string`, `Record`<`string`, `unknown`>> | [`AnySelect`](README.md#anyselect) |
+| `T` extends | `Table` | `View` | `Subquery`<`string`, `ColumnsSelection`> |
+`WithSubquery`<`string`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) |
 
 ---
 
@@ -93,7 +96,7 @@ Infer table columns or (sub)query fields.
 ### InferData\<T>
 
 ```ts
-type InferData<T>: T extends Table ? InferSelectModel<T> : T extends Column ? T["_"]["notNull"] extends true ? T["_"]["data"] : T["_"]["data"] | null : T extends View | Subquery ? T["_"]["selectedFields"] : T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : T extends Param ? T["value"] : unknown;
+type InferData<T>: T extends Table ? InferSelectModel<T> : T extends Column ? T["_"]["notNull"] extends true ? T["_"]["data"] : T["_"]["data"] | null : T extends View | Subquery ? T["_"]["selectedFields"] : T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : unknown;
 ```
 
 Infer any SQL wrapper's expected return data type.
@@ -111,7 +114,7 @@ Infer any SQL wrapper's expected return data type.
 ### InferNameOrAlias\<T>
 
 ```ts
-type InferNameOrAlias<T>: T extends Table | View | Column ? T["_"]["name"] : T extends Subquery | WithSubquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : T extends SQL.Aliased ? T["fieldAlias"] : T extends Placeholder ? T["name"] : never;
+type InferNameOrAlias<T>: T extends Table | View | Column ? T["_"]["name"] : T extends Subquery | WithSubquery ? T["_"]["alias"] : T extends AnySelect ? T["_"]["tableName"] : T extends SQL.Aliased ? T["fieldAlias"] : T extends Placeholder ? T["name"] : undefined;
 ```
 
 Infer a table's name or a (sub)query's alias.
@@ -361,26 +364,28 @@ Implement smarter typing to identify confirmable early returns with truthy condi
 ### coalesce()
 
 ```ts
-coalesce<T>(...values: T): CoalesceSQL<T, true, never>
+coalesce<T>(...values: [...T[]]): CoalesceSQL<T, true, never>
 ```
-
-SQL coalesce.
 
 #### Type parameters
 
-| Type parameter                  |
-| :------------------------------ |
-| `T` extends `SQL`<`unknown`>\[] |
+| Type parameter           |
+| :----------------------- |
+| `T` extends `unknown`\[] |
 
 #### Parameters
 
-| Parameter   | Type |
-| :---------- | :--- |
-| ...`values` | `T`  |
+| Parameter   | Type        |
+| :---------- | :---------- |
+| ...`values` | \[`...T[]`] |
 
 #### Returns
 
 `CoalesceSQL`<`T`, `true`, `never`>
+
+#### See
+
+https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
 
 ---
 
@@ -504,6 +509,66 @@ Get a table's name or a (sub)query's alias.
 
 ---
 
+<a id="greatest" name="greatest"></a>
+
+### greatest()
+
+```ts
+greatest<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }[number]>
+```
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `T` extends `unknown`\[] |
+
+#### Parameters
+
+| Parameter   | Type        |
+| :---------- | :---------- |
+| ...`values` | \[`...T[]`] |
+
+#### Returns
+
+`SQL`<`{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }`\[`number`]>
+
+#### See
+
+https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST
+
+---
+
+<a id="least" name="least"></a>
+
+### least()
+
+```ts
+least<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }[number]>
+```
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `T` extends `unknown`\[] |
+
+#### Parameters
+
+| Parameter   | Type        |
+| :---------- | :---------- |
+| ...`values` | \[`...T[]`] |
+
+#### Returns
+
+`SQL`<`{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }`\[`number`]>
+
+#### See
+
+https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST
+
+---
+
 <a id="multiply" name="multiply"></a>
 
 ### multiply()
@@ -530,6 +595,40 @@ Subtract values.
 
 `SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
 `T`\[`number`]>
+
+---
+
+<a id="nullif" name="nullif"></a>
+
+### nullIf()
+
+```ts
+nullIf<V, C>(value: V, condition: C): SQL<null | V>
+```
+
+Return null if value meets condition. Useful to coalesce to something else.
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `V` extends `SQLWrapper` |
+| `C`                      |
+
+#### Parameters
+
+| Parameter   | Type |
+| :---------- | :--- |
+| `value`     | `V`  |
+| `condition` | `C`  |
+
+#### Returns
+
+`SQL`<`null` | `V`>
+
+#### See
+
+https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-NULLIF
 
 ---
 

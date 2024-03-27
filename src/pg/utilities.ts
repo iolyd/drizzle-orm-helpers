@@ -1,8 +1,9 @@
 import { SQL, StringChunk, isSQLWrapper, sql, type AnyColumn, type SQLWrapper } from 'drizzle-orm';
 import { customType } from 'drizzle-orm/pg-core';
-import { INTERVAL_UNITS_ARR_ORDERED, type IntervalUnit } from '.';
+import { INTERVAL_UNITS_ARR_ORDERED, type IntervalUnit, type RangeBoundType } from '.';
 import type { InferData } from '..';
 import { PG_DIALECT } from '../internals';
+import { RANGE_BOUND_BRACKETS } from './internals';
 
 export type RangeValue<T = void> = { upper: T | null; lower: T | null };
 
@@ -11,7 +12,7 @@ export type RangeValue<T = void> = { upper: T | null; lower: T | null };
  *
  * @param columns Record of columns to get from the conflict's `excluded` table.
  */
-export function excluded<T extends Record<string, AnyColumn>>(columns: T) {
+export function toExcluded<T extends Record<string, AnyColumn>>(columns: T) {
 	return (Object.keys(columns) as (keyof T)[]).reduce(
 		(acc, curr) => {
 			acc[curr] = sql.raw(`excluded.${columns[curr].name}`) as SQL<InferData<T[typeof curr]>>;
@@ -61,7 +62,7 @@ export const generatedTsvector = customType<{
 /**
  * Create an interval value by passing a value deconstructed into time units.
  */
-export function interval<T extends Partial<Record<IntervalUnit, number>>>(value: T) {
+export function toInterval<T extends Partial<Record<IntervalUnit, number>>>(value: T) {
 	const units = INTERVAL_UNITS_ARR_ORDERED.reduce(
 		(acc, curr) => {
 			if (value[curr] != null) {
@@ -76,4 +77,22 @@ export function interval<T extends Partial<Record<IntervalUnit, number>>>(value:
 		sql.join(units, new StringChunk(' ')),
 		new StringChunk("')"),
 	]).mapWith(String);
+}
+
+/**
+ * Using canonical form of included lower bound and excluded upper bound. See
+ * https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
+ */
+export function toRange<
+	const T extends [number | undefined, number | undefined] | [Date | undefined, Date | undefined],
+>(
+	tuple: T,
+	{
+		lowerBound = 'inclusive',
+		upperBound = 'exclusive',
+	}: { lowerBound?: RangeBoundType; upperBound?: RangeBoundType } = {}
+) {
+	const lb = RANGE_BOUND_BRACKETS.LOWER[lowerBound];
+	const ub = RANGE_BOUND_BRACKETS.UPPER[upperBound];
+	return sql<T>`${lb}${tuple[0]},${tuple[1]}${ub}`;
 }

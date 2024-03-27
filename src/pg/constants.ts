@@ -45,6 +45,8 @@ export const REGCONFIGS = {
 
 export type Regconfig = ValueOf<typeof REGCONFIGS>;
 
+export type RegconfigString = Regconfig | (string & NonNullable<unknown>);
+
 export const RANGE_BOUND_TYPES = {
 	INCLUSIVE: 'inclusive',
 	EXCLUSIVE: 'exclusive',

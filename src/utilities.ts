@@ -12,7 +12,6 @@ import {
 	type ColumnBuilderBase,
 	type ColumnsSelection,
 	type InferSelectModel,
-	type Param,
 	type SQLWrapper,
 	type WithSubquery,
 } from 'drizzle-orm';
@@ -99,9 +98,7 @@ export type InferData<T extends SQLWrapper> = T extends Table
 				? U
 				: T extends SQL.Aliased<infer U>
 					? U
-					: T extends Param
-						? T['value']
-						: unknown;
+					: unknown;
 
 /**
  * Infer table columns or (sub)query fields.
@@ -110,8 +107,8 @@ export type InferColumns<
 	T extends
 		| Table
 		| View
-		| Subquery<string, Record<string, unknown>>
-		| WithSubquery<string, Record<string, unknown>>
+		| Subquery<string, ColumnsSelection>
+		| WithSubquery<string, ColumnsSelection>
 		| AnySelect,
 > = T extends Table
 	? T['_']['columns']
@@ -132,7 +129,7 @@ export type InferNameOrAlias<T extends SQLWrapper> = T extends Table | View | Co
 				? T['fieldAlias']
 				: T extends Placeholder
 					? T['name']
-					: never;
+					: undefined;
 
 /**
  * Should replace `getTableColumns` to allow for more input versatility.
@@ -181,8 +178,7 @@ export function getNameOrAlias<T extends SQLWrapper>(query: T): InferNameOrAlias
 						? query.fieldAlias
 						: is(query, Placeholder)
 							? query.name
-							: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-								(query as any).tableName;
+							: undefined;
 }
 
 /**

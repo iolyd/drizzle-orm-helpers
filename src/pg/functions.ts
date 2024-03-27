@@ -1,7 +1,6 @@
 import type {
 	AnyColumn,
 	AnyTable,
-	Column,
 	InferSelectModel,
 	SQLChunk,
 	SQLWrapper,
@@ -12,9 +11,9 @@ import type {
 } from 'drizzle-orm';
 import { SQL, StringChunk, bindIfParam, isSQLWrapper, sql } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
-import type { AnySelect, InferData } from '..';
-import type { RangeBoundType, Regconfig } from './constants';
-import { RANGE_BOUND_BRACKETS } from './internals';
+import { emptyArray, nullArray } from '.';
+import { coalesce, nullIf, type InferData } from '..';
+import type { RegconfigString } from './constants';
 
 /**
  * Postgres random function.
@@ -61,17 +60,26 @@ export function boolOr(...expression: SQLWrapper[]) {
 /**
  * SQL json_strip_nulls.
  */
-export function jsonStripNulls<T>(json: SQL<T> | SQL.Aliased<T>) {
-	return sql<SetNonNullable<T>>`json_strip_nulls(${json})`;
+export function jsonStripNulls<T>(json: T) {
+	return sql<SetNonNullable<T extends SQLWrapper ? InferData<T> : T>>`json_strip_nulls(${json})`;
 }
 
 /**
  * Aggregate sql values into an sql array.
+ *
+ * Input values, including nulls, concatenated into an array.
+ *
+ * Input arrays concatenated into array of one higher dimension (inputs must all have same
+ * dimensionality, and cannot be empty or null)
+ *
+ * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
  */
-export function arrayAgg<T extends SQL | SQL.Aliased | InferSelectModel<AnyTable<TableConfig>>>(
-	raw: T
-) {
-	return sql<(T extends SQL | SQL.Aliased ? InferData<T>[] : T[]) | null>`array_agg(${raw})`;
+export function arrayAgg<T extends SQLWrapper>(expression: T) {
+	return sql<InferData<T> | null>`array_agg(${expression})`;
+}
+
+export function arrayAggCollapse<T extends SQLWrapper>(expression: T) {
+	return coalesce(nullIf(expression, nullArray), emptyArray);
 }
 
 /**
@@ -97,7 +105,7 @@ export function rowToJson<T extends Table | View | Subquery>(row: T) {
  * Build objects using `json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
  * return an object with unwrapped value types instead of SQL wrapped types.
  */
-export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape: T) {
+export function jsonBuildObject<T extends Record<string, SQLWrapper>>(shape: T) {
 	const chunks: SQL[] = [];
 	Object.entries(shape).forEach(([key, value]) => {
 		if (chunks.length > 0) {
@@ -131,6 +139,8 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 }
 
 /**
+ * Aggregates name/value pairs as a JSON object; values can be null, but not names.
+ *
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
  *
@@ -139,6 +149,8 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
  * ```sql
  * json_object_agg(...)
  * ```
+ *
+ * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
  */
 export function jsonObjectAgg<
 	K extends AnyColumn,
@@ -154,11 +166,15 @@ export function jsonObjectAgg<
 }
 
 /**
+ * Aggregates name/value pairs as a JSON object; values can be null, but not names.
+ *
  * @example
  *
  * ```sql
  * jsonb_object_agg(...)
  * ```
+ *
+ * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
  */
 export function jsonbObjectAgg<
 	K extends AnyColumn,
@@ -174,22 +190,14 @@ export function jsonbObjectAgg<
 }
 
 /**
- * Json_agg.
+ * Aggregates values, including nulls, as a JSON array.
+ *
+ * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
  */
-export function jsonAgg<T extends Table | Column | Subquery | AnySelect>(
+export function jsonAgg<T extends SQLWrapper, N extends boolean = true>(
 	selection: T,
-	{ notNull = true }: { notNull?: boolean } = {}
-): SQL<
-	T extends Table
-		? InferSelectModel<T>
-		: T extends Column
-			? InferData<T>[]
-			: T extends Subquery
-				? { [K in keyof T['_']['selectedFields']]: InferData<T['_']['selectedFields'][K]> }[]
-				: T extends AnySelect
-					? Awaited<T>
-					: never
-> {
+	{ notNull }: { notNull?: N } = {}
+): SQL<N extends true ? InferData<T>[] : InferData<T>[] | [null]> {
 	if (notNull) {
 		return sql`json_agg(${selection}) filter (where ${selection} is not null)`;
 	}
@@ -204,7 +212,7 @@ export function jsonAgg<T extends Table | Column | Subquery | AnySelect>(
  * ```
  */
 export function getCurrentTsConfig() {
-	return sql<Regconfig>`get_current_ts_config()`;
+	return sql<RegconfigString>`get_current_ts_config()`;
 }
 
 /**
@@ -219,7 +227,7 @@ export function getCurrentTsConfig() {
  */
 export function toTsvector(
 	text: unknown,
-	{ regconfig }: { regconfig?: Regconfig | SQLWrapper } = {}
+	{ regconfig }: { regconfig?: RegconfigString | SQLWrapper } = {}
 ) {
 	if (regconfig) {
 		const value = isSQLWrapper(regconfig) ? bindIfParam(text, regconfig) : text;
@@ -245,7 +253,7 @@ export function toTsquery(
 		regconfig,
 	}: {
 		plain?: boolean;
-		regconfig?: SQLWrapper | Regconfig;
+		regconfig?: SQLWrapper | RegconfigString;
 	} = {}
 ) {
 	const start = new StringChunk(plain ? 'plainto_tsquery(' : 'to_tsquery(');
@@ -288,22 +296,4 @@ export function age<TOrigin extends SQLWrapper | Date, TTarget extends SQLWrappe
 	target: TTarget
 ) {
 	return sql`age(${origin},${target})`.mapWith(String);
-}
-
-/**
- * Using canonical form of included lower bound and excluded upper bound. See
- * https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
- */
-export function range<
-	const T extends [number | undefined, number | undefined] | [Date | undefined, Date | undefined],
->(
-	tuple: T,
-	{
-		lowerBound = 'inclusive',
-		upperBound = 'exclusive',
-	}: { lowerBound?: RangeBoundType; upperBound?: RangeBoundType } = {}
-) {
-	const lb = RANGE_BOUND_BRACKETS.LOWER[lowerBound];
-	const ub = RANGE_BOUND_BRACKETS.UPPER[upperBound];
-	return sql<T>`${lb}${tuple[0]},${tuple[1]}${ub}`;
 }

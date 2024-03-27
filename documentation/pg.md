@@ -7,6 +7,7 @@
   - [RangeBoundType](#rangeboundtype)
   - [RangeValue\<T>](#rangevaluet)
   - [Regconfig](#regconfig)
+  - [RegconfigString](#regconfigstring)
 - [Variables](#variables)
   - [INTERVAL_UNITS](#interval_units)
   - [INTERVAL_UNITS_ARR_ORDERED](#interval_units_arr_ordered)
@@ -17,9 +18,11 @@
   - [emptyArray](#emptyarray)
   - [emptyJsonArray](#emptyjsonarray)
   - [emptyJsonObject](#emptyjsonobject)
+  - [nullArray](#nullarray)
 - [Functions](#functions)
   - [age()](#age)
   - [arrayAgg()](#arrayagg)
+  - [arrayAggCollapse()](#arrayaggcollapse)
   - [boolAnd()](#booland)
   - [boolOr()](#boolor)
   - [citext()](#citext)
@@ -40,13 +43,11 @@
   - [daterangeSchema()](#daterangeschema)
   - [difference()](#difference)
   - [distance()](#distance)
-  - [excluded()](#excluded)
   - [extract()](#extract)
   - [generatedTsvector()](#generatedtsvector)
   - [geography()](#geography)
   - [geometry()](#geometry)
   - [getCurrentTsConfig()](#getcurrenttsconfig)
-  - [interval()](#interval)
   - [intrange()](#intrange)
   - [intrangeSchema()](#intrangeschema)
   - [jsonAgg()](#jsonagg)
@@ -62,15 +63,17 @@
   - [numrangeSchema()](#numrangeschema)
   - [overlaps()](#overlaps)
   - [random()](#random)
-  - [range()](#range)
   - [regconfig()](#regconfig-1)
   - [rowToJson()](#rowtojson)
   - [setweight()](#setweight)
   - [similar()](#similar)
   - [soundex()](#soundex)
   - [textenum()](#textenum)
+  - [toExcluded()](#toexcluded)
+  - [toInterval()](#tointerval)
   - [toJson()](#tojson)
   - [toJsonb()](#tojsonb)
+  - [toRange()](#torange)
   - [toTsquery()](#totsquery)
   - [toTsvector()](#totsvector)
   - [ts()](#ts)
@@ -129,6 +132,16 @@ type RangeValue<T>: Object;
 
 ```ts
 type Regconfig: ValueOf<typeof REGCONFIGS>;
+```
+
+---
+
+<a id="regconfigstring" name="regconfigstring"></a>
+
+### RegconfigString
+
+```ts
+type RegconfigString: Regconfig | string & NonNullable<unknown>;
 ```
 
 ## Variables
@@ -279,7 +292,7 @@ Postgres value returned for empty ranges.
 ### emptyArray
 
 ```ts
-const emptyArray: SQL<SQL<[]>>;
+const emptyArray: SQL<[]>;
 ```
 
 Empty SQL array (not json typed)
@@ -307,6 +320,18 @@ const emptyJsonObject: SQL<object>;
 ```
 
 Empty record as SQL json.
+
+---
+
+<a id="nullarray" name="nullarray"></a>
+
+### nullArray
+
+```ts
+const nullArray: SQL<[null]>;
+```
+
+An array with a single null member. Typically returned when aggregation result is empty.
 
 ## Functions
 
@@ -352,27 +377,61 @@ age(timestamp '2001-04-10', timestamp '1957-06-13') → 43 years 9 mons 27 days
 ### arrayAgg()
 
 ```ts
-arrayAgg<T>(raw: T): SQL<null | T extends SQL<unknown> | Aliased<unknown> ? InferData<T>[] : T[]>
+arrayAgg<T>(expression: T): SQL<null | InferData<T>>
 ```
 
 Aggregate sql values into an sql array.
 
+Input values, including nulls, concatenated into an array.
+
+Input arrays concatenated into array of one higher dimension (inputs must all have same
+dimensionality, and cannot be empty or null)
+
 #### Type parameters
 
-| Type parameter               |
-| :--------------------------- | -------------------- | -------- |
-| `T` extends `SQL`<`unknown`> | `Aliased`<`unknown`> | `Object` |
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
 
 #### Parameters
 
-| Parameter | Type |
-| :-------- | :--- |
-| `raw`     | `T`  |
+| Parameter    | Type |
+| :----------- | :--- |
+| `expression` | `T`  |
 
 #### Returns
 
-`SQL`<`null` | `T` extends `SQL`<`unknown`> | `Aliased`<`unknown`> ?
-[`InferData`](README.md#inferdatat)<`T`>\[] : `T`\[]>
+`SQL`<`null` | [`InferData`](README.md#inferdatat)<`T`>>
+
+#### See
+
+https://www.postgresql.org/docs/9.5/functions-aggregate.html
+
+---
+
+<a id="arrayaggcollapse" name="arrayaggcollapse"></a>
+
+### arrayAggCollapse()
+
+```ts
+arrayAggCollapse<T>(expression: T): SQL<[] | RemoveNull<T>>
+```
+
+#### Type parameters
+
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
+
+#### Parameters
+
+| Parameter    | Type |
+| :----------- | :--- |
+| `expression` | `T`  |
+
+#### Returns
+
+`SQL`<\[] | `RemoveNull`<`T`>>
 
 ---
 
@@ -980,34 +1039,6 @@ cube <=> cube → float8
 
 ---
 
-<a id="excluded" name="excluded"></a>
-
-### excluded()
-
-```ts
-excluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferData<T[K]>> }
-```
-
-Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
-
-#### Type parameters
-
-| Type parameter                              |
-| :------------------------------------------ |
-| `T` extends `Record`<`string`, `AnyColumn`> |
-
-#### Parameters
-
-| Parameter | Type | Description                                                    |
-| :-------- | :--- | :------------------------------------------------------------- |
-| `columns` | `T`  | Record of columns to get from the conflict's `excluded` table. |
-
-#### Returns
-
-`{ [K in string | number | symbol]: SQL<InferData<T[K]>> }`
-
----
-
 <a id="extract" name="extract"></a>
 
 ### extract()
@@ -1215,7 +1246,7 @@ https://github.com/drizzle-team/drizzle-orm/pull/1423)
 ### getCurrentTsConfig()
 
 ```ts
-getCurrentTsConfig(): SQL<Regconfig>
+getCurrentTsConfig(): SQL<RegconfigString>
 ```
 
 Get the database's currently set regconfig for text-search functionalities.
@@ -1226,35 +1257,7 @@ get_current_ts_config();
 
 #### Returns
 
-`SQL`<[`Regconfig`](src/pg.md#regconfig)>
-
----
-
-<a id="interval" name="interval"></a>
-
-### interval()
-
-```ts
-interval<T>(value: T): SQL<string>
-```
-
-Create an interval value by passing a value deconstructed into time units.
-
-#### Type parameters
-
-| Type parameter                                                                      |
-| :---------------------------------------------------------------------------------- |
-| `T` extends `Partial`<`Record`<[`IntervalUnit`](src/pg.md#intervalunit), `number`>> |
-
-#### Parameters
-
-| Parameter | Type |
-| :-------- | :--- |
-| `value`   | `T`  |
-
-#### Returns
-
-`SQL`<`string`>
+`SQL`<[`RegconfigString`](src/pg.md#regconfigstring)>
 
 ---
 
@@ -1333,31 +1336,34 @@ intrangeSchema(__namedParameters:     Object): ZodObject<Object, "strip", ZodTyp
 ### jsonAgg()
 
 ```ts
-jsonAgg<T>(selection: T, __namedParameters:     Object): SQL<T extends Table ? InferSelectModel<T> : T extends Column ? InferData<T>[] : T extends Subquery ? { [K in keyof T["_"]["selectedFields"]]: InferData<T["_"]["selectedFields"][K]> }[] : T extends AnySelect ? Awaited<T> : never>
+jsonAgg<T, N>(selection: T, __namedParameters:     Object): SQL<N extends true ? InferData<T>[] : InferData<T>[] | [null]>
 ```
 
-Json_agg.
+Aggregates values, including nulls, as a JSON array.
 
 #### Type parameters
 
-| Type parameter                                                                           |
-| :--------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- | ---------------------------------- |
-| `T` extends `Column`<`ColumnBaseConfig`<`ColumnDataType`, `string`>, `object`, `object`> | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `Subquery`<`string`, `unknown`> | [`AnySelect`](README.md#anyselect) |
+| Type parameter           | Value  |
+| :----------------------- | :----- |
+| `T` extends `SQLWrapper` | -      |
+| `N` extends `boolean`    | `true` |
 
 #### Parameters
 
-| Parameter                    | Type      |
-| :--------------------------- | :-------- |
-| `selection`                  | `T`       |
-| `__namedParameters`          | `Object`  |
-| `__namedParameters.notNull`? | `boolean` |
+| Parameter                    | Type     |
+| :--------------------------- | :------- |
+| `selection`                  | `T`      |
+| `__namedParameters`          | `Object` |
+| `__namedParameters.notNull`? | `N`      |
 
 #### Returns
 
-`SQL`<`T` extends `Table` ? `InferSelectModel`<`T`> : `T` extends `Column` ?
-[`InferData`](README.md#inferdatat)<`T`>\[] : `T` extends `Subquery` ?
-`{ [K in keyof T["_"]["selectedFields"]]: InferData<T["_"]["selectedFields"][K]> }`\[] : `T` extends
-[`AnySelect`](README.md#anyselect) ? `Awaited`<`T`> : `never`>
+`SQL`<`N` extends `true` ? [`InferData`](README.md#inferdatat)<`T`>\[] :
+[`InferData`](README.md#inferdatat)<`T`>\[] | \[`null`]>
+
+#### See
+
+https://www.postgresql.org/docs/9.5/functions-aggregate.html
 
 ---
 
@@ -1373,9 +1379,9 @@ Aggregate sql values into a json object.
 
 #### Type parameters
 
-| Type parameter                                  |
-| :---------------------------------------------- | ----------- | --------------------- |
-| `T` extends `Record`<`string`, `SQL`<`unknown`> | `AnyColumn` | `Aliased`<`unknown`>> |
+| Type parameter                             |
+| :----------------------------------------- | ---------------- | --------------------- |
+| `T` extends `Record`<`string`, `AnyColumn` | `SQL`<`unknown`> | `Aliased`<`unknown`>> |
 
 #### Parameters
 
@@ -1402,9 +1408,9 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Type parameters
 
-| Type parameter                                  |
-| :---------------------------------------------- | ------------ |
-| `T` extends `Record`<`string`, `SQL`<`unknown`> | `AnyColumn`> |
+| Type parameter                               |
+| :------------------------------------------- |
+| `T` extends `Record`<`string`, `SQLWrapper`> |
 
 #### Parameters
 
@@ -1425,6 +1431,8 @@ return an object with unwrapped value types instead of SQL wrapped types.
 ```ts
 jsonObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
 ```
+
+Aggregates name/value pairs as a JSON object; values can be null, but not names.
 
 Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped type
 instead of an SQL wrapped type.
@@ -1455,6 +1463,10 @@ instead of an SQL wrapped type.
 json_object_agg(...)
 ```
 
+#### See
+
+https://www.postgresql.org/docs/9.5/functions-aggregate.html
+
 ---
 
 <a id="jsonstripnulls" name="jsonstripnulls"></a>
@@ -1462,7 +1474,7 @@ json_object_agg(...)
 ### jsonStripNulls()
 
 ```ts
-jsonStripNulls<T>(json: SQL<T> | Aliased<T>): SQL<SetNonNullable<T, keyof T>>
+jsonStripNulls<T>(json: T): SQL<SetNonNullable<T extends SQLWrapper ? InferData<T> : T, keyof T extends SQLWrapper ? InferData<T> : T>>
 ```
 
 SQL json_strip_nulls.
@@ -1475,13 +1487,14 @@ SQL json_strip_nulls.
 
 #### Parameters
 
-| Parameter | Type       |
-| :-------- | :--------- | -------------- |
-| `json`    | `SQL`<`T`> | `Aliased`<`T`> |
+| Parameter | Type |
+| :-------- | :--- |
+| `json`    | `T`  |
 
 #### Returns
 
-`SQL`<`SetNonNullable`<`T`, keyof `T`>>
+`SQL`<`SetNonNullable`<`T` extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`T`> : `T`,
+keyof `T` extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`T`> : `T`>>
 
 ---
 
@@ -1492,6 +1505,8 @@ SQL json_strip_nulls.
 ```ts
 jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
 ```
+
+Aggregates name/value pairs as a JSON object; values can be null, but not names.
 
 #### Type parameters
 
@@ -1518,6 +1533,10 @@ jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
 ```sql
 jsonb_object_agg(...)
 ```
+
+#### See
+
+https://www.postgresql.org/docs/9.5/functions-aggregate.html
 
 ---
 
@@ -1783,38 +1802,6 @@ random();
 
 ---
 
-<a id="range" name="range"></a>
-
-### range()
-
-```ts
-range<T>(tuple: T, __namedParameters:     Object): SQL<T>
-```
-
-Using canonical form of included lower bound and excluded upper bound. See
-https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
-
-#### Type parameters
-
-| Type parameter            |
-| :------------------------ | --------------------- | --------- | ------------- | ------------------- | ------- |
-| `T` extends \[`undefined` | `number`, `undefined` | `number`] | \[`undefined` | `Date`, `undefined` | `Date`] |
-
-#### Parameters
-
-| Parameter                       | Type                                         |
-| :------------------------------ | :------------------------------------------- |
-| `tuple`                         | `T`                                          |
-| `__namedParameters`             | `Object`                                     |
-| `__namedParameters.lowerBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
-| `__namedParameters.upperBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
-
-#### Returns
-
-`SQL`<`T`>
-
----
-
 <a id="regconfig-1" name="regconfig-1"></a>
 
 ### regconfig()
@@ -2000,6 +1987,62 @@ https://orm.drizzle.team/docs/column-types/pg#text
 
 ---
 
+<a id="toexcluded" name="toexcluded"></a>
+
+### toExcluded()
+
+```ts
+toExcluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferData<T[K]>> }
+```
+
+Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
+
+#### Type parameters
+
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` extends `Record`<`string`, `AnyColumn`> |
+
+#### Parameters
+
+| Parameter | Type | Description                                                    |
+| :-------- | :--- | :------------------------------------------------------------- |
+| `columns` | `T`  | Record of columns to get from the conflict's `excluded` table. |
+
+#### Returns
+
+`{ [K in string | number | symbol]: SQL<InferData<T[K]>> }`
+
+---
+
+<a id="tointerval" name="tointerval"></a>
+
+### toInterval()
+
+```ts
+toInterval<T>(value: T): SQL<string>
+```
+
+Create an interval value by passing a value deconstructed into time units.
+
+#### Type parameters
+
+| Type parameter                                                                      |
+| :---------------------------------------------------------------------------------- |
+| `T` extends `Partial`<`Record`<[`IntervalUnit`](src/pg.md#intervalunit), `number`>> |
+
+#### Parameters
+
+| Parameter | Type |
+| :-------- | :--- |
+| `value`   | `T`  |
+
+#### Returns
+
+`SQL`<`string`>
+
+---
+
 <a id="tojson" name="tojson"></a>
 
 ### toJson()
@@ -2056,6 +2099,38 @@ toJsonb<T>(anyelement: T): SQL<InferData<T>>
 
 ---
 
+<a id="torange" name="torange"></a>
+
+### toRange()
+
+```ts
+toRange<T>(tuple: T, __namedParameters:     Object): SQL<T>
+```
+
+Using canonical form of included lower bound and excluded upper bound. See
+https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
+
+#### Type parameters
+
+| Type parameter            |
+| :------------------------ | --------------------- | --------- | ------------- | ------------------- | ------- |
+| `T` extends \[`undefined` | `number`, `undefined` | `number`] | \[`undefined` | `Date`, `undefined` | `Date`] |
+
+#### Parameters
+
+| Parameter                       | Type                                         |
+| :------------------------------ | :------------------------------------------- |
+| `tuple`                         | `T`                                          |
+| `__namedParameters`             | `Object`                                     |
+| `__namedParameters.lowerBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
+| `__namedParameters.upperBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
+
+#### Returns
+
+`SQL`<`T`>
+
+---
+
 <a id="totsquery" name="totsquery"></a>
 
 ### toTsquery()
@@ -2071,7 +2146,7 @@ toTsquery(text: unknown, text:     Object): SQL<string>
 | `text`            | `unknown`    | Source text to convert into a text search query. |
 | `text`            | `Object`     | Source text to convert into a text search query. |
 | `text.plain`?     | `boolean`    | -                                                |
-| `text.regconfig`? | `SQLWrapper` | [`Regconfig`](src/pg.md#regconfig)               | -   |
+| `text.regconfig`? | `SQLWrapper` | [`RegconfigString`](src/pg.md#regconfigstring)   | -   |
 
 #### Returns
 
@@ -2093,7 +2168,7 @@ toTsvector(text: unknown, text:     Object): SQL<string>
 | :---------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------- | --- |
 | `text`            | `unknown`    | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
 | `text`            | `Object`     | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
-| `text.regconfig`? | `SQLWrapper` | [`Regconfig`](src/pg.md#regconfig)                                                                                    | -   |
+| `text.regconfig`? | `SQLWrapper` | [`RegconfigString`](src/pg.md#regconfigstring)                                                                        | -   |
 
 #### Returns
 

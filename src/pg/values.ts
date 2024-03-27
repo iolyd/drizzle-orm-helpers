@@ -1,4 +1,3 @@
-import type { SQL } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 
 /**
@@ -14,7 +13,12 @@ export const emptyJsonArray = sql<[never]>`'[]'::json`;
 /**
  * Empty SQL array (not json typed)
  */
-export const emptyArray = sql<SQL<[]>>`{}`;
+export const emptyArray = sql<[]>`'{}'`;
+
+/**
+ * An array with a single null member. Typically returned when aggregation result is empty.
+ */
+export const nullArray = sql<[null]>`'{null}'`;
 
 /**
  * Postgres value returned for empty ranges.
