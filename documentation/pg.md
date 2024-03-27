@@ -1336,7 +1336,7 @@ intrangeSchema(__namedParameters:     Object): ZodObject<Object, "strip", ZodTyp
 ### jsonAgg()
 
 ```ts
-jsonAgg<T, N>(selection: T, __namedParameters:     Object): SQL<N extends true ? InferData<T>[] : InferData<T>[] | [null]>
+jsonAgg<T, N>(selection: T, __namedParameters:     Object): SQL<N extends true ? NonNullable<InferData<T>>[] : InferData<T>[] | [null]>
 ```
 
 Aggregates values, including nulls, as a JSON array.
@@ -1358,7 +1358,7 @@ Aggregates values, including nulls, as a JSON array.
 
 #### Returns
 
-`SQL`<`N` extends `true` ? [`InferData`](README.md#inferdatat)<`T`>\[] :
+`SQL`<`N` extends `true` ? `NonNullable`<[`InferData`](README.md#inferdatat)<`T`>>\[] :
 [`InferData`](README.md#inferdatat)<`T`>\[] | \[`null`]>
 
 #### See
@@ -1372,26 +1372,29 @@ https://www.postgresql.org/docs/9.5/functions-aggregate.html
 ### jsonAggBuildObject()
 
 ```ts
-jsonAggBuildObject<T>(shape: T): SQL<{ [K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]> }[]>
+jsonAggBuildObject<T>(shape: T, __namedParameters:     Object): SQL<{ [K in string | number | symbol]: InferData<T[K]> extends never ? T : InferData<T[K]> }[]>
 ```
 
-Aggregate sql values into a json object.
+Aggregate sql values into an array of json objects using a combination of `json_agg` and
+`json_build_object`.
 
 #### Type parameters
 
-| Type parameter                             |
-| :----------------------------------------- | ---------------- | --------------------- |
-| `T` extends `Record`<`string`, `AnyColumn` | `SQL`<`unknown`> | `Aliased`<`unknown`>> |
+| Type parameter                               |
+| :------------------------------------------- |
+| `T` extends `Record`<`string`, `SQLWrapper`> |
 
 #### Parameters
 
-| Parameter | Type |
-| :-------- | :--- |
-| `shape`   | `T`  |
+| Parameter                     | Type      |
+| :---------------------------- | :-------- |
+| `shape`                       | `T`       |
+| `__namedParameters`           | `Object`  |
+| `__namedParameters.distinct`? | `boolean` |
 
 #### Returns
 
-`SQL`<`{ [K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]> }`\[]>
+`SQL`<`{ [K in string | number | symbol]: InferData<T[K]> extends never ? T : InferData<T[K]> }`\[]>
 
 ---
 
