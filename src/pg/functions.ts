@@ -118,15 +118,13 @@ export function jsonBuildObject<T extends Record<string, SQLWrapper>>(shape: T) 
 }
 
 /**
- * Aggregate sql values into a json object.
+ * Aggregate sql values into an array of json objects using a combination of `json_agg` and
+ * `json_build_object`.
  */
-export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQL.Aliased>>(
-	shape: T
-): SQL<
-	{
-		[K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]>;
-	}[]
-> {
+export function jsonAggBuildObject<T extends Record<string, SQLWrapper>>(
+	shape: T,
+	{ distinct = true }: { distinct?: boolean } = {}
+) {
 	const chunks: SQL[] = [];
 	Object.entries(shape).forEach(([key, value]) => {
 		if (chunks.length > 0) {
@@ -135,7 +133,15 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 		chunks.push(sql.raw(`'${key}',`));
 		chunks.push(sql`${value}`);
 	});
-	return sql`coalesce(json_agg(distinct json_build_object(${sql.join(chunks)})), '[]')`;
+	return sql.join([
+		new StringChunk('coalesce(json_agg(' + distinct ? 'distinct ' : ''),
+		sql.join(chunks),
+		new StringChunk(")), '[]')"),
+	]) as SQL<
+		{
+			[K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]>;
+		}[]
+	>;
 }
 
 /**
@@ -197,9 +203,9 @@ export function jsonbObjectAgg<
 export function jsonAgg<T extends SQLWrapper, N extends boolean = true>(
 	selection: T,
 	{ notNull }: { notNull?: N } = {}
-): SQL<N extends true ? InferData<T>[] : InferData<T>[] | [null]> {
+): SQL<N extends true ? NonNullable<InferData<T>>[] : InferData<T>[] | [null]> {
 	if (notNull) {
-		return sql`json_agg(${selection}) filter (where ${selection} is not null)`;
+		return sql`coalesce(json_agg(${selection}) filter (where ${selection} is not null), '[]')`;
 	}
 	return sql`json_agg(${selection})`;
 }
