@@ -135,6 +135,7 @@ export function jsonAggBuildObject<T extends Record<string, SQLWrapper>>(
 	});
 	return sql.join([
 		new StringChunk('coalesce(json_agg(' + distinct ? 'distinct ' : ''),
+		new StringChunk('json_build_object('),
 		sql.join(chunks),
 		new StringChunk(")), '[]')"),
 	]) as SQL<
