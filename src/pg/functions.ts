@@ -1,6 +1,7 @@
 import type {
 	AnyColumn,
 	AnyTable,
+	ColumnsSelection,
 	InferSelectModel,
 	SQLChunk,
 	SQLWrapper,
@@ -105,7 +106,7 @@ export function rowToJson<T extends Table | View | Subquery>(row: T) {
  * Build objects using `json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
  * return an object with unwrapped value types instead of SQL wrapped types.
  */
-export function jsonBuildObject<T extends Record<string, SQLWrapper>>(shape: T) {
+export function jsonBuildObject<T extends ColumnsSelection>(shape: T) {
 	const chunks: SQL[] = [];
 	Object.entries(shape).forEach(([key, value]) => {
 		if (chunks.length > 0) {
@@ -114,16 +115,24 @@ export function jsonBuildObject<T extends Record<string, SQLWrapper>>(shape: T) 
 		chunks.push(sql.raw(`'${key}',`));
 		chunks.push(sql`${value}`);
 	});
-	return sql<{ [K in keyof T]: InferData<T[K]> }>`json_build_object(${sql.join(chunks)})`;
+	return sql<{
+		[K in keyof T]: T[K] extends SQLWrapper ? InferData<T[K]> : T[K];
+	}>`json_build_object(${sql.join(chunks)})`;
 }
 
 /**
  * Aggregate sql values into an array of json objects using a combination of `json_agg` and
  * `json_build_object`.
  */
-export function jsonAggBuildObject<T extends Record<string, SQLWrapper>>(
+export function jsonAggBuildObject<T extends Record<string, ColumnsSelection>>(
 	shape: T,
-	{ distinct = true }: { distinct?: boolean } = {}
+	{
+		distinct = true,
+		// notNull,
+	}: {
+		distinct?: boolean;
+		// notNull?: boolean;
+	} = {}
 ) {
 	const chunks: SQL[] = [];
 	Object.entries(shape).forEach(([key, value]) => {
@@ -140,7 +149,7 @@ export function jsonAggBuildObject<T extends Record<string, SQLWrapper>>(
 		new StringChunk(")), '[]')"),
 	]) as SQL<
 		{
-			[K in keyof T]: InferData<T[K]> extends never ? T : InferData<T[K]>;
+			[K in keyof T]: T[K] extends SQLWrapper ? InferData<T[K]> : T[K];
 		}[]
 	>;
 }
@@ -201,9 +210,9 @@ export function jsonbObjectAgg<
  *
  * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
  */
-export function jsonAgg<T extends SQLWrapper, N extends boolean = true>(
+export function jsonAgg<T extends SQLWrapper, N extends boolean>(
 	selection: T,
-	{ notNull }: { notNull?: N } = {}
+	{ notNull = true as N }: { notNull?: N } = {}
 ): SQL<N extends true ? NonNullable<InferData<T>>[] : InferData<T>[] | [null]> {
 	if (notNull) {
 		return sql`coalesce(json_agg(${selection}) filter (where ${selection} is not null), '[]')`;

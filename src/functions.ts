@@ -6,14 +6,18 @@ import type { InferData } from '.';
  * @see https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
  */
 export function coalesce<T extends unknown[]>(...values: [...T]) {
-	return sql.join([
-		new StringChunk('coalesce('),
-		sql.join(
-			values.map((v) => sql`${v}`),
-			sql.raw(', ')
-		),
-		new StringChunk(')'),
-	]) as CoalesceSQL<T>;
+	// return sql.join([
+	// 	new StringChunk('coalesce('),
+	// 	sql.join(
+	// 		values.map((v) => sql`${v}`),
+	// 		sql.raw(', ')
+	// 	),
+	// 	new StringChunk(')'),
+	// ]) as CoalesceSQL<T>;
+	return sql<CoalesceSQL<T>>`coalesce(${sql.join(
+		values.map((v) => sql`${v}`),
+		sql`,`
+	)})`;
 }
 type RemoveNull<T> = T extends null ? never : T;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

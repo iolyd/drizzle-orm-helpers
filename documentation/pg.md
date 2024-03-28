@@ -414,7 +414,7 @@ https://www.postgresql.org/docs/9.5/functions-aggregate.html
 ### arrayAggCollapse()
 
 ```ts
-arrayAggCollapse<T>(expression: T): SQL<[] | RemoveNull<T>>
+arrayAggCollapse<T>(expression: T): SQL<SQL<[] | RemoveNull<T>>>
 ```
 
 #### Type parameters
@@ -431,7 +431,7 @@ arrayAggCollapse<T>(expression: T): SQL<[] | RemoveNull<T>>
 
 #### Returns
 
-`SQL`<\[] | `RemoveNull`<`T`>>
+`SQL`<`SQL`<\[] | `RemoveNull`<`T`>>>
 
 ---
 
@@ -1343,10 +1343,10 @@ Aggregates values, including nulls, as a JSON array.
 
 #### Type parameters
 
-| Type parameter           | Value  |
-| :----------------------- | :----- |
-| `T` extends `SQLWrapper` | -      |
-| `N` extends `boolean`    | `true` |
+| Type parameter           |
+| :----------------------- |
+| `T` extends `SQLWrapper` |
+| `N` extends `boolean`    |
 
 #### Parameters
 
@@ -1372,7 +1372,7 @@ https://www.postgresql.org/docs/9.5/functions-aggregate.html
 ### jsonAggBuildObject()
 
 ```ts
-jsonAggBuildObject<T>(shape: T, __namedParameters:     Object): SQL<{ [K in string | number | symbol]: InferData<T[K]> extends never ? T : InferData<T[K]> }[]>
+jsonAggBuildObject<T>(shape: T, __namedParameters:     Object): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }[]>
 ```
 
 Aggregate sql values into an array of json objects using a combination of `json_agg` and
@@ -1380,9 +1380,9 @@ Aggregate sql values into an array of json objects using a combination of `json_
 
 #### Type parameters
 
-| Type parameter                               |
-| :------------------------------------------- |
-| `T` extends `Record`<`string`, `SQLWrapper`> |
+| Type parameter                                     |
+| :------------------------------------------------- |
+| `T` extends `Record`<`string`, `ColumnsSelection`> |
 
 #### Parameters
 
@@ -1394,7 +1394,7 @@ Aggregate sql values into an array of json objects using a combination of `json_
 
 #### Returns
 
-`SQL`<`{ [K in string | number | symbol]: InferData<T[K]> extends never ? T : InferData<T[K]> }`\[]>
+`SQL`<`{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }`\[]>
 
 ---
 
@@ -1403,7 +1403,7 @@ Aggregate sql values into an array of json objects using a combination of `json_
 ### jsonBuildObject()
 
 ```ts
-jsonBuildObject<T>(shape: T): SQL<{ [K in string | number | symbol]: InferData<T[K]> }>
+jsonBuildObject<T>(shape: T): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }>
 ```
 
 Build objects using \`json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
@@ -1411,9 +1411,9 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Type parameters
 
-| Type parameter                               |
-| :------------------------------------------- |
-| `T` extends `Record`<`string`, `SQLWrapper`> |
+| Type parameter                 |
+| :----------------------------- |
+| `T` extends `ColumnsSelection` |
 
 #### Parameters
 
@@ -1423,7 +1423,7 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Returns
 
-`SQL`<`{ [K in string | number | symbol]: InferData<T[K]> }`>
+`SQL`<`{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }`>
 
 ---
 

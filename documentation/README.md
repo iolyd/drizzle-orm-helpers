@@ -364,7 +364,7 @@ Implement smarter typing to identify confirmable early returns with truthy condi
 ### coalesce()
 
 ```ts
-coalesce<T>(...values: [...T[]]): CoalesceSQL<T, true, never>
+coalesce<T>(...values: [...T[]]): SQL<CoalesceSQL<T, true, never>>
 ```
 
 #### Type parameters
@@ -381,7 +381,7 @@ coalesce<T>(...values: [...T[]]): CoalesceSQL<T, true, never>
 
 #### Returns
 
-`CoalesceSQL`<`T`, `true`, `never`>
+`SQL`<`CoalesceSQL`<`T`, `true`, `never`>>
 
 #### See
 
