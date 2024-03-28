@@ -12,8 +12,7 @@ import type {
 } from 'drizzle-orm';
 import { SQL, StringChunk, bindIfParam, isSQLWrapper, sql } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
-import { emptyArray, nullArray } from '.';
-import { coalesce, nullIf, type InferData } from '..';
+import { type InferData } from '..';
 import type { RegconfigString } from './constants';
 
 /**
@@ -74,13 +73,17 @@ export function jsonStripNulls<T>(json: T) {
  * dimensionality, and cannot be empty or null)
  *
  * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
+ *
+ * @todo Implement collapsing for null array with notNull option.
  */
-export function arrayAgg<T extends SQLWrapper>(expression: T) {
+export function arrayAgg<
+	T extends SQLWrapper,
+	//  N extends boolean = true
+>(
+	expression: T
+	// { notNull = true as N }: { notNull?: N } = {}
+) {
 	return sql<InferData<T> | null>`array_agg(${expression})`;
-}
-
-export function arrayAggCollapse<T extends SQLWrapper>(expression: T) {
-	return coalesce(nullIf(expression, nullArray), emptyArray);
 }
 
 /**
@@ -210,7 +213,7 @@ export function jsonbObjectAgg<
  *
  * @see https://www.postgresql.org/docs/9.5/functions-aggregate.html
  */
-export function jsonAgg<T extends SQLWrapper, N extends boolean>(
+export function jsonAgg<T extends SQLWrapper, N extends boolean = true>(
 	selection: T,
 	{ notNull = true as N }: { notNull?: N } = {}
 ): SQL<N extends true ? NonNullable<InferData<T>>[] : InferData<T>[] | [null]> {

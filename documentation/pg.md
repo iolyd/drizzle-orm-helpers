@@ -22,7 +22,6 @@
 - [Functions](#functions)
   - [age()](#age)
   - [arrayAgg()](#arrayagg)
-  - [arrayAggCollapse()](#arrayaggcollapse)
   - [boolAnd()](#booland)
   - [boolOr()](#boolor)
   - [citext()](#citext)
@@ -407,31 +406,9 @@ dimensionality, and cannot be empty or null)
 
 https://www.postgresql.org/docs/9.5/functions-aggregate.html
 
----
+#### Todo
 
-<a id="arrayaggcollapse" name="arrayaggcollapse"></a>
-
-### arrayAggCollapse()
-
-```ts
-arrayAggCollapse<T>(expression: T): SQL<SQL<[] | RemoveNull<T>>>
-```
-
-#### Type parameters
-
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
-
-#### Parameters
-
-| Parameter    | Type |
-| :----------- | :--- |
-| `expression` | `T`  |
-
-#### Returns
-
-`SQL`<`SQL`<\[] | `RemoveNull`<`T`>>>
+Implement collapsing for null array with notNull option.
 
 ---
 
@@ -1343,10 +1320,10 @@ Aggregates values, including nulls, as a JSON array.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
-| `N` extends `boolean`    |
+| Type parameter           | Value  |
+| :----------------------- | :----- |
+| `T` extends `SQLWrapper` | -      |
+| `N` extends `boolean`    | `true` |
 
 #### Parameters
 
