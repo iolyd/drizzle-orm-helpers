@@ -463,7 +463,7 @@ Should replace `getTableColumns` to allow for more input versatility.
 
 | `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`,
 `boolean`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) | `Subquery`<`string`,
-`Record`<`string`, `unknown`>> | `WithSubquery`<`string`, `Record`<`string`, `unknown`>> |
+`ColumnsSelection`> | `WithSubquery`<`string`, `ColumnsSelection`> |
 
 #### Parameters
 
@@ -637,10 +637,7 @@ https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-NUL
 ### paginate()
 
 ```ts
-paginate<T>(
-   qb: T,
-   page: number,
-   size: number): PgSelect | MySqlSelect | SQLiteSelect
+paginate<T>(qb: T, __namedParameters:     Object): PgSelect | MySqlSelect | SQLiteSelect
 ```
 
 Paginate a query.
@@ -653,11 +650,12 @@ Paginate a query.
 
 #### Parameters
 
-| Parameter | Type     | Default value |
-| :-------- | :------- | :------------ |
-| `qb`      | `T`      | `undefined`   |
-| `page`    | `number` | `undefined`   |
-| `size`    | `number` | `20`          |
+| Parameter                 | Type     |
+| :------------------------ | :------- |
+| `qb`                      | `T`      |
+| `__namedParameters`       | `Object` |
+| `__namedParameters.page`  | `number` |
+| `__namedParameters.size`? | `number` |
 
 #### Returns
 

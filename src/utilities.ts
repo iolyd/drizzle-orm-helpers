@@ -140,8 +140,8 @@ export function getColumns<
 	T extends
 		| Table
 		| View
-		| Subquery<string, Record<string, unknown>>
-		| WithSubquery<string, Record<string, unknown>>
+		| Subquery<string, ColumnsSelection>
+		| WithSubquery<string, ColumnsSelection>
 		| AnySelect,
 >(table: T): InferColumns<T> {
 	return is(table, Table)
@@ -184,6 +184,9 @@ export function getNameOrAlias<T extends SQLWrapper>(query: T): InferNameOrAlias
 /**
  * Paginate a query.
  */
-export function paginate<T extends Select>(qb: T, page: number, size: number = 20) {
+export function paginate<T extends Select>(
+	qb: T,
+	{ page, size = 20 }: { page: number; size?: number }
+) {
 	return qb.limit(size).offset(page * size);
 }
