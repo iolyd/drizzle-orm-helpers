@@ -2,23 +2,6 @@ import type { SQL, SQLWrapper } from 'drizzle-orm';
 import { StringChunk, sql } from 'drizzle-orm';
 import type { InferData } from '.';
 
-/**
- * @see https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
- */
-export function coalesce<T extends unknown[]>(...values: [...T]) {
-	// return sql.join([
-	// 	new StringChunk('coalesce('),
-	// 	sql.join(
-	// 		values.map((v) => sql`${v}`),
-	// 		sql.raw(', ')
-	// 	),
-	// 	new StringChunk(')'),
-	// ]) as CoalesceSQL<T>;
-	return sql<CoalesceSQL<T>>`coalesce(${sql.join(
-		values.map((v) => sql`${v}`),
-		sql`,`
-	)})`;
-}
 type RemoveNull<T> = T extends null ? never : T;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T extends [
@@ -33,6 +16,15 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 	: N extends true
 		? SQL<R | null>
 		: SQL<R>;
+/**
+ * @see https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
+ */
+export function coalesce<T extends unknown[]>(...values: [...T]) {
+	return sql<CoalesceSQL<T>>`coalesce(${sql.join(
+		values.map((v) => sql`${v}`),
+		sql`,`
+	)})`;
+}
 
 /**
  * Return null if value meets condition. Useful to coalesce to something else.

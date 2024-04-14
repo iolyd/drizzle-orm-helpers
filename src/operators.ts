@@ -22,7 +22,7 @@ export function subtract<T extends (SQLWrapper | number)[]>(...values: T) {
 }
 
 /**
- * Subtract values.
+ * Divide values.
  */
 export function divide<T extends (SQLWrapper | number)[]>(...values: T) {
 	const divisions = sql.join(values, new StringChunk(' / '));
@@ -32,7 +32,7 @@ export function divide<T extends (SQLWrapper | number)[]>(...values: T) {
 }
 
 /**
- * Subtract values.
+ * Multiply values.
  */
 export function multiply<T extends (SQLWrapper | number)[]>(...values: T) {
 	const multiplications = sql.join(values, new StringChunk(' * '));

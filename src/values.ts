@@ -3,24 +3,24 @@ import { sql } from 'drizzle-orm';
 /**
  * SQL template true value.
  */
-export const tru = sql<true>`'true'`;
+export const $true = sql<true>`'true'`;
 
 /**
  * SQL template false value.
  */
-export const fal = sql<false>`'false'`;
+export const $false = sql<false>`'false'`;
 
 /**
  * SQL template boolean value.
  */
-export function bool<T extends boolean>(value: T) {
+export function $boolean<T extends boolean>(value: T) {
 	return sql<T>`${value ? 'true' : 'false'}`;
 }
 
 /**
  * SQL template null value.
  */
-export const nul = sql<null>`null`;
+export const $null = sql<null>`null`;
 
 /**
  * @example
@@ -29,4 +29,4 @@ export const nul = sql<null>`null`;
  * current_timestamp();
  * ```
  */
-export const currentTimestamp = sql<Date>`current_timestamp`;
+export const $currentTimestamp = sql<Date>`current_timestamp`;

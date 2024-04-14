@@ -316,3 +316,7 @@ export function age<TOrigin extends SQLWrapper | Date, TTarget extends SQLWrappe
 ) {
 	return sql`age(${origin},${target})`.mapWith(String);
 }
+
+export function isEmpty<T extends SQLWrapper | unknown>(range: T) {
+	return sql`isempty(${range})`.mapWith(Boolean);
+}

@@ -44,7 +44,7 @@ export const generatedTsvector = customType<{
 }>({
 	dataType(config) {
 		const cfgname = isSQLWrapper(config.language)
-			? PG_DIALECT.sqlToQuery(config.language.getSQL()).sql
+			? PG_DIALECT.sqlToQuery(config.language.getSQL().inlineParams()).sql
 			: config.language;
 		if (config.weighted) {
 			const weighted = config.sources.map((input, index) => {

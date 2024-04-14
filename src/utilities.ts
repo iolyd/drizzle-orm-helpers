@@ -3,7 +3,6 @@ import {
 	Placeholder,
 	SQL,
 	Subquery,
-	SubqueryConfig,
 	Table,
 	View,
 	ViewBaseConfig,
@@ -103,18 +102,12 @@ export type InferData<T extends SQLWrapper> = T extends Table
 /**
  * Infer table columns or (sub)query fields.
  */
-export type InferColumns<
-	T extends
-		| Table
-		| View
-		| Subquery<string, ColumnsSelection>
-		| WithSubquery<string, ColumnsSelection>
-		| AnySelect,
-> = T extends Table
-	? T['_']['columns']
-	: T extends View | Subquery | WithSubquery | AnySelect
-		? T['_']['selectedFields']
-		: never;
+export type InferColumns<T extends Table | View | Subquery | WithSubquery | AnySelect> =
+	T extends Table
+		? T['_']['columns']
+		: T extends View | Subquery | WithSubquery | AnySelect
+			? T['_']['selectedFields']
+			: never;
 
 /**
  * Infer a table's name or a (sub)query's alias.
@@ -150,13 +143,8 @@ export function getColumns<
 		: is(table, View)
 			? // eslint-disable-next-line @typescript-eslint/no-explicit-any
 				(table as any)[ViewBaseConfig].selectedFields
-			: is(table, Subquery)
-				? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(table as any)[SubqueryConfig].selection
-				: // is(table, WithSubquery) ?
-					// (table as any)[SubqueryConfig].selectedFields :
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(table as any)._.selectedFields;
+			: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+				table._.selectedFields;
 }
 
 /**
@@ -173,7 +161,7 @@ export function getNameOrAlias<T extends SQLWrapper>(query: T): InferNameOrAlias
 				? query.name
 				: is(query, Subquery)
 					? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-						(query as any)[SubqueryConfig].alias
+						query._.alias
 					: is(query, SQL.Aliased)
 						? query.fieldAlias
 						: is(query, Placeholder)

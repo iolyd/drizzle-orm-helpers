@@ -13,13 +13,13 @@
   - [SubqueryWithSelection\<TSelection, TName>](#subquerywithselectiontselection-tname)
   - [WithSubqueryWithSelection\<TSelection, TAlias>](#withsubquerywithselectiontselection-talias)
 - [Variables](#variables)
-  - [currentTimestamp](#currenttimestamp)
-  - [fal](#fal)
-  - [nul](#nul)
-  - [tru](#tru)
+  - [$currentTimestamp](#currenttimestamp)
+  - [$false](#false)
+  - [$null](#null)
+  - [$true](#true)
 - [Functions](#functions)
+  - [$boolean()](#boolean)
   - [add()](#add)
-  - [bool()](#bool)
   - [cases()](#cases)
   - [coalesce()](#coalesce)
   - [distinct()](#distinct)
@@ -86,8 +86,8 @@ Infer table columns or (sub)query fields.
 | Type parameter |
 | :------------- |
 
-| `T` extends | `Table` | `View` | `Subquery`<`string`, `ColumnsSelection`> |
-`WithSubquery`<`string`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) |
+| `T` extends | `Table` | `View` | `Subquery` | `WithSubquery` | [`AnySelect`](README.md#anyselect)
+|
 
 ---
 
@@ -195,12 +195,12 @@ Dialect-agnostic with subquery with selection.
 
 ## Variables
 
-<a id="currenttimestamp" name="currenttimestamp"></a>
+<a id="$currenttimestamp" name="$currenttimestamp"></a>
 
-### currentTimestamp
+### $currentTimestamp
 
 ```ts
-const currentTimestamp: SQL<Date>;
+const $currentTimestamp: SQL<Date>;
 ```
 
 #### Example
@@ -211,41 +211,69 @@ current_timestamp();
 
 ---
 
-<a id="fal" name="fal"></a>
+<a id="$false" name="$false"></a>
 
-### fal
+### $false
 
 ```ts
-const fal: SQL<false>;
+const $false: SQL<false>;
 ```
 
 SQL template false value.
 
 ---
 
-<a id="nul" name="nul"></a>
+<a id="$null" name="$null"></a>
 
-### nul
+### $null
 
 ```ts
-const nul: SQL<null>;
+const $null: SQL<null>;
 ```
 
 SQL template null value.
 
 ---
 
-<a id="tru" name="tru"></a>
+<a id="$true" name="$true"></a>
 
-### tru
+### $true
 
 ```ts
-const tru: SQL<true>;
+const $true: SQL<true>;
 ```
 
 SQL template true value.
 
 ## Functions
+
+<a id="$boolean" name="$boolean"></a>
+
+### $boolean()
+
+```ts
+$boolean<T>(value: T): SQL<T>
+```
+
+SQL template boolean value.
+
+#### Type parameters
+
+| Type parameter        |
+| :-------------------- |
+| `T` extends `boolean` |
+
+#### Parameters
+
+| Parameter | Type |
+| :-------- | :--- |
+| `value`   | `T`  |
+
+#### Returns
+
+`SQL`<`T`>
+
+---
 
 <a id="add" name="add"></a>
 
@@ -276,34 +304,6 @@ Add values.
 
 ---
 
-<a id="bool" name="bool"></a>
-
-### bool()
-
-```ts
-bool<T>(value: T): SQL<T>
-```
-
-SQL template boolean value.
-
-#### Type parameters
-
-| Type parameter        |
-| :-------------------- |
-| `T` extends `boolean` |
-
-#### Parameters
-
-| Parameter | Type |
-| :-------- | :--- |
-| `value`   | `T`  |
-
-#### Returns
-
-`SQL`<`T`>
-
----
-
 <a id="cases" name="cases"></a>
 
 ### cases()
@@ -324,8 +324,8 @@ Case condition chain.
 | `R`                      | `T` extends \[`T0`, `T1`] ? `T0` extends `SQL`< |
 
 | `null` | `false` | `0` | `"0"` | `"f"` | `"F"`> ? `never` : `T1` extends `SQLWrapper` ?
-[`InferData`](README.md#inferdatat)<`T1`> : `T1` : `never` | `F` extends `void` ? `never` : `F`
-extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`F`> : `F` |
+[`InferData`](README.md#inferdatat)<`T1`<`T1`>> : `T1` : `never` | `F` extends `void` ? `never` :
+`F` extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`F`<`F`>> : `F` |
 
 #### Parameters
 
@@ -425,7 +425,7 @@ Distinct keyword.
 divide<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
 ```
 
-Subtract values.
+Divide values.
 
 #### Type parameters
 
@@ -514,7 +514,7 @@ Get a table's name or a (sub)query's alias.
 ### greatest()
 
 ```ts
-greatest<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }[number]>
+greatest<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }[number]>
 ```
 
 #### Type parameters
@@ -531,7 +531,7 @@ greatest<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I] ex
 
 #### Returns
 
-`SQL`<`{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }`\[`number`]>
+`SQL`<`{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }`\[`number`]>
 
 #### See
 
@@ -544,7 +544,7 @@ https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GRE
 ### least()
 
 ```ts
-least<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }[number]>
+least<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }[number]>
 ```
 
 #### Type parameters
@@ -561,7 +561,7 @@ least<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I] exten
 
 #### Returns
 
-`SQL`<`{ [I in string | number | symbol]: T[I] extends SQLWrapper ? InferData<any[any]> : T[I] }`\[`number`]>
+`SQL`<`{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }`\[`number`]>
 
 #### See
 
@@ -577,7 +577,7 @@ https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GRE
 multiply<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
 ```
 
-Subtract values.
+Multiply values.
 
 #### Type parameters
 
