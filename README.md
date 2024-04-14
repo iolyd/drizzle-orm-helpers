@@ -19,3 +19,93 @@ officially and with more stability through Drizzle-ORM package(s).
 
 A crude auto-generated
 [**documentation** is available here](https://github.com/iolyd/drizzle-orm-helpers/blob/main/documentation/README.md).
+
+## Examples
+
+### Aggregating translations
+
+````ts
+const APP_LANGUAGES = ['fr', 'en', 'es'] as const;
+type AppLanguage = (typeof APP_LANGUAGES)[number]; // 'fr' | 'en' | 'es';
+
+const languages = pgTable('languages', {
+  lang: textenum('lang', { enum: APP_LANGUAGES }),
+});
+
+const projects = pgTable('projects', {
+  id: text('id')
+    .default(nanoid({ size: 12 }))
+    .primaryKey(),
+  createdById: text('created_by_id').references(() => users.id, {
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
+  }),
+});
+
+const projectsTranslations = pgTable(
+  'projects_t',
+  {
+    id: text('id')
+      .references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+      .notNull(),
+    lang: textenum('lang', { enum: APP_LANGUAGES })
+      .references(() => languages.lang, { onDelete: 'cascade', onUpdate: 'cascade' })
+      .notNull(),
+    title: text('title'),
+    description: text('description'),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.id, table.lang] }),
+    };
+  }
+);
+
+/**
+ * Build a json object aggregating translations with languages as keys and joined columns as nested
+ * properties.
+ */
+export function aggTranslations<TSelection extends ColumnsSelection>(selection: TSelection) {
+  return jsonObjectAgg(languages.lang, jsonBuildObject(selection));
+}
+
+/**
+ * Join translations through the languages table.
+ */
+export function joinTranslations<
+  TSelect extends PgSelect,
+  TTranslations extends
+    | (AnyTable<TableConfig> & LangColumn)
+    | (Subquery<string, Record<string, unknown>> & LangColumn),
+>(select: TSelect, translations: TTranslations, on: SQL) {
+  return select
+    .leftJoin(languages, tru)
+    .leftJoin(translations, and(on, eq(languages.lang, translations.lang)));
+}
+
+const projectsWithTranslations = await joinTranslations(
+  db
+    .select({
+      ...getColumns(projects),
+      translations: aggTranslations(getColumns(projectsTranslations)),
+    })
+    .from(projects),
+  projectsTranslations,
+  eq(projects.id, projectsTranslations.id)
+);
+
+// Would return aggregated data as:
+// {
+//  id: string,
+//  created_by_id: string,
+//  translations: {
+//   Record<AppLanguage, {
+//    id: string,
+//    lang: AppLanguage,
+//    title?: string,
+//    description?: string
+//   }>
+//  }
+// }[]
+// ```
+````
