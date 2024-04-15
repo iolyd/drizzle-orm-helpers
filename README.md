@@ -24,7 +24,7 @@ A crude auto-generated
 
 ### Aggregating translations
 
-````ts
+```ts
 const APP_LANGUAGES = ['fr', 'en', 'es'] as const;
 type AppLanguage = (typeof APP_LANGUAGES)[number]; // 'fr' | 'en' | 'es';
 
@@ -79,7 +79,7 @@ export function joinTranslations<
     | (Subquery<string, Record<string, unknown>> & LangColumn),
 >(select: TSelect, translations: TTranslations, on: SQL) {
   return select
-    .leftJoin(languages, tru)
+    .leftJoin(languages, $true)
     .leftJoin(translations, and(on, eq(languages.lang, translations.lang)));
 }
 
@@ -95,17 +95,16 @@ const projectsWithTranslations = await joinTranslations(
 );
 
 // Would return aggregated data as:
+//
 // {
-//  id: string,
-//  created_by_id: string,
-//  translations: {
-//   Record<AppLanguage, {
-//    id: string,
-//    lang: AppLanguage,
-//    title?: string,
-//    description?: string
+//   id: string,
+//   created_by_id: string,
+//   translations: Record<'fr' | 'en' | 'es', {
+//     id: string,
+//     lang: 'fr' | 'en' | 'es',
+//     title?: string,
+//     description?: string
 //   }>
-//  }
+// }
 // }[]
-// ```
-````
+```
