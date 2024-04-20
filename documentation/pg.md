@@ -1963,9 +1963,9 @@ with the `config.enum`.
 #### Type parameters
 
 | Type parameter              |
-| :-------------------------- |
+| :-------------------------- | -------------------- |
 | `TName` extends `string`    |
-| `TEnum` extends `string`\[] |
+| `TEnum` extends `string`\[] | readonly `string`\[] |
 | `TConfig` extends `Object`  |
 
 #### Parameters

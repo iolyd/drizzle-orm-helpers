@@ -93,18 +93,36 @@ const projectsWithTranslations = await joinTranslations(
   projectsTranslations,
   eq(projects.id, projectsTranslations.id)
 );
+```
 
-// Would return aggregated data as:
-//
-// {
-//   id: string,
-//   created_by_id: string,
-//   translations: Record<'fr' | 'en' | 'es', {
-//     id: string,
-//     lang: 'fr' | 'en' | 'es',
-//     title?: string,
-//     description?: string
-//   }>
-// }
-// }[]
+Would return aggregated data with expected types as:
+
+```json
+[
+  {
+    id: string,
+    created_by_id: string,
+    translations: {
+      fr: {
+        id: string,
+        lang: string,
+        title?: string,
+        description?: string
+      },
+      en: {
+        id: string,
+        lang: string,
+        title?: string,
+        description?: string
+      }
+      es: {
+        id: string,
+        lang: string,
+        title?: string,
+        description?: string
+      }
+    }
+  },
+  //...
+]
 ```

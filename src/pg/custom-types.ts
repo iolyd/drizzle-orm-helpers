@@ -16,7 +16,7 @@ import { RANGE_BOUND_BRACKETS } from './internals';
  */
 export function textenum<
 	TName extends string,
-	const TEnum extends string[],
+	const TEnum extends string[] | Readonly<string[]>,
 	TConfig extends {
 		enum: TEnum;
 		fallback: TConfig['enum'][number] | Error | ((value: string) => TConfig['enum'][number]);
