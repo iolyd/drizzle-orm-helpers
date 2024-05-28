@@ -35,7 +35,7 @@
 
 ## Type Aliases
 
-<a id="anyselect" name="anyselect"></a>
+<a id="anyselect" name="anyselect" />
 
 ### AnySelect
 
@@ -53,7 +53,7 @@ Dialect agnostic AnySelect.
 
 ---
 
-<a id="infercolumntypet" name="infercolumntypet"></a>
+<a id="infercolumntypet" name="infercolumntypet" />
 
 ### InferColumnType\<T>
 
@@ -65,13 +65,13 @@ Infer type of table column.
 
 #### Type parameters
 
-| Type parameter                                               |
-| :----------------------------------------------------------- |
-| `T` extends (...`config`: `never`\[]) => `ColumnBuilderBase` |
+| Type parameter                                                 |
+| :------------------------------------------------------------- |
+| `T` _extends_ (...`config`: `never`\[]) => `ColumnBuilderBase` |
 
 ---
 
-<a id="infercolumnst" name="infercolumnst"></a>
+<a id="infercolumnst" name="infercolumnst" />
 
 ### InferColumns\<T>
 
@@ -83,15 +83,18 @@ Infer table columns or (sub)query fields.
 
 #### Type parameters
 
-| Type parameter |
-| :------------- |
-
-| `T` extends | `Table` | `View` | `Subquery` | `WithSubquery` | [`AnySelect`](README.md#anyselect)
-|
+| Type parameter                        |
+| :------------------------------------ |
+| `T` _extends_                         |
+| \| `Table`                            |
+| \| `View`                             |
+| \| `Subquery`                         |
+| \| `WithSubquery`                     |
+| \| [`AnySelect`](README.md#anyselect) |
 
 ---
 
-<a id="inferdatat" name="inferdatat"></a>
+<a id="inferdatat" name="inferdatat" />
 
 ### InferData\<T>
 
@@ -103,13 +106,13 @@ Infer any SQL wrapper's expected return data type.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 ---
 
-<a id="infernameoraliast" name="infernameoraliast"></a>
+<a id="infernameoraliast" name="infernameoraliast" />
 
 ### InferNameOrAlias\<T>
 
@@ -121,13 +124,13 @@ Infer a table's name or a (sub)query's alias.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 ---
 
-<a id="schema" name="schema"></a>
+<a id="schema" name="schema" />
 
 ### Schema
 
@@ -139,7 +142,7 @@ Dialect-agnostic schema. Excludes SQLite.
 
 ---
 
-<a id="select" name="select"></a>
+<a id="select" name="select" />
 
 ### Select
 
@@ -157,7 +160,7 @@ Dialect agnostic select.
 
 ---
 
-<a id="subquerywithselectiontselectiontname" name="subquerywithselectiontselectiontname"></a>
+<a id="subquerywithselectiontselectiontname" name="subquerywithselectiontselectiontname" />
 
 ### SubqueryWithSelection\<TSelection, TName>
 
@@ -169,14 +172,14 @@ Dialect-agnostic subquery with selection.
 
 #### Type parameters
 
-| Type parameter                          |
-| :-------------------------------------- |
-| `TSelection` extends `ColumnsSelection` |
-| `TName` extends `string`                |
+| Type parameter                            |
+| :---------------------------------------- |
+| `TSelection` _extends_ `ColumnsSelection` |
+| `TName` _extends_ `string`                |
 
 ---
 
-<a id="withsubquerywithselectiontselectiontalias" name="withsubquerywithselectiontselectiontalias"></a>
+<a id="withsubquerywithselectiontselectiontalias" name="withsubquerywithselectiontselectiontalias" />
 
 ### WithSubqueryWithSelection\<TSelection, TAlias>
 
@@ -188,14 +191,14 @@ Dialect-agnostic with subquery with selection.
 
 #### Type parameters
 
-| Type parameter                          |
-| :-------------------------------------- |
-| `TSelection` extends `ColumnsSelection` |
-| `TAlias` extends `string`               |
+| Type parameter                            |
+| :---------------------------------------- |
+| `TSelection` _extends_ `ColumnsSelection` |
+| `TAlias` _extends_ `string`               |
 
 ## Variables
 
-<a id="$currenttimestamp" name="$currenttimestamp"></a>
+<a id="$currenttimestamp" name="$currenttimestamp" />
 
 ### $currentTimestamp
 
@@ -211,7 +214,7 @@ current_timestamp();
 
 ---
 
-<a id="$false" name="$false"></a>
+<a id="$false" name="$false" />
 
 ### $false
 
@@ -223,7 +226,7 @@ SQL template false value.
 
 ---
 
-<a id="$null" name="$null"></a>
+<a id="$null" name="$null" />
 
 ### $null
 
@@ -235,7 +238,7 @@ SQL template null value.
 
 ---
 
-<a id="$true" name="$true"></a>
+<a id="$true" name="$true" />
 
 ### $true
 
@@ -247,21 +250,21 @@ SQL template true value.
 
 ## Functions
 
-<a id="$boolean" name="$boolean"></a>
+<a id="$boolean" name="$boolean" />
 
 ### $boolean()
 
 ```ts
-$boolean<T>(value: T): SQL<T>
+function $boolean<T>(value: T): SQL<T>;
 ```
 
 SQL template boolean value.
 
 #### Type parameters
 
-| Type parameter        |
-| :-------------------- |
-| `T` extends `boolean` |
+| Type parameter          |
+| :---------------------- |
+| `T` _extends_ `boolean` |
 
 #### Parameters
 
@@ -271,25 +274,25 @@ SQL template boolean value.
 
 #### Returns
 
-`SQL`<`T`>
+`SQL`\<`T`>
 
 ---
 
-<a id="add" name="add"></a>
+<a id="add" name="add" />
 
 ### add()
 
 ```ts
-add<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
+function add<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>;
 ```
 
 Add values.
 
 #### Type parameters
 
-| Type parameter        |
-| :-------------------- | ---------------- |
-| `T` extends (`number` | `SQLWrapper`)\[] |
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` _extends_ (`number` \| `SQLWrapper`)\[] |
 
 #### Parameters
 
@@ -299,33 +302,35 @@ Add values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`SQL`\<`T`\[`number`] _extends_ `SQLWrapper` ? [`InferData`](README.md#inferdatat)\<`any`\[`any`]> :
 `T`\[`number`]>
 
 ---
 
-<a id="cases" name="cases"></a>
+<a id="cases" name="cases" />
 
 ### cases()
 
 ```ts
-cases<C, F, T, R>(conditionals: C, fallback?: F): SQL<R>
+function cases<C, F, T, R>(conditionals: C, fallback?: F): SQL<R>;
 ```
 
 Case condition chain.
 
 #### Type parameters
 
-| Type parameter           | Value                                           |
-| :----------------------- | :---------------------------------------------- | --- |
-| `C` extends (`undefined` | \[`SQLWrapper`, `unknown`])\[]                  | -   |
-| `F`                      | -                                               |
-| `T`                      | `NonUndefinable`<`TupleToUnion`<`C`>>           |
-| `R`                      | `T` extends \[`T0`, `T1`] ? `T0` extends `SQL`< |
-
-| `null` | `false` | `0` | `"0"` | `"f"` | `"F"`> ? `never` : `T1` extends `SQLWrapper` ?
-[`InferData`](README.md#inferdatat)<`T1`<`T1`>> : `T1` : `never` | `F` extends `void` ? `never` :
-`F` extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`F`<`F`>> : `F` |
+| Type parameter                                                                                                                                                                                                                                | Value                                                |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------- |
+| `C` _extends_ (`undefined` \| \[`SQLWrapper`, `unknown`])\[]                                                                                                                                                                                  | -                                                    |
+| `F`                                                                                                                                                                                                                                           | -                                                    |
+| `T`                                                                                                                                                                                                                                           | `NonUndefinable`\<`TupleToUnion`\<`C`>>              |
+| `R`                                                                                                                                                                                                                                           | `T` _extends_ \[`T0`, `T1`] ? `T0` _extends_ `SQL`\< |
+| \| `null`                                                                                                                                                                                                                                     |                                                      |
+| \| `false`                                                                                                                                                                                                                                    |                                                      |
+| \| `0`                                                                                                                                                                                                                                        |                                                      |
+| \| `"0"`                                                                                                                                                                                                                                      |                                                      |
+| \| `"f"`                                                                                                                                                                                                                                      |                                                      |
+| \| `"F"`> ? `never` : `T1` _extends_ `SQLWrapper` ? [`InferData`](README.md#inferdatat)\<`T1`\<`T1`>> : `T1` : `never` \| `F` _extends_ `void` ? `never` : `F` _extends_ `SQLWrapper` ? [`InferData`](README.md#inferdatat)\<`F`\<`F`>> : `F` |                                                      |
 
 #### Parameters
 
@@ -336,15 +341,13 @@ Case condition chain.
 
 #### Returns
 
-`SQL`<`R`>
+`SQL`\<`R`>
 
-#### Example
+#### Examples
 
 ```ts
 cases([[eq(thing, other), 2]], 3);
 ```
-
-#### Example
 
 ```sql
 CASE
@@ -359,19 +362,19 @@ Implement smarter typing to identify confirmable early returns with truthy condi
 
 ---
 
-<a id="coalesce" name="coalesce"></a>
+<a id="coalesce" name="coalesce" />
 
 ### coalesce()
 
 ```ts
-coalesce<T>(...values: [...T[]]): SQL<CoalesceSQL<T, true, never>>
+function coalesce<T>(...values: [...T[]]): SQL<CoalesceSQL<T, true, never>>;
 ```
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `unknown`\[] |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `unknown`\[] |
 
 #### Parameters
 
@@ -381,29 +384,29 @@ coalesce<T>(...values: [...T[]]): SQL<CoalesceSQL<T, true, never>>
 
 #### Returns
 
-`SQL`<`CoalesceSQL`<`T`, `true`, `never`>>
+`SQL`\<`CoalesceSQL`\<`T`, `true`, `never`>>
 
 #### See
 
-https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
+[https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL](https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL)
 
 ---
 
-<a id="distinct" name="distinct"></a>
+<a id="distinct" name="distinct" />
 
 ### distinct()
 
 ```ts
-distinct<T>(statement: T): SQL<InferData<T>>
+function distinct<T>(statement: T): SQL<InferData<T>>;
 ```
 
 Distinct keyword.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 #### Parameters
 
@@ -413,25 +416,27 @@ Distinct keyword.
 
 #### Returns
 
-`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
+`SQL`\<[`InferData`](README.md#inferdatat)\<`T`>>
 
 ---
 
-<a id="divide" name="divide"></a>
+<a id="divide" name="divide" />
 
 ### divide()
 
 ```ts
-divide<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
+function divide<T>(
+  ...values: T
+): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>;
 ```
 
 Divide values.
 
 #### Type parameters
 
-| Type parameter        |
-| :-------------------- | ---------------- |
-| `T` extends (`number` | `SQLWrapper`)\[] |
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` _extends_ (`number` \| `SQLWrapper`)\[] |
 
 #### Parameters
 
@@ -441,29 +446,31 @@ Divide values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`SQL`\<`T`\[`number`] _extends_ `SQLWrapper` ? [`InferData`](README.md#inferdatat)\<`any`\[`any`]> :
 `T`\[`number`]>
 
 ---
 
-<a id="getcolumns" name="getcolumns"></a>
+<a id="getcolumns" name="getcolumns" />
 
 ### getColumns()
 
 ```ts
-getColumns<T>(table: T): InferColumns<T>
+function getColumns<T>(table: T): InferColumns<T>;
 ```
 
 Should replace `getTableColumns` to allow for more input versatility.
 
 #### Type parameters
 
-| Type parameter |
-| :------------- |
-
-| `T` extends | `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`,
-`boolean`, `ColumnsSelection`> | [`AnySelect`](README.md#anyselect) | `Subquery`<`string`,
-`ColumnsSelection`> | `WithSubquery`<`string`, `ColumnsSelection`> |
+| Type parameter                                                    |
+| :---------------------------------------------------------------- |
+| `T` _extends_                                                     |
+| \| `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`>>> |
+| \| `View`\<`string`, `boolean`, `ColumnsSelection`>               |
+| \| [`AnySelect`](README.md#anyselect)                             |
+| \| `Subquery`\<`string`, `ColumnsSelection`>                      |
+| \| `WithSubquery`\<`string`, `ColumnsSelection`>                  |
 
 #### Parameters
 
@@ -473,29 +480,29 @@ Should replace `getTableColumns` to allow for more input versatility.
 
 #### Returns
 
-[`InferColumns`](README.md#infercolumnst)<`T`>
+[`InferColumns`](README.md#infercolumnst)\<`T`>
 
 #### See
 
-https://github.com/drizzle-team/drizzle-orm/pull/1789
+[drizzle-team/drizzle-orm#1789](https://github.com/drizzle-team/drizzle-orm/pull/1789)
 
 ---
 
-<a id="getnameoralias" name="getnameoralias"></a>
+<a id="getnameoralias" name="getnameoralias" />
 
 ### getNameOrAlias()
 
 ```ts
-getNameOrAlias<T>(query: T): InferNameOrAlias<T>
+function getNameOrAlias<T>(query: T): InferNameOrAlias<T>;
 ```
 
 Get a table's name or a (sub)query's alias.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 #### Parameters
 
@@ -505,23 +512,29 @@ Get a table's name or a (sub)query's alias.
 
 #### Returns
 
-[`InferNameOrAlias`](README.md#infernameoraliast)<`T`>
+[`InferNameOrAlias`](README.md#infernameoraliast)\<`T`>
 
 ---
 
-<a id="greatest" name="greatest"></a>
+<a id="greatest" name="greatest" />
 
 ### greatest()
 
 ```ts
-greatest<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }[number]>
+function greatest<T>(
+  ...values: [...T[]]
+): SQL<
+  {
+    [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>];
+  }[number]
+>;
 ```
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `unknown`\[] |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `unknown`\[] |
 
 #### Parameters
 
@@ -531,27 +544,34 @@ greatest<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I<I>]
 
 #### Returns
 
-`SQL`<`{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }`\[`number`]>
+`SQL`\<\{ \[I in string | number | symbol]: T\[I\<I>] extends SQLWrapper ? InferData\<any\[any]> :
+T\[I\<I>] }\[`number`]>
 
 #### See
 
-https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST
+[https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST](https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST)
 
 ---
 
-<a id="least" name="least"></a>
+<a id="least" name="least" />
 
 ### least()
 
 ```ts
-least<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }[number]>
+function least<T>(
+  ...values: [...T[]]
+): SQL<
+  {
+    [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>];
+  }[number]
+>;
 ```
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `unknown`\[] |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `unknown`\[] |
 
 #### Parameters
 
@@ -561,29 +581,32 @@ least<T>(...values: [...T[]]): SQL<{ [I in string | number | symbol]: T[I<I>] ex
 
 #### Returns
 
-`SQL`<`{ [I in string | number | symbol]: T[I<I>] extends SQLWrapper ? InferData<any[any]> : T[I<I>] }`\[`number`]>
+`SQL`\<\{ \[I in string | number | symbol]: T\[I\<I>] extends SQLWrapper ? InferData\<any\[any]> :
+T\[I\<I>] }\[`number`]>
 
 #### See
 
-https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST
+[https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST](https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-GREATEST-LEAST)
 
 ---
 
-<a id="multiply" name="multiply"></a>
+<a id="multiply" name="multiply" />
 
 ### multiply()
 
 ```ts
-multiply<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
+function multiply<T>(
+  ...values: T
+): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>;
 ```
 
 Multiply values.
 
 #### Type parameters
 
-| Type parameter        |
-| :-------------------- | ---------------- |
-| `T` extends (`number` | `SQLWrapper`)\[] |
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` _extends_ (`number` \| `SQLWrapper`)\[] |
 
 #### Parameters
 
@@ -593,27 +616,27 @@ Multiply values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`SQL`\<`T`\[`number`] _extends_ `SQLWrapper` ? [`InferData`](README.md#inferdatat)\<`any`\[`any`]> :
 `T`\[`number`]>
 
 ---
 
-<a id="nullif" name="nullif"></a>
+<a id="nullif" name="nullif" />
 
 ### nullIf()
 
 ```ts
-nullIf<V, C>(value: V, condition: C): SQL<null | V>
+function nullIf<V, C>(value: V, condition: C): SQL<null | V>;
 ```
 
 Return null if value meets condition. Useful to coalesce to something else.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `V` extends `SQLWrapper` |
-| `C`                      |
+| Type parameter             |
+| :------------------------- |
+| `V` _extends_ `SQLWrapper` |
+| `C`                        |
 
 #### Parameters
 
@@ -624,36 +647,36 @@ Return null if value meets condition. Useful to coalesce to something else.
 
 #### Returns
 
-`SQL`<`null` | `V`>
+`SQL`\<`null` | `V`>
 
 #### See
 
-https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-NULLIF
+[https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-NULLIF](https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-NULLIF)
 
 ---
 
-<a id="paginate" name="paginate"></a>
+<a id="paginate" name="paginate" />
 
 ### paginate()
 
 ```ts
-paginate<T>(qb: T, __namedParameters:     Object): PgSelect | MySqlSelect | SQLiteSelect
+function paginate<T>(qb: T, __namedParameters: object): PgSelect | MySqlSelect | SQLiteSelect;
 ```
 
 Paginate a query.
 
 #### Type parameters
 
-| Type parameter                           |
-| :--------------------------------------- |
-| `T` extends [`Select`](README.md#select) |
+| Type parameter                             |
+| :----------------------------------------- |
+| `T` _extends_ [`Select`](README.md#select) |
 
 #### Parameters
 
 | Parameter                 | Type     |
 | :------------------------ | :------- |
 | `qb`                      | `T`      |
-| `__namedParameters`       | `Object` |
+| `__namedParameters`       | `object` |
 | `__namedParameters.page`  | `number` |
 | `__namedParameters.size`? | `number` |
 
@@ -663,21 +686,23 @@ Paginate a query.
 
 ---
 
-<a id="subtract" name="subtract"></a>
+<a id="subtract" name="subtract" />
 
 ### subtract()
 
 ```ts
-subtract<T>(...values: T): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>
+function subtract<T>(
+  ...values: T
+): SQL<T[number] extends SQLWrapper ? InferData<any[any]> : T[number]>;
 ```
 
 Subtract values.
 
 #### Type parameters
 
-| Type parameter        |
-| :-------------------- | ---------------- |
-| `T` extends (`number` | `SQLWrapper`)\[] |
+| Type parameter                              |
+| :------------------------------------------ |
+| `T` _extends_ (`number` \| `SQLWrapper`)\[] |
 
 #### Parameters
 
@@ -687,5 +712,5 @@ Subtract values.
 
 #### Returns
 
-`SQL`<`T`\[`number`] extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`any`\[`any`]> :
+`SQL`\<`T`\[`number`] _extends_ `SQLWrapper` ? [`InferData`](README.md#inferdatat)\<`any`\[`any`]> :
 `T`\[`number`]>

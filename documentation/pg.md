@@ -83,7 +83,7 @@
 
 ## Type Aliases
 
-<a id="intervalunit" name="intervalunit"></a>
+<a id="intervalunit" name="intervalunit" />
 
 ### IntervalUnit
 
@@ -93,7 +93,7 @@ type IntervalUnit: ValueOf<typeof INTERVAL_UNITS>;
 
 ---
 
-<a id="rangeboundtype" name="rangeboundtype"></a>
+<a id="rangeboundtype" name="rangeboundtype" />
 
 ### RangeBoundType
 
@@ -103,12 +103,12 @@ type RangeBoundType: ValueOf<typeof RANGE_BOUND_TYPES>;
 
 ---
 
-<a id="rangevaluet" name="rangevaluet"></a>
+<a id="rangevaluet" name="rangevaluet" />
 
 ### RangeValue\<T>
 
 ```ts
-type RangeValue<T>: Object;
+type RangeValue<T>: object;
 ```
 
 #### Type parameters
@@ -119,14 +119,14 @@ type RangeValue<T>: Object;
 
 #### Type declaration
 
-| Member  | Type |
-| :------ | :--- | ------ |
-| `lower` | `T`  | `null` |
-| `upper` | `T`  | `null` |
+| Member  | Type          |
+| :------ | :------------ |
+| `lower` | `T` \| `null` |
+| `upper` | `T` \| `null` |
 
 ---
 
-<a id="regconfig" name="regconfig"></a>
+<a id="regconfig" name="regconfig" />
 
 ### Regconfig
 
@@ -136,7 +136,7 @@ type Regconfig: ValueOf<typeof REGCONFIGS>;
 
 ---
 
-<a id="regconfigstring" name="regconfigstring"></a>
+<a id="regconfigstring" name="regconfigstring" />
 
 ### RegconfigString
 
@@ -146,7 +146,7 @@ type RegconfigString: Regconfig | string & NonNullable<unknown>;
 
 ## Variables
 
-<a id="$empty" name="$empty"></a>
+<a id="$empty" name="$empty" />
 
 ### $empty
 
@@ -158,7 +158,7 @@ Postgres value returned for empty ranges.
 
 ---
 
-<a id="$emptyarray" name="$emptyarray"></a>
+<a id="$emptyarray" name="$emptyarray" />
 
 ### $emptyArray
 
@@ -170,7 +170,7 @@ Empty SQL array (not json typed)
 
 ---
 
-<a id="$emptyjsonarray" name="$emptyjsonarray"></a>
+<a id="$emptyjsonarray" name="$emptyjsonarray" />
 
 ### $emptyJsonArray
 
@@ -182,7 +182,7 @@ Empty array as SQL json.
 
 ---
 
-<a id="$emptyjsonobject" name="$emptyjsonobject"></a>
+<a id="$emptyjsonobject" name="$emptyjsonobject" />
 
 ### $emptyJsonObject
 
@@ -194,7 +194,7 @@ Empty record as SQL json.
 
 ---
 
-<a id="$nullarray" name="$nullarray"></a>
+<a id="$nullarray" name="$nullarray" />
 
 ### $nullArray
 
@@ -206,12 +206,12 @@ An array with a single null member. Typically returned when aggregation result i
 
 ---
 
-<a id="interval_units" name="interval_units"></a>
+<a id="interval_units" name="interval_units" />
 
 ### INTERVAL_UNITS
 
 ```ts
-const INTERVAL_UNITS: Object;
+const INTERVAL_UNITS: object;
 ```
 
 #### Type declaration
@@ -228,7 +228,7 @@ const INTERVAL_UNITS: Object;
 
 ---
 
-<a id="interval_units_arr_ordered" name="interval_units_arr_ordered"></a>
+<a id="interval_units_arr_ordered" name="interval_units_arr_ordered" />
 
 ### INTERVAL_UNITS_ARR_ORDERED
 
@@ -246,12 +246,12 @@ const INTERVAL_UNITS_ARR_ORDERED: readonly [
 
 ---
 
-<a id="range_bound_types" name="range_bound_types"></a>
+<a id="range_bound_types" name="range_bound_types" />
 
 ### RANGE_BOUND_TYPES
 
 ```ts
-const RANGE_BOUND_TYPES: Object;
+const RANGE_BOUND_TYPES: object;
 ```
 
 #### Type declaration
@@ -263,12 +263,12 @@ const RANGE_BOUND_TYPES: Object;
 
 ---
 
-<a id="range_empty" name="range_empty"></a>
+<a id="range_empty" name="range_empty" />
 
 ### RANGE_EMPTY
 
 ```ts
-const RANGE_EMPTY: Object;
+const RANGE_EMPTY: object;
 ```
 
 Value for app-side representation of empty postgres ranges.
@@ -282,12 +282,12 @@ Value for app-side representation of empty postgres ranges.
 
 ---
 
-<a id="regconfigs" name="regconfigs"></a>
+<a id="regconfigs" name="regconfigs" />
 
 ### REGCONFIGS
 
 ```ts
-const REGCONFIGS: Object;
+const REGCONFIGS: object;
 ```
 
 Postgres regconfig cfgnames.
@@ -335,22 +335,22 @@ FROM pg_catalog.pg_ts_config;
 
 ## Functions
 
-<a id="age" name="age"></a>
+<a id="age" name="age" />
 
 ### age()
 
 ```ts
-age<TOrigin, TTarget>(origin: TOrigin, target: TTarget): SQL<string>
+function age<TOrigin, TTarget>(origin: TOrigin, target: TTarget): SQL<string>;
 ```
 
 Subtract arguments, producing a “symbolic” result that uses years and months, rather than just days.
 
 #### Type parameters
 
-| Type parameter                 |
-| :----------------------------- | ------ |
-| `TOrigin` extends `SQLWrapper` | `Date` |
-| `TTarget` extends `SQLWrapper` | `Date` |
+| Type parameter                             |
+| :----------------------------------------- |
+| `TOrigin` _extends_ `SQLWrapper` \| `Date` |
+| `TTarget` _extends_ `SQLWrapper` \| `Date` |
 
 #### Parameters
 
@@ -361,7 +361,7 @@ Subtract arguments, producing a “symbolic” result that uses years and months
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 #### Example
 
@@ -372,12 +372,12 @@ age(timestamp '2001-04-10', timestamp '1957-06-13') → 43 years 9 mons 27 days
 
 ---
 
-<a id="arrayagg" name="arrayagg"></a>
+<a id="arrayagg" name="arrayagg" />
 
 ### arrayAgg()
 
 ```ts
-arrayAgg<T>(expression: T): SQL<null | InferData<T>>
+function arrayAgg<T>(expression: T): SQL<null | InferData<T>>;
 ```
 
 Aggregate sql values into an sql array.
@@ -389,9 +389,9 @@ dimensionality, and cannot be empty or null)
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 #### Parameters
 
@@ -401,11 +401,11 @@ dimensionality, and cannot be empty or null)
 
 #### Returns
 
-`SQL`<`null` | [`InferData`](README.md#inferdatat)<`T`>>
+`SQL`\<`null` | [`InferData`](README.md#inferdatat)\<`T`>>
 
 #### See
 
-https://www.postgresql.org/docs/9.5/functions-aggregate.html
+[https://www.postgresql.org/docs/9.5/functions-aggregate.html](https://www.postgresql.org/docs/9.5/functions-aggregate.html)
 
 #### Todo
 
@@ -413,12 +413,12 @@ Implement collapsing for null array with notNull option.
 
 ---
 
-<a id="booland" name="booland"></a>
+<a id="booland" name="booland" />
 
 ### boolAnd()
 
 ```ts
-boolAnd(...expression: SQLWrapper[]): SQL<boolean>
+function boolAnd(...expression: SQLWrapper[]): SQL<boolean>;
 ```
 
 True if all input values are true, otherwise false.
@@ -431,16 +431,16 @@ True if all input values are true, otherwise false.
 
 #### Returns
 
-`SQL`<`boolean`>
+`SQL`\<`boolean`>
 
 ---
 
-<a id="boolor" name="boolor"></a>
+<a id="boolor" name="boolor" />
 
 ### boolOr()
 
 ```ts
-boolOr(...expression: SQLWrapper[]): SQL<boolean>
+function boolOr(...expression: SQLWrapper[]): SQL<boolean>;
 ```
 
 True if at least one input value is true, otherwise false.
@@ -453,25 +453,25 @@ True if at least one input value is true, otherwise false.
 
 #### Returns
 
-`SQL`<`boolean`>
+`SQL`\<`boolean`>
 
 ---
 
-<a id="citext" name="citext"></a>
+<a id="citext" name="citext" />
 
 ### citext()
 
 ```ts
-citext<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<Object>
+function citext<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<object>;
 ```
 
 Ci-text postgres column type.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
 
 #### Parameters
 
@@ -482,29 +482,29 @@ Ci-text postgres column type.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `string`           |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `unknown`          |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+| Member        | Type               |
+| :------------ | :----------------- |
+| `columnType`  | `"PgCustomColumn"` |
+| `data`        | `string`           |
+| `dataType`    | `"custom"`         |
+| `driverParam` | `unknown`          |
+| `enumValues`  | `undefined`        |
+| `name`        | `TName`            |
 
 #### See
 
-https://www.postgresql.org/docs/current/citext.html
+[https://www.postgresql.org/docs/current/citext.html](https://www.postgresql.org/docs/current/citext.html)
 
 ---
 
-<a id="contained" name="contained"></a>
+<a id="contained" name="contained" />
 
 ### contained()
 
 ```ts
-contained(left: SQLWrapper, right: unknown): SQL<unknown>
+function contained(left: SQLWrapper, right: unknown): SQL<unknown>;
 ```
 
 Is the first cube contained in the second?
@@ -518,7 +518,7 @@ Is the first cube contained in the second?
 
 #### Returns
 
-`SQL`<`unknown`>
+`SQL`\<`unknown`>
 
 #### Example
 
@@ -528,12 +528,12 @@ cube <@ cube → boolean
 
 ---
 
-<a id="contains" name="contains"></a>
+<a id="contains" name="contains" />
 
 ### contains()
 
 ```ts
-contains(left: SQLWrapper, right: unknown): SQL<unknown>
+function contains(left: SQLWrapper, right: unknown): SQL<unknown>;
 ```
 
 Does the first cube contain the second?
@@ -547,7 +547,7 @@ Does the first cube contain the second?
 
 #### Returns
 
-`SQL`<`unknown`>
+`SQL`\<`unknown`>
 
 #### Example
 
@@ -557,21 +557,21 @@ cube @> cube → boolean
 
 ---
 
-<a id="cube" name="cube"></a>
+<a id="cube" name="cube" />
 
 ### cube()
 
 ```ts
-cube<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<Object>
+function cube<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<object>;
 ```
 
 Postgres cube column type with customizable amount of dimensions.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
 
 #### Parameters
 
@@ -582,29 +582,29 @@ Postgres cube column type with customizable amount of dimensions.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- | --------------------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `number`\[]        | \[`number`\[], `number`\[]] |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `number`\[]        | \[`number`\[], `number`\[]] |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+| Member        | Type                                       |
+| :------------ | :----------------------------------------- |
+| `columnType`  | `"PgCustomColumn"`                         |
+| `data`        | `number`\[] \| \[`number`\[], `number`\[]] |
+| `dataType`    | `"custom"`                                 |
+| `driverParam` | `number`\[] \| \[`number`\[], `number`\[]] |
+| `enumValues`  | `undefined`                                |
+| `name`        | `TName`                                    |
 
 #### See
 
-https://www.postgresql.org/docs/current/cube.html
+[https://www.postgresql.org/docs/current/cube.html](https://www.postgresql.org/docs/current/cube.html)
 
 ---
 
-<a id="cubedim" name="cubedim"></a>
+<a id="cubedim" name="cubedim" />
 
 ### cubeDim()
 
 ```ts
-cubeDim(cube: SQLWrapper): SQL<number>
+function cubeDim(cube: SQLWrapper): SQL<number>;
 ```
 
 Returns the number of dimensions of the cube.
@@ -617,7 +617,7 @@ Returns the number of dimensions of the cube.
 
 #### Returns
 
-`SQL`<`number`>
+`SQL`\<`number`>
 
 #### Example
 
@@ -628,12 +628,12 @@ cube_dim('(1,2),(3,4)') → 2
 
 ---
 
-<a id="cubedistance" name="cubedistance"></a>
+<a id="cubedistance" name="cubedistance" />
 
 ### cubeDistance()
 
 ```ts
-cubeDistance(...cubes: [SQLWrapper, SQLWrapper]): SQL<number>
+function cubeDistance(...cubes: [SQLWrapper, SQLWrapper]): SQL<number>;
 ```
 
 Returns the distance between two cubes. If both cubes are points, this is the normal distance
@@ -647,7 +647,7 @@ function.
 
 #### Returns
 
-`SQL`<`number`>
+`SQL`\<`number`>
 
 #### Example
 
@@ -658,23 +658,22 @@ cube_distance('(1,2)', '(3,4)') → 2.8284271247461903
 
 ---
 
-<a id="cubeenlarge" name="cubeenlarge"></a>
+<a id="cubeenlarge" name="cubeenlarge" />
 
 ### cubeEnlarge()
 
 ```ts
-cubeEnlarge(): void
+function cubeEnlarge(): void;
 ```
 
 Increases the size of the cube by the specified radius r in at least n dimensions. If the radius is
 negative the cube is shrunk instead. All defined dimensions are changed by the radius r. Lower-left
 coordinates are decreased by r and upper-right coordinates are increased by r. If a lower-left
 coordinate is increased to more than the corresponding upper-right coordinate (this can only happen
-when r
-`< 0) than both coordinates are set to their average. If n is greater than the number of defined dimensions and the cube is being enlarged (r >`
-0), then extra dimensions are added to make n altogether; 0 is used as the initial value for the
-extra coordinates. This function is useful for creating bounding boxes around a point for searching
-for nearby points.
+when r \< 0) than both coordinates are set to their average. If n is greater than the number of
+defined dimensions and the cube is being enlarged (r > 0), then extra dimensions are added to make n
+altogether; 0 is used as the initial value for the extra coordinates. This function is useful for
+creating bounding boxes around a point for searching for nearby points.
 
 #### Returns
 
@@ -689,12 +688,12 @@ cube_enlarge('(1,2),(3,4)', 0.5, 3) → (0.5, 1.5, -0.5),(3.5, 4.5, 0.5)
 
 ---
 
-<a id="cubeinter" name="cubeinter"></a>
+<a id="cubeinter" name="cubeinter" />
 
 ### cubeInter()
 
 ```ts
-cubeInter(): void
+function cubeInter(): void;
 ```
 
 Produces the intersection of two cubes.
@@ -712,12 +711,12 @@ cube_inter('(1,2)', '(3,4)') → (3, 4),(1, 2)
 
 ---
 
-<a id="cubeispoint" name="cubeispoint"></a>
+<a id="cubeispoint" name="cubeispoint" />
 
 ### cubeIsPoint()
 
 ```ts
-cubeIsPoint(cube: SQLWrapper): SQL<boolean>
+function cubeIsPoint(cube: SQLWrapper): SQL<boolean>;
 ```
 
 Returns true if the cube is a point, that is, the two defining corners are the same.
@@ -730,7 +729,7 @@ Returns true if the cube is a point, that is, the two defining corners are the s
 
 #### Returns
 
-`SQL`<`boolean`>
+`SQL`\<`boolean`>
 
 #### Example
 
@@ -741,12 +740,12 @@ cube_is_point(cube(1,1)) → t
 
 ---
 
-<a id="cubelowerleftcoord" name="cubelowerleftcoord"></a>
+<a id="cubelowerleftcoord" name="cubelowerleftcoord" />
 
 ### cubeLowerLeftCoord()
 
 ```ts
-cubeLowerLeftCoord(): void
+function cubeLowerLeftCoord(): void;
 ```
 
 Returns the n-th coordinate value for the lower left corner of the cube.
@@ -764,12 +763,12 @@ cube_ll_coord('(1,2),(3,4)', 2) → 2
 
 ---
 
-<a id="cubesubset" name="cubesubset"></a>
+<a id="cubesubset" name="cubesubset" />
 
 ### cubeSubset()
 
 ```ts
-cubeSubset(): void
+function cubeSubset(): void;
 ```
 
 Makes a new cube from an existing cube, using a list of dimension indexes from an array. Can be used
@@ -790,12 +789,12 @@ cube_subset(cube('(1,3,5),(6,7,8)'), ARRAY[3,2,1,1]) → (5, 3, 1, 1),(8, 7, 6, 
 
 ---
 
-<a id="cubeunion" name="cubeunion"></a>
+<a id="cubeunion" name="cubeunion" />
 
 ### cubeUnion()
 
 ```ts
-cubeUnion(): void
+function cubeUnion(): void;
 ```
 
 Produces the union of two cubes.
@@ -813,12 +812,12 @@ cube_union('(1,2)', '(3,4)') → (1, 2),(3, 4)
 
 ---
 
-<a id="cubeupperrightcoord" name="cubeupperrightcoord"></a>
+<a id="cubeupperrightcoord" name="cubeupperrightcoord" />
 
 ### cubeUpperRightCoord()
 
 ```ts
-cubeUpperRightCoord(): void
+function cubeUpperRightCoord(): void;
 ```
 
 ```
@@ -838,47 +837,50 @@ cube_ur_coord('(1,2),(3,4)', 2) → 4
 
 ---
 
-<a id="daitch_mokotoff" name="daitch_mokotoff"></a>
+<a id="daitch_mokotoff" name="daitch_mokotoff" />
 
 ### daitch_mokotoff()
 
 ```ts
-daitch_mokotoff(source: string | SQLWrapper): SQL<string[]>
+function daitch_mokotoff(source: string | SQLWrapper): SQL<string[]>;
 ```
 
 #### Parameters
 
-| Parameter | Type     |
-| :-------- | :------- | ------------ |
-| `source`  | `string` | `SQLWrapper` |
+| Parameter | Type                     |
+| :-------- | :----------------------- |
+| `source`  | `string` \| `SQLWrapper` |
 
 #### Returns
 
-`SQL`<`string`\[]>
+`SQL`\<`string`\[]>
 
 #### See
 
-https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-DAITCH-MOKOTOFF
+[https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-DAITCH-MOKOTOFF](https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-DAITCH-MOKOTOFF)
 
 ---
 
-<a id="daterange" name="daterange"></a>
+<a id="daterange" name="daterange" />
 
 ### daterange()
 
 ```ts
-daterange<TName, TConfig, TData>(name: TName, config?: TConfig): PgCustomColumnBuilder<Object>
+function daterange<TName, TConfig, TData>(
+  name: TName,
+  config?: TConfig
+): PgCustomColumnBuilder<object>;
 ```
 
 Implements postgres date range.
 
 #### Type parameters
 
-| Type parameter             | Value                                                                                                                                      |
-| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `TName` extends `string`   | -                                                                                                                                          |
-| `TConfig` extends `Object` | -                                                                                                                                          |
-| `TData`                    | `TConfig`\[`"mode"`] extends `"string"` ? [`RangeValue`](src/pg.md#rangevaluet)<`string`> : [`RangeValue`](src/pg.md#rangevaluet)<`number` | `Date`> |
+| Type parameter               | Value                                                                                                                                                     |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TName` _extends_ `string`   | -                                                                                                                                                         |
+| `TConfig` _extends_ `object` | -                                                                                                                                                         |
+| `TData`                      | `TConfig`\[`"mode"`] _extends_ `"string"` ? [`RangeValue`](src/pg.md#rangevaluet)\<`string`> : [`RangeValue`](src/pg.md#rangevaluet)\<`number` \| `Date`> |
 
 #### Parameters
 
@@ -889,94 +891,99 @@ Implements postgres date range.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `TData`            |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `string`           |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+| Member        | Type               |
+| :------------ | :----------------- |
+| `columnType`  | `"PgCustomColumn"` |
+| `data`        | `TData`            |
+| `dataType`    | `"custom"`         |
+| `driverParam` | `string`           |
+| `enumValues`  | `undefined`        |
+| `name`        | `TName`            |
 
 #### See
 
-- https://orm.drizzle.team/docs/custom-types Timestamp for reference.
-- https://www.postgresql.org/docs/current/rangetypes.html
+- [https://orm.drizzle.team/docs/custom-types](https://orm.drizzle.team/docs/custom-types) Timestamp
+  for reference.
+- [https://www.postgresql.org/docs/current/rangetypes.html](https://www.postgresql.org/docs/current/rangetypes.html)
 
 ---
 
-<a id="daterangeschema" name="daterangeschema"></a>
+<a id="daterangeschema" name="daterangeschema" />
 
 ### daterangeSchema()
 
 ```ts
-daterangeSchema<TMode, TData>(__namedParameters:     Object): ZodObject<Object, "strip", ZodTypeAny, { [k_1 in "lower" | "upper"]: addQuestionMarks<baseObjectOutputType<Object>, (undefined extends TData ? never : "lower") | (undefined extends TData ? never : "upper")>[k_1] }, Object>
+function daterangeSchema<TMode, TData>(
+  __namedParameters: object
+): ZodObject<
+  object,
+  'strip',
+  ZodTypeAny,
+  { [k in 'lower' | 'upper']: addQuestionMarks<baseObjectOutputType<Object>, any>[k] },
+  object
+>;
 ```
 
 #### Type parameters
 
-| Type parameter             | Value                                            |
-| :------------------------- | :----------------------------------------------- | ------ |
-| `TMode` extends `"string"` | `"date"`                                         | -      |
-| `TData`                    | `TMode` extends `"string"` ? `string` : `number` | `Date` |
+| Type parameter                           | Value                                                        |
+| :--------------------------------------- | :----------------------------------------------------------- |
+| `TMode` _extends_ `"string"` \| `"date"` | -                                                            |
+| `TData`                                  | `TMode` _extends_ `"string"` ? `string` : `number` \| `Date` |
 
 #### Parameters
 
 | Parameter                 | Type     |
 | :------------------------ | :------- |
-| `__namedParameters`       | `Object` |
+| `__namedParameters`       | `object` |
 | `__namedParameters.max`?  | `Date`   |
 | `__namedParameters.min`?  | `Date`   |
 | `__namedParameters.mode`? | `TMode`  |
 
 #### Returns
 
-`ZodObject`<`Object`, `"strip"`, `ZodTypeAny`,
-`{ [k_1 in "lower" | "upper"]: addQuestionMarks<baseObjectOutputType<Object>, (undefined extends TData ? never : "lower") | (undefined extends TData ? never : "upper")>[k_1] }`,
-`Object`>
+`ZodObject`\<`object`, `"strip"`, `ZodTypeAny`, \{ \[k in "lower" | "upper"]:
+addQuestionMarks\<baseObjectOutputType\<Object>, any>\[k] }, `object`>
 
-> | Member  | Type                                                   | Value   |
-> | :------ | :----------------------------------------------------- | :------ | ---------------------------------------------------------------------------------- | -------- | ------- | ----------- |
-> | `lower` | `ZodEffects`<`ZodNullable`<`ZodDate`>, `TData`, `null` | `Date`> | `ZodEffects`<`ZodNullable`<`ZodUnion`<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` | `number` | `Date`> | lowerSchema |
-> | `upper` | `ZodEffects`<`ZodNullable`<`ZodDate`>, `TData`, `null` | `Date`> | `ZodEffects`<`ZodNullable`<`ZodUnion`<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` | `number` | `Date`> | upperSchema |
+| Member  | Type                                                                                                                                                                                | Value       |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------- |
+| `lower` | `ZodEffects`\<`ZodNullable`\<`ZodDate`>, `TData`, `null` \| `Date`> \| `ZodEffects`\<`ZodNullable`\<`ZodUnion`\<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` \| `number` \| `Date`> | lowerSchema |
+| `upper` | `ZodEffects`\<`ZodNullable`\<`ZodDate`>, `TData`, `null` \| `Date`> \| `ZodEffects`\<`ZodNullable`\<`ZodUnion`\<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` \| `number` \| `Date`> | upperSchema |
 
 ---
 
-<a id="difference" name="difference"></a>
+<a id="difference" name="difference" />
 
 ### difference()
 
 ```ts
-difference(...texts: [string | SQLWrapper, string | SQLWrapper]): SQL<number>
+function difference(...texts: [string | SQLWrapper, string | SQLWrapper]): SQL<number>;
 ```
 
 #### Parameters
 
-| Parameter  | Type       |
-| :--------- | :--------- | ---------------------- | ------------- |
-| ...`texts` | \[`string` | `SQLWrapper`, `string` | `SQLWrapper`] |
+| Parameter  | Type                                                  |
+| :--------- | :---------------------------------------------------- |
+| ...`texts` | \[`string` \| `SQLWrapper`, `string` \| `SQLWrapper`] |
 
 #### Returns
 
-`SQL`<`number`>
+`SQL`\<`number`>
 
 #### See
 
-https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-DAITCH-MOKOTOFF
+[https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-DAITCH-MOKOTOFF](https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-DAITCH-MOKOTOFF)
 
 ---
 
-<a id="distance" name="distance"></a>
+<a id="distance" name="distance" />
 
 ### distance()
 
 ```ts
-distance(
-   left: SQLWrapper,
-   right: unknown,
-__namedParameters:     Object): SQL<unknown>
+function distance(left: SQLWrapper, right: unknown, __namedParameters: object): SQL<unknown>;
 ```
 
 Computes the distance between two cubes.
@@ -987,28 +994,24 @@ Computes the distance between two cubes.
 | :------------------------ | :------------- |
 | `left`                    | `SQLWrapper`   |
 | `right`                   | `unknown`      |
-| `__namedParameters`       | `Object`       |
+| `__namedParameters`       | `object`       |
 | `__namedParameters.type`? | `DistanceType` |
 
 #### Returns
 
-`SQL`<`unknown`>
+`SQL`\<`unknown`>
 
-#### Example
+#### Examples
 
 ```sql
 -- Computes the Euclidean distance between the two cubes.
 cube <-> cube → float8
 ```
 
-#### Example
-
 ```sql
 -- Computes the taxicab (L-1 metric) distance between the two cubes.
 cube <#> cube → float8
 ```
-
-#### Example
 
 ```sql
 -- Computes the Chebyshev (L-inf metric) distance between the two cubes.
@@ -1017,12 +1020,12 @@ cube <=> cube → float8
 
 ---
 
-<a id="extract" name="extract"></a>
+<a id="extract" name="extract" />
 
 ### extract()
 
 ```ts
-extract(left: SQLWrapper, right: unknown): SQL<unknown>
+function extract(left: SQLWrapper, right: unknown): SQL<unknown>;
 ```
 
 Extracts the n-th coordinate of the cube (counting from 1).
@@ -1036,9 +1039,9 @@ Extracts the n-th coordinate of the cube (counting from 1).
 
 #### Returns
 
-`SQL`<`unknown`>
+`SQL`\<`unknown`>
 
-#### Example
+#### Examples
 
 ```sql
 cube -> integer → float8
@@ -1049,56 +1052,57 @@ bound of k-th dimension, n = 2 \* k means upper bound of k-th dimension. Negativ
 inverse value of the corresponding positive coordinate. This operator is designed for KNN-GiST
 support.
 
-#### Example
-
 ```sql
 cube ~> integer → float8
 ```
 
 ---
 
-<a id="generatedtsvector" name="generatedtsvector"></a>
+<a id="generatedtsvector" name="generatedtsvector" />
 
 ### generatedTsvector()
 
 ```ts
-generatedTsvector<TName>(dbName: TName, fieldConfig:     Object): PgCustomColumnBuilder<Object>
+function generatedTsvector<TName>(
+  dbName: TName,
+  fieldConfig: object
+): PgCustomColumnBuilder<object>;
 ```
 
 Tsvector type for generated columns used notably for fuzzy string search.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
 
 #### Parameters
 
-| Parameter               | Type        |
-| :---------------------- | :---------- | ------------ |
-| `dbName`                | `TName`     |
-| `fieldConfig`           | `Object`    |
-| `fieldConfig.language`  | `string`    | `SQLWrapper` |
-| `fieldConfig.sources`   | `string`\[] |
-| `fieldConfig.weighted`? | `boolean`   |
+| Parameter               | Type                     |
+| :---------------------- | :----------------------- |
+| `dbName`                | `TName`                  |
+| `fieldConfig`           | `object`                 |
+| `fieldConfig.language`  | `string` \| `SQLWrapper` |
+| `fieldConfig.sources`   | `string`\[]              |
+| `fieldConfig.weighted`? | `boolean`                |
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `string`           |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `unknown`          |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+| Member        | Type               |
+| :------------ | :----------------- |
+| `columnType`  | `"PgCustomColumn"` |
+| `data`        | `string`           |
+| `dataType`    | `"custom"`         |
+| `driverParam` | `unknown`          |
+| `enumValues`  | `undefined`        |
+| `name`        | `TName`            |
 
 #### See
 
-https://github.com/drizzle-team/drizzle-orm/issues/247
+[drizzle-team/drizzle-orm#247](https://github.com/drizzle-team/drizzle-orm/issues/247)
 
 #### Todo
 
@@ -1107,12 +1111,15 @@ or stay up to date on support for `generatedAs()`.
 
 ---
 
-<a id="geography" name="geography"></a>
+<a id="geography" name="geography" />
 
 ### geography()
 
 ```ts
-geography<TName, TGeography, TZ, TM, TSrid>(name: TName, config?:     Object): PgCustomColumnBuilder<Object>
+function geography<TName, TGeography, TZ, TM, TSrid>(
+  name: TName,
+  config?: object
+): PgCustomColumnBuilder<object>;
 ```
 
 PostGIS column type for generic or specific geographies.
@@ -1124,20 +1131,27 @@ to break.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
-
-| `TGeography` extends | `"Point"` | `"MultiPoint"` | `"LineString"` | `"MultiLineString"` |
-`"Polygon"` | `"MultiPolygon"` | `"GeometryCollection"` | | `TZ` extends `boolean` | | `TM` extends
-`boolean` | | `TSrid` extends `Srid` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
+| `TGeography` _extends_     |
+| \| `"Point"`               |
+| \| `"MultiPoint"`          |
+| \| `"LineString"`          |
+| \| `"MultiLineString"`     |
+| \| `"Polygon"`             |
+| \| `"MultiPolygon"`        |
+| \| `"GeometryCollection"`  |
+| `TZ` _extends_ `boolean`   |
+| `TM` _extends_ `boolean`   |
+| `TSrid` _extends_ `Srid`   |
 
 #### Parameters
 
 | Parameter      | Type         |
 | :------------- | :----------- |
 | `name`         | `TName`      |
-| `config`?      | `Object`     |
+| `config`?      | `object`     |
 | `config.m`?    | `TM`         |
 | `config.srid`? | `TSrid`      |
 | `config.type`? | `TGeography` |
@@ -1145,30 +1159,40 @@ to break.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type                                       |
-> | :------------ | :----------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                         |
-> | `data`        |                                            | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
-> | `dataType`    | `"custom"`                                 |
-> | `driverParam` | `string`                                   |
-> | `enumValues`  | `undefined`                                |
-> | `name`        | \`st_asgeojson"("${TName}") as "${TName}\` |
+| Member                                                     | Type                                         |
+| :--------------------------------------------------------- | :------------------------------------------- |
+| `columnType`                                               | `"PgCustomColumn"`                           |
+| `data`                                                     |                                              |
+| \| `Extract`\<`Point`, `object`>                           |                                              |
+| \| `Extract`\<`MultiPoint`, `object`>                      |                                              |
+| \| `Extract`\<`LineString`, `object`>                      |                                              |
+| \| `Extract`\<`MultiLineString`, `object`>                 |                                              |
+| \| `Extract`\<`Polygon`, `object`>                         |                                              |
+| \| `Extract`\<`MultiPolygon`, `object`>                    |                                              |
+| \| `Extract`\<`GeometryCollection`\<`Geometry`>, `object`> |                                              |
+| `dataType`                                                 | `"custom"`                                   |
+| `driverParam`                                              | `string`                                     |
+| `enumValues`                                               | `undefined`                                  |
+| `name`                                                     | \`st_asgeojson"("$\{TName}") as "$\{TName}\` |
 
 #### See
 
 Unstable until better support for custom type custom select is available (e.g.
-https://github.com/drizzle-team/drizzle-orm/pull/1423)
+[drizzle-team/drizzle-orm#1423](https://github.com/drizzle-team/drizzle-orm/pull/1423))
 
 ---
 
-<a id="geometry" name="geometry"></a>
+<a id="geometry" name="geometry" />
 
 ### geometry()
 
 ```ts
-geometry<TName, TGeometry, TZ, TM, TSrid>(name: TName, config?:     Object): PgCustomColumnBuilder<Object>
+function geometry<TName, TGeometry, TZ, TM, TSrid>(
+  name: TName,
+  config?: object
+): PgCustomColumnBuilder<object>;
 ```
 
 - PostGIS column type for generic or specific geometries.
@@ -1180,20 +1204,27 @@ to break.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
-
-| `TGeometry` extends | `"Point"` | `"MultiPoint"` | `"LineString"` | `"MultiLineString"` |
-`"Polygon"` | `"MultiPolygon"` | `"GeometryCollection"` | | `TZ` extends `boolean` | | `TM` extends
-`boolean` | | `TSrid` extends `Srid` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
+| `TGeometry` _extends_      |
+| \| `"Point"`               |
+| \| `"MultiPoint"`          |
+| \| `"LineString"`          |
+| \| `"MultiLineString"`     |
+| \| `"Polygon"`             |
+| \| `"MultiPolygon"`        |
+| \| `"GeometryCollection"`  |
+| `TZ` _extends_ `boolean`   |
+| `TM` _extends_ `boolean`   |
+| `TSrid` _extends_ `Srid`   |
 
 #### Parameters
 
 | Parameter      | Type        |
 | :------------- | :---------- |
 | `name`         | `TName`     |
-| `config`?      | `Object`    |
+| `config`?      | `object`    |
 | `config.m`?    | `TM`        |
 | `config.srid`? | `TSrid`     |
 | `config.type`? | `TGeometry` |
@@ -1201,30 +1232,37 @@ to break.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type                                       |
-> | :------------ | :----------------------------------------- | ---------------------------- | --------------------------------- | --------------------------------- | -------------------------------------- | ------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                         |
-> | `data`        |                                            | `Extract`<`Point`, `Object`> | `Extract`<`MultiPoint`, `Object`> | `Extract`<`LineString`, `Object`> | `Extract`<`MultiLineString`, `Object`> | `Extract`<`Polygon`, `Object`> | `Extract`<`MultiPolygon`, `Object`> | `Extract`<`GeometryCollection`<`Geometry`>, `Object`> |
-> | `dataType`    | `"custom"`                                 |
-> | `driverParam` | `string`                                   |
-> | `enumValues`  | `undefined`                                |
-> | `name`        | \`st_asgeojson"("${TName}") as "${TName}\` |
+| Member                                                     | Type                                         |
+| :--------------------------------------------------------- | :------------------------------------------- |
+| `columnType`                                               | `"PgCustomColumn"`                           |
+| `data`                                                     |                                              |
+| \| `Extract`\<`Point`, `object`>                           |                                              |
+| \| `Extract`\<`MultiPoint`, `object`>                      |                                              |
+| \| `Extract`\<`LineString`, `object`>                      |                                              |
+| \| `Extract`\<`MultiLineString`, `object`>                 |                                              |
+| \| `Extract`\<`Polygon`, `object`>                         |                                              |
+| \| `Extract`\<`MultiPolygon`, `object`>                    |                                              |
+| \| `Extract`\<`GeometryCollection`\<`Geometry`>, `object`> |                                              |
+| `dataType`                                                 | `"custom"`                                   |
+| `driverParam`                                              | `string`                                     |
+| `enumValues`                                               | `undefined`                                  |
+| `name`                                                     | \`st_asgeojson"("$\{TName}") as "$\{TName}\` |
 
 #### See
 
 Unstable until better support for custom type custom select is available (e.g.
-https://github.com/drizzle-team/drizzle-orm/pull/1423)
+[drizzle-team/drizzle-orm#1423](https://github.com/drizzle-team/drizzle-orm/pull/1423))
 
 ---
 
-<a id="getcurrenttsconfig" name="getcurrenttsconfig"></a>
+<a id="getcurrenttsconfig" name="getcurrenttsconfig" />
 
 ### getCurrentTsConfig()
 
 ```ts
-getCurrentTsConfig(): SQL<RegconfigString>
+function getCurrentTsConfig(): SQL<RegconfigString>;
 ```
 
 Get the database's currently set regconfig for text-search functionalities.
@@ -1235,26 +1273,26 @@ get_current_ts_config();
 
 #### Returns
 
-`SQL`<[`RegconfigString`](src/pg.md#regconfigstring)>
+`SQL`\<[`RegconfigString`](src/pg.md#regconfigstring)>
 
 ---
 
-<a id="intrange" name="intrange"></a>
+<a id="intrange" name="intrange" />
 
 ### intrange()
 
 ```ts
-intrange<TName, TConfig>(name: TName, config?: TConfig): PgCustomColumnBuilder<Object>
+function intrange<TName, TConfig>(name: TName, config?: TConfig): PgCustomColumnBuilder<object>;
 ```
 
 Implements postgres int4range and int8range types.
 
 #### Type parameters
 
-| Type parameter             |
-| :------------------------- |
-| `TName` extends `string`   |
-| `TConfig` extends `Object` |
+| Type parameter               |
+| :--------------------------- |
+| `TName` _extends_ `string`   |
+| `TConfig` _extends_ `object` |
 
 #### Parameters
 
@@ -1265,63 +1303,65 @@ Implements postgres int4range and int8range types.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type                                            |
-> | :------------ | :---------------------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                              |
-> | `data`        | [`RangeValue`](src/pg.md#rangevaluet)<`number`> |
-> | `dataType`    | `"custom"`                                      |
-> | `driverParam` | `string`                                        |
-> | `enumValues`  | `undefined`                                     |
-> | `name`        | `TName`                                         |
+| Member        | Type                                             |
+| :------------ | :----------------------------------------------- |
+| `columnType`  | `"PgCustomColumn"`                               |
+| `data`        | [`RangeValue`](src/pg.md#rangevaluet)\<`number`> |
+| `dataType`    | `"custom"`                                       |
+| `driverParam` | `string`                                         |
+| `enumValues`  | `undefined`                                      |
+| `name`        | `TName`                                          |
 
 #### See
 
-https://www.postgresql.org/docs/current/rangetypes.html
+[https://www.postgresql.org/docs/current/rangetypes.html](https://www.postgresql.org/docs/current/rangetypes.html)
 
 ---
 
-<a id="intrangeschema" name="intrangeschema"></a>
+<a id="intrangeschema" name="intrangeschema" />
 
 ### intrangeSchema()
 
 ```ts
-intrangeSchema(__namedParameters:     Object): ZodObject<Object, "strip", ZodTypeAny, Object, Object>
+function intrangeSchema(
+  __namedParameters: object
+): ZodObject<object, 'strip', ZodTypeAny, object, object>;
 ```
 
 #### Parameters
 
 | Parameter                | Type     |
 | :----------------------- | :------- |
-| `__namedParameters`      | `Object` |
+| `__namedParameters`      | `object` |
 | `__namedParameters.max`? | `number` |
 | `__namedParameters.min`? | `number` |
 
 #### Returns
 
-`ZodObject`<`Object`, `"strip"`, `ZodTypeAny`, `Object`, `Object`>
+`ZodObject`\<`object`, `"strip"`, `ZodTypeAny`, `object`, `object`>
 
-> | Member  | Type                       | Value       |
-> | :------ | :------------------------- | :---------- |
-> | `lower` | `ZodNullable`<`ZodNumber`> | lowerSchema |
-> | `upper` | `ZodNullable`<`ZodNumber`> | upperSchema |
+| Member  | Type                        | Value       |
+| :------ | :-------------------------- | :---------- |
+| `lower` | `ZodNullable`\<`ZodNumber`> | lowerSchema |
+| `upper` | `ZodNullable`\<`ZodNumber`> | upperSchema |
 
 ---
 
-<a id="isempty" name="isempty"></a>
+<a id="isempty" name="isempty" />
 
 ### isEmpty()
 
 ```ts
-isEmpty<T>(range: T): SQL<boolean>
+function isEmpty<T>(range: T): SQL<boolean>;
 ```
 
 #### Type parameters
 
-| Type parameter        |
-| :-------------------- |
-| `T` extends `unknown` |
+| Type parameter          |
+| :---------------------- |
+| `T` _extends_ `unknown` |
 
 #### Parameters
 
@@ -1331,52 +1371,58 @@ isEmpty<T>(range: T): SQL<boolean>
 
 #### Returns
 
-`SQL`<`boolean`>
+`SQL`\<`boolean`>
 
 ---
 
-<a id="jsonagg" name="jsonagg"></a>
+<a id="jsonagg" name="jsonagg" />
 
 ### jsonAgg()
 
 ```ts
-jsonAgg<T, N>(selection: T, __namedParameters:     Object): SQL<N extends true ? NonNullable<InferData<T>>[] : InferData<T>[] | [null]>
+function jsonAgg<T, N>(
+  selection: T,
+  __namedParameters: object
+): SQL<N extends true ? NonNullable<InferData<T>>[] : InferData<T>[] | [null]>;
 ```
 
 Aggregates values, including nulls, as a JSON array.
 
 #### Type parameters
 
-| Type parameter           | Value  |
-| :----------------------- | :----- |
-| `T` extends `SQLWrapper` | -      |
-| `N` extends `boolean`    | `true` |
+| Type parameter             | Value  |
+| :------------------------- | :----- |
+| `T` _extends_ `SQLWrapper` | -      |
+| `N` _extends_ `boolean`    | `true` |
 
 #### Parameters
 
 | Parameter                    | Type     |
 | :--------------------------- | :------- |
 | `selection`                  | `T`      |
-| `__namedParameters`          | `Object` |
+| `__namedParameters`          | `object` |
 | `__namedParameters.notNull`? | `N`      |
 
 #### Returns
 
-`SQL`<`N` extends `true` ? `NonNullable`<[`InferData`](README.md#inferdatat)<`T`>>\[] :
-[`InferData`](README.md#inferdatat)<`T`>\[] | \[`null`]>
+`SQL`\<`N` _extends_ `true` ? `NonNullable`\<[`InferData`](README.md#inferdatat)\<`T`>>\[] :
+[`InferData`](README.md#inferdatat)\<`T`>\[] | \[`null`]>
 
 #### See
 
-https://www.postgresql.org/docs/9.5/functions-aggregate.html
+[https://www.postgresql.org/docs/9.5/functions-aggregate.html](https://www.postgresql.org/docs/9.5/functions-aggregate.html)
 
 ---
 
-<a id="jsonaggbuildobject" name="jsonaggbuildobject"></a>
+<a id="jsonaggbuildobject" name="jsonaggbuildobject" />
 
 ### jsonAggBuildObject()
 
 ```ts
-jsonAggBuildObject<T>(shape: T, __namedParameters:     Object): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }[]>
+function jsonAggBuildObject<T>(
+  shape: T,
+  __namedParameters: object
+): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }[]>;
 ```
 
 Aggregate sql values into an array of json objects using a combination of `json_agg` and
@@ -1384,30 +1430,33 @@ Aggregate sql values into an array of json objects using a combination of `json_
 
 #### Type parameters
 
-| Type parameter                                     |
-| :------------------------------------------------- |
-| `T` extends `Record`<`string`, `ColumnsSelection`> |
+| Type parameter                                        |
+| :---------------------------------------------------- |
+| `T` _extends_ `Record`\<`string`, `ColumnsSelection`> |
 
 #### Parameters
 
 | Parameter                     | Type      |
 | :---------------------------- | :-------- |
 | `shape`                       | `T`       |
-| `__namedParameters`           | `Object`  |
+| `__namedParameters`           | `object`  |
 | `__namedParameters.distinct`? | `boolean` |
 
 #### Returns
 
-`SQL`<`{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }`\[]>
+`SQL`\<\{ \[K in string | number | symbol]: T\[K] extends SQLWrapper ? InferData\<any\[any]> : T\[K]
+}\[]>
 
 ---
 
-<a id="jsonbuildobject" name="jsonbuildobject"></a>
+<a id="jsonbuildobject" name="jsonbuildobject" />
 
 ### jsonBuildObject()
 
 ```ts
-jsonBuildObject<T>(shape: T): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }>
+function jsonBuildObject<T>(
+  shape: T
+): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }>;
 ```
 
 Build objects using \`json_build_object(k1, v1, ...kn, vn). Since it is a json method, it should
@@ -1415,9 +1464,9 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Type parameters
 
-| Type parameter                 |
-| :----------------------------- |
-| `T` extends `ColumnsSelection` |
+| Type parameter                   |
+| :------------------------------- |
+| `T` _extends_ `ColumnsSelection` |
 
 #### Parameters
 
@@ -1427,16 +1476,17 @@ return an object with unwrapped value types instead of SQL wrapped types.
 
 #### Returns
 
-`SQL`<`{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }`>
+`SQL`\<\{ \[K in string | number | symbol]: T\[K] extends SQLWrapper ? InferData\<any\[any]> : T\[K]
+}>
 
 ---
 
-<a id="jsonobjectagg" name="jsonobjectagg"></a>
+<a id="jsonobjectagg" name="jsonobjectagg" />
 
 ### jsonObjectAgg()
 
 ```ts
-jsonObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
+function jsonObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>;
 ```
 
 Aggregates name/value pairs as a JSON object; values can be null, but not names.
@@ -1446,12 +1496,12 @@ instead of an SQL wrapped type.
 
 #### Type parameters
 
-| Type parameter               | Value                                                                                                                                                                                                                                     |
-| :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `K` extends `AnyColumn`      | -                                                                                                                                                                                                                                         |
-| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                                      | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                         | -                                                                                                  |
-| `TK` extends `string`        | `number`                                                                                                                                                                                                                                  | `null` extends [`InferData`](README.md#inferdatat)<`K`> ? `never` : [`InferData`](README.md#inferdatat)<`K`> extends `string`          | `number` ? [`InferData`](README.md#inferdatat)<[`InferData`](README.md#inferdatat)<`K`>> : `never` |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V<(...)>["\_"]["columns"][Key]["_"]["notNull"] extends true ? V<(...)>["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferData`](README.md#inferdatat)<`V`<`V`>> : `never` |
+| Type parameter                                                                                                                | Value                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| :---------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `K` _extends_ `AnyColumn`                                                                                                     | -                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `V` _extends_ `SQL`\<`unknown`> \| `Aliased`\<`unknown`> \| `AnyTable`\<`TableConfig`\<`Column`\<`any`, `object`, `object`>>> | -                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `TK` _extends_ `string` \| `number`                                                                                           | `null` _extends_ [`InferData`](README.md#inferdatat)\<`K`> ? `never` : [`InferData`](README.md#inferdatat)\<`K`> _extends_ `string` \| `number` ? [`InferData`](README.md#inferdatat)\<[`InferData`](README.md#inferdatat)\<`K`>> : `never`                                                                                                                                                                              |
+| `TV`                                                                                                                          | `V` _extends_ `AnyTable`\<`TableConfig`\<`Column`\<`any`, `object`, `object`>>> ? \{ \[K in string]: \{ \[Key in string as Key]: V\<(...)>\["\_"]\["columns"]\[Key]\["\_"]\["notNull"] extends true ? V\<(...)>\["\_"]\["columns"]\[Key]\["\_"]\["data"] : null \| (...)\[(...)]\["columns"]\[Key]\["\_"]\["data"] }\[K] } : `V` _extends_ `SQL`\<`unknown`> ? [`InferData`](README.md#inferdatat)\<`V`\<`V`>> : `never` |
 
 #### Parameters
 
@@ -1462,7 +1512,7 @@ instead of an SQL wrapped type.
 
 #### Returns
 
-`SQL`<`Record`<`TK`, `TV`>>
+`SQL`\<`Record`\<`TK`, `TV`>>
 
 #### Example
 
@@ -1472,16 +1522,23 @@ json_object_agg(...)
 
 #### See
 
-https://www.postgresql.org/docs/9.5/functions-aggregate.html
+[https://www.postgresql.org/docs/9.5/functions-aggregate.html](https://www.postgresql.org/docs/9.5/functions-aggregate.html)
 
 ---
 
-<a id="jsonstripnulls" name="jsonstripnulls"></a>
+<a id="jsonstripnulls" name="jsonstripnulls" />
 
 ### jsonStripNulls()
 
 ```ts
-jsonStripNulls<T>(json: T): SQL<SetNonNullable<T extends SQLWrapper ? InferData<T<T>> : T, keyof T extends SQLWrapper ? InferData<T<T>> : T>>
+function jsonStripNulls<T>(
+  json: T
+): SQL<
+  SetNonNullable<
+    T extends SQLWrapper ? InferData<T<T>> : T,
+    keyof T extends SQLWrapper ? InferData<T<T>> : T
+  >
+>;
 ```
 
 SQL json_strip_nulls.
@@ -1500,29 +1557,30 @@ SQL json_strip_nulls.
 
 #### Returns
 
-`SQL`<`SetNonNullable`<`T` extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`T`<`T`>> :
-`T`, keyof `T` extends `SQLWrapper` ? [`InferData`](README.md#inferdatat)<`T`<`T`>> : `T`>>
+`SQL`\<`SetNonNullable`\<`T` _extends_ `SQLWrapper` ?
+[`InferData`](README.md#inferdatat)\<`T`\<`T`>> : `T`, keyof `T` _extends_ `SQLWrapper` ?
+[`InferData`](README.md#inferdatat)\<`T`\<`T`>> : `T`>>
 
 ---
 
-<a id="jsonbobjectagg" name="jsonbobjectagg"></a>
+<a id="jsonbobjectagg" name="jsonbobjectagg" />
 
 ### jsonbObjectAgg()
 
 ```ts
-jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>
+function jsonbObjectAgg<K, V, TK, TV>(name: K, value: V): SQL<Record<TK, TV>>;
 ```
 
 Aggregates name/value pairs as a JSON object; values can be null, but not names.
 
 #### Type parameters
 
-| Type parameter               | Value                                                                                                                                                                                                                                     |
-| :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `K` extends `AnyColumn`      | -                                                                                                                                                                                                                                         |
-| `V` extends `SQL`<`unknown`> | `Aliased`<`unknown`>                                                                                                                                                                                                                      | `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>>                                                                         | -                                                                                                  |
-| `TK` extends `string`        | `number`                                                                                                                                                                                                                                  | `null` extends [`InferData`](README.md#inferdatat)<`K`> ? `never` : [`InferData`](README.md#inferdatat)<`K`> extends `string`          | `number` ? [`InferData`](README.md#inferdatat)<[`InferData`](README.md#inferdatat)<`K`>> : `never` |
-| `TV`                         | `V` extends `AnyTable`<`TableConfig`<`Column`<`any`, `object`, `object`>>> ? `{ [K in string]: { [Key in string as Key]: V<(...)>["\_"]["columns"][Key]["_"]["notNull"] extends true ? V<(...)>["\_"]["columns"][Key]["_"]["data"] : null | (...)[(...)]["columns"][Key]["_"]["data"] }[K] }`:`V`extends`SQL`<`unknown`> ? [`InferData`](README.md#inferdatat)<`V`<`V`>> : `never` |
+| Type parameter                                                                                                                | Value                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| :---------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `K` _extends_ `AnyColumn`                                                                                                     | -                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `V` _extends_ `SQL`\<`unknown`> \| `Aliased`\<`unknown`> \| `AnyTable`\<`TableConfig`\<`Column`\<`any`, `object`, `object`>>> | -                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `TK` _extends_ `string` \| `number`                                                                                           | `null` _extends_ [`InferData`](README.md#inferdatat)\<`K`> ? `never` : [`InferData`](README.md#inferdatat)\<`K`> _extends_ `string` \| `number` ? [`InferData`](README.md#inferdatat)\<[`InferData`](README.md#inferdatat)\<`K`>> : `never`                                                                                                                                                                              |
+| `TV`                                                                                                                          | `V` _extends_ `AnyTable`\<`TableConfig`\<`Column`\<`any`, `object`, `object`>>> ? \{ \[K in string]: \{ \[Key in string as Key]: V\<(...)>\["\_"]\["columns"]\[Key]\["\_"]\["notNull"] extends true ? V\<(...)>\["\_"]\["columns"]\[Key]\["\_"]\["data"] : null \| (...)\[(...)]\["columns"]\[Key]\["\_"]\["data"] }\[K] } : `V` _extends_ `SQL`\<`unknown`> ? [`InferData`](README.md#inferdatat)\<`V`\<`V`>> : `never` |
 
 #### Parameters
 
@@ -1533,7 +1591,7 @@ Aggregates name/value pairs as a JSON object; values can be null, but not names.
 
 #### Returns
 
-`SQL`<`Record`<`TK`, `TV`>>
+`SQL`\<`Record`\<`TK`, `TV`>>
 
 #### Example
 
@@ -1543,27 +1601,31 @@ jsonb_object_agg(...)
 
 #### See
 
-https://www.postgresql.org/docs/9.5/functions-aggregate.html
+[https://www.postgresql.org/docs/9.5/functions-aggregate.html](https://www.postgresql.org/docs/9.5/functions-aggregate.html)
 
 ---
 
-<a id="makecube" name="makecube"></a>
+<a id="makecube" name="makecube" />
 
 ### makeCube()
 
 ```ts
-makeCube<T>(...args: T): SQL<number[]>
+function makeCube<T>(...args: T): SQL<number[]>;
 ```
 
 Makes a one dimensional cube with both coordinates the same.
 
 #### Type parameters
 
-| Type parameter |
-| :------------- |
-
-| `T` extends | `number`\[] | \[`number`\[], `number`\[]] | \[`number`] | \[`number`, `number`] |
-\[`SQLWrapper`, `number`] | \[`SQLWrapper`, `number`, `number`] |
+| Type parameter                         |
+| :------------------------------------- |
+| `T` _extends_                          |
+| \| `number`\[]                         |
+| \| \[`number`\[], `number`\[]]         |
+| \| \[`number`]                         |
+| \| \[`number`, `number`]               |
+| \| \[`SQLWrapper`, `number`]           |
+| \| \[`SQLWrapper`, `number`, `number`] |
 
 #### Parameters
 
@@ -1573,9 +1635,9 @@ Makes a one dimensional cube with both coordinates the same.
 
 #### Returns
 
-`SQL`<`number`\[]>
+`SQL`\<`number`\[]>
 
-#### Example
+#### Examples
 
 ```sql
 -- cube ( float8 ) → cube
@@ -1584,16 +1646,12 @@ cube(1) → (1)
 
 Makes a one dimensional cube.
 
-#### Example
-
 ```sql
 -- cube ( float8, float8 ) → cube
 cube(1, 2) → (1),(2)
 ```
 
 Makes a zero-volume cube using the coordinates defined by the array.
-
-#### Example
 
 ```sql
 -- cube ( float8[] ) → cube
@@ -1602,8 +1660,6 @@ cube(ARRAY[1,2,3]) → (1, 2, 3)
 
 Makes a cube with upper right and lower left coordinates as defined by the two arrays, which must be
 of the same length.
-
-#### Example
 
 ```sql
 -- cube ( float8[], float8[] ) → cube
@@ -1614,8 +1670,6 @@ Makes a new cube by adding a dimension on to an existing cube, with the same val
 endpoints of the new coordinate. This is useful for building cubes piece by piece from calculated
 values.
 
-#### Example
-
 ```sql
 -- cube ( cube, float8 ) → cube
 cube('(1,2),(3,4)'::cube, 5) → (1, 2, 5),(3, 4, 5)
@@ -1624,8 +1678,6 @@ cube('(1,2),(3,4)'::cube, 5) → (1, 2, 5),(3, 4, 5)
 Makes a new cube by adding a dimension on to an existing cube. This is useful for building cubes
 piece by piece from calculated values.
 
-#### Example
-
 ```sql
 --cube ( cube, float8, float8 ) → cube
 cube('(1,2),(3,4)'::cube, 5, 6) → (1, 2, 5),(3, 4, 6)
@@ -1633,30 +1685,30 @@ cube('(1,2),(3,4)'::cube, 5, 6) → (1, 2, 5),(3, 4, 6)
 
 ---
 
-<a id="nanoid" name="nanoid"></a>
+<a id="nanoid" name="nanoid" />
 
 ### nanoid()
 
 ```ts
-nanoid(__namedParameters: Object & Object | Object): SQL<string>
+function nanoid(__namedParameters: (object & object) | object): SQL<string>;
 ```
 
 Generate a nanoid using a postgres implementation of the nanoid function.
 
 #### Parameters
 
-| Parameter           | Type                |
-| :------------------ | :------------------ | -------- |
-| `__namedParameters` | `Object` & `Object` | `Object` |
+| Parameter           | Type                            |
+| :------------------ | :------------------------------ |
+| `__namedParameters` | `object` & `object` \| `object` |
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 #### See
 
 - [Postgres implementation of the nanoid generator](https://github.com/iolyd/drizzle-orm-helpers/blob/main/sql/nanoid.sql)
-- https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571
+- [https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571](https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571)
 
 #### Todo
 
@@ -1664,19 +1716,19 @@ Stay up to date when default values will accept 'sql' without having to pass par
 
 ---
 
-<a id="now" name="now"></a>
+<a id="now" name="now" />
 
 ### now()
 
 ```ts
-now(): SQL<Date>
+function now(): SQL<Date>;
 ```
 
 Get the current time (dynamically).
 
 #### Returns
 
-`SQL`<`Date`>
+`SQL`\<`Date`>
 
 #### Example
 
@@ -1686,22 +1738,22 @@ now();
 
 ---
 
-<a id="numrange" name="numrange"></a>
+<a id="numrange" name="numrange" />
 
 ### numrange()
 
 ```ts
-numrange<TName, TConfig>(name: TName, config?: TConfig): PgCustomColumnBuilder<Object>
+function numrange<TName, TConfig>(name: TName, config?: TConfig): PgCustomColumnBuilder<object>;
 ```
 
 Implements postgres numrange type.
 
 #### Type parameters
 
-| Type parameter             |
-| :------------------------- |
-| `TName` extends `string`   |
-| `TConfig` extends `Object` |
+| Type parameter               |
+| :--------------------------- |
+| `TName` _extends_ `string`   |
+| `TConfig` _extends_ `object` |
 
 #### Parameters
 
@@ -1712,56 +1764,58 @@ Implements postgres numrange type.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type                                            |
-> | :------------ | :---------------------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                              |
-> | `data`        | [`RangeValue`](src/pg.md#rangevaluet)<`number`> |
-> | `dataType`    | `"custom"`                                      |
-> | `driverParam` | `string`                                        |
-> | `enumValues`  | `undefined`                                     |
-> | `name`        | `TName`                                         |
+| Member        | Type                                             |
+| :------------ | :----------------------------------------------- |
+| `columnType`  | `"PgCustomColumn"`                               |
+| `data`        | [`RangeValue`](src/pg.md#rangevaluet)\<`number`> |
+| `dataType`    | `"custom"`                                       |
+| `driverParam` | `string`                                         |
+| `enumValues`  | `undefined`                                      |
+| `name`        | `TName`                                          |
 
 #### See
 
-https://www.postgresql.org/docs/current/rangetypes.html
+[https://www.postgresql.org/docs/current/rangetypes.html](https://www.postgresql.org/docs/current/rangetypes.html)
 
 ---
 
-<a id="numrangeschema" name="numrangeschema"></a>
+<a id="numrangeschema" name="numrangeschema" />
 
 ### numrangeSchema()
 
 ```ts
-numrangeSchema(__namedParameters:     Object): ZodObject<Object, "strip", ZodTypeAny, Object, Object>
+function numrangeSchema(
+  __namedParameters: object
+): ZodObject<object, 'strip', ZodTypeAny, object, object>;
 ```
 
 #### Parameters
 
 | Parameter                | Type     |
 | :----------------------- | :------- |
-| `__namedParameters`      | `Object` |
+| `__namedParameters`      | `object` |
 | `__namedParameters.max`? | `number` |
 | `__namedParameters.min`? | `number` |
 
 #### Returns
 
-`ZodObject`<`Object`, `"strip"`, `ZodTypeAny`, `Object`, `Object`>
+`ZodObject`\<`object`, `"strip"`, `ZodTypeAny`, `object`, `object`>
 
-> | Member  | Type                       | Value       |
-> | :------ | :------------------------- | :---------- |
-> | `lower` | `ZodNullable`<`ZodNumber`> | lowerSchema |
-> | `upper` | `ZodNullable`<`ZodNumber`> | upperSchema |
+| Member  | Type                        | Value       |
+| :------ | :-------------------------- | :---------- |
+| `lower` | `ZodNullable`\<`ZodNumber`> | lowerSchema |
+| `upper` | `ZodNullable`\<`ZodNumber`> | upperSchema |
 
 ---
 
-<a id="overlaps" name="overlaps"></a>
+<a id="overlaps" name="overlaps" />
 
 ### overlaps()
 
 ```ts
-overlaps(left: SQLWrapper, right: unknown): SQL<unknown>
+function overlaps(left: SQLWrapper, right: unknown): SQL<unknown>;
 ```
 
 Do the cubes overlap?
@@ -1775,7 +1829,7 @@ Do the cubes overlap?
 
 #### Returns
 
-`SQL`<`unknown`>
+`SQL`\<`unknown`>
 
 #### Example
 
@@ -1785,19 +1839,19 @@ cube && cube → boolean
 
 ---
 
-<a id="random" name="random"></a>
+<a id="random" name="random" />
 
 ### random()
 
 ```ts
-random(): SQL<number>
+function random(): SQL<number>;
 ```
 
 Postgres random function.
 
 #### Returns
 
-`SQL`<`number`>
+`SQL`\<`number`>
 
 Random number between 0 and 1.
 
@@ -1809,21 +1863,21 @@ random();
 
 ---
 
-<a id="regconfig-1" name="regconfig-1"></a>
+<a id="regconfig-1" name="regconfig-1" />
 
 ### regconfig()
 
 ```ts
-regconfig<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<Object>
+function regconfig<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<object>;
 ```
 
 Implements Postgres regconfig. Useful for text search language config storage.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
 
 #### Parameters
 
@@ -1834,38 +1888,38 @@ Implements Postgres regconfig. Useful for text search language config storage.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type                               |
-> | :------------ | :--------------------------------- |
-> | `columnType`  | `"PgCustomColumn"`                 |
-> | `data`        | [`Regconfig`](src/pg.md#regconfig) |
-> | `dataType`    | `"custom"`                         |
-> | `driverParam` | `unknown`                          |
-> | `enumValues`  | `undefined`                        |
-> | `name`        | `TName`                            |
+| Member        | Type                               |
+| :------------ | :--------------------------------- |
+| `columnType`  | `"PgCustomColumn"`                 |
+| `data`        | [`Regconfig`](src/pg.md#regconfig) |
+| `dataType`    | `"custom"`                         |
+| `driverParam` | `unknown`                          |
+| `enumValues`  | `undefined`                        |
+| `name`        | `TName`                            |
 
 #### See
 
-https://www.postgresql.org/docs/current/textsearch-controls.html
+[https://www.postgresql.org/docs/current/textsearch-controls.html](https://www.postgresql.org/docs/current/textsearch-controls.html)
 
 ---
 
-<a id="rowtojson" name="rowtojson"></a>
+<a id="rowtojson" name="rowtojson" />
 
 ### rowToJson()
 
 ```ts
-rowToJson<T>(row: T): SQL<InferData<T>>
+function rowToJson<T>(row: T): SQL<InferData<T>>;
 ```
 
 Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped type.
 
 #### Type parameters
 
-| Type parameter                                                          |
-| :---------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------- |
-| `T` extends `Table`<`TableConfig`<`Column`<`any`, `object`, `object`>>> | `View`<`string`, `boolean`, `ColumnsSelection`> | `Subquery`<`string`, `Record`<`string`, `unknown`>> |
+| Type parameter                                                                                                                                                                            |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `T` _extends_ `Table`\<`TableConfig`\<`Column`\<`any`, `object`, `object`>>> \| `View`\<`string`, `boolean`, `ColumnsSelection`> \| `Subquery`\<`string`, `Record`\<`string`, `unknown`>> |
 
 #### Parameters
 
@@ -1875,16 +1929,16 @@ Since it is a json method, it should return an unwrapped (raw) type instead of a
 
 #### Returns
 
-`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
+`SQL`\<[`InferData`](README.md#inferdatat)\<`T`>>
 
 ---
 
-<a id="setweight" name="setweight"></a>
+<a id="setweight" name="setweight" />
 
 ### setweight()
 
 ```ts
-setweight(tsvector: SQLWrapper, weight: string | number): SQL<string>
+function setweight(tsvector: SQLWrapper, weight: string | number): SQL<string>;
 ```
 
 The function setweight can be used to label the entries of a tsvector with a given weight, where a
@@ -1897,23 +1951,23 @@ be null.
 
 #### Parameters
 
-| Parameter  | Type         |
-| :--------- | :----------- | -------- |
-| `tsvector` | `SQLWrapper` |
-| `weight`   | `string`     | `number` |
+| Parameter  | Type                 |
+| :--------- | :------------------- |
+| `tsvector` | `SQLWrapper`         |
+| `weight`   | `string` \| `number` |
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 ---
 
-<a id="similar" name="similar"></a>
+<a id="similar" name="similar" />
 
 ### similar()
 
 ```ts
-similar(): void
+function similar(): void;
 ```
 
 #### Returns
@@ -1922,51 +1976,54 @@ similar(): void
 
 ---
 
-<a id="soundex" name="soundex"></a>
+<a id="soundex" name="soundex" />
 
 ### soundex()
 
 ```ts
-soundex(text: string | SQLWrapper): SQL<string>
+function soundex(text: string | SQLWrapper): SQL<string>;
 ```
 
 #### Parameters
 
-| Parameter | Type     |
-| :-------- | :------- | ------------ |
-| `text`    | `string` | `SQLWrapper` |
+| Parameter | Type                     |
+| :-------- | :----------------------- |
+| `text`    | `string` \| `SQLWrapper` |
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 #### See
 
-https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-SOUNDEX
+[https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-SOUNDEX](https://www.postgresql.org/docs/current/fuzzystrmatch.html#FUZZYSTRMATCH-SOUNDEX)
 
 ---
 
-<a id="textenum" name="textenum"></a>
+<a id="textenum" name="textenum" />
 
 ### textenum()
 
 ```ts
-textenum<TName, TEnum, TConfig>(name: TName, config: TConfig): PgCustomColumnBuilder<Object>
+function textenum<TName, TEnum, TConfig>(
+  name: TName,
+  config: TConfig
+): PgCustomColumnBuilder<object>;
 ```
 
 Text-based enum with runtime check and type inferrence. In other words, similar to drizzle's own
 `text` column with `config.enum` but this time with runtime peace-of mind.
 
 If you simply want a union-typed text without runtime safety of values, use drizzle's own `text`
-with the `config.enum`.
+with the `config.enum` configuration.
 
 #### Type parameters
 
-| Type parameter              |
-| :-------------------------- | -------------------- |
-| `TName` extends `string`    |
-| `TEnum` extends `string`\[] | readonly `string`\[] |
-| `TConfig` extends `Object`  |
+| Type parameter                                        |
+| :---------------------------------------------------- |
+| `TName` _extends_ `string`                            |
+| `TEnum` _extends_ `string`\[] \| readonly `string`\[] |
+| `TConfig` _extends_ `object`                          |
 
 #### Parameters
 
@@ -1977,38 +2034,38 @@ with the `config.enum`.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type                            |
-> | :------------ | :------------------------------ |
-> | `columnType`  | `"PgCustomColumn"`              |
-> | `data`        | `TConfig`\[`"enum"`]\[`number`] |
-> | `dataType`    | `"custom"`                      |
-> | `driverParam` | `string`                        |
-> | `enumValues`  | `undefined`                     |
-> | `name`        | `TName`                         |
+| Member        | Type                            |
+| :------------ | :------------------------------ |
+| `columnType`  | `"PgCustomColumn"`              |
+| `data`        | `TConfig`\[`"enum"`]\[`number`] |
+| `dataType`    | `"custom"`                      |
+| `driverParam` | `string`                        |
+| `enumValues`  | `undefined`                     |
+| `name`        | `TName`                         |
 
 #### See
 
-https://orm.drizzle.team/docs/column-types/pg#text
+[https://orm.drizzle.team/docs/column-types/pg#text](https://orm.drizzle.team/docs/column-types/pg#text)
 
 ---
 
-<a id="toexcluded" name="toexcluded"></a>
+<a id="toexcluded" name="toexcluded" />
 
 ### toExcluded()
 
 ```ts
-toExcluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferData<T[K]>> }
+function toExcluded<T>(columns: T): { [K in string | number | symbol]: SQL<InferData<T[K]>> };
 ```
 
 Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
 
 #### Type parameters
 
-| Type parameter                              |
-| :------------------------------------------ |
-| `T` extends `Record`<`string`, `AnyColumn`> |
+| Type parameter                                 |
+| :--------------------------------------------- |
+| `T` _extends_ `Record`\<`string`, `AnyColumn`> |
 
 #### Parameters
 
@@ -2018,25 +2075,25 @@ Get excluded column values in conflict cases. Useful for onConflictDoUpdate's se
 
 #### Returns
 
-`{ [K in string | number | symbol]: SQL<InferData<T[K]>> }`
+\{ \[K in string | number | symbol]: SQL\<InferData\<T\[K]>> }
 
 ---
 
-<a id="tointerval" name="tointerval"></a>
+<a id="tointerval" name="tointerval" />
 
 ### toInterval()
 
 ```ts
-toInterval<T>(value: T): SQL<string>
+function toInterval<T>(value: T): SQL<string>;
 ```
 
 Create an interval value by passing a value deconstructed into time units.
 
 #### Type parameters
 
-| Type parameter                                                                      |
-| :---------------------------------------------------------------------------------- |
-| `T` extends `Partial`<`Record`<[`IntervalUnit`](src/pg.md#intervalunit), `number`>> |
+| Type parameter                                                                          |
+| :-------------------------------------------------------------------------------------- |
+| `T` _extends_ `Partial`\<`Record`\<[`IntervalUnit`](src/pg.md#intervalunit), `number`>> |
 
 #### Parameters
 
@@ -2046,23 +2103,23 @@ Create an interval value by passing a value deconstructed into time units.
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 ---
 
-<a id="tojson" name="tojson"></a>
+<a id="tojson" name="tojson" />
 
 ### toJson()
 
 ```ts
-toJson<T>(anyelement: T): SQL<InferData<T>>
+function toJson<T>(anyelement: T): SQL<InferData<T>>;
 ```
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 #### Parameters
 
@@ -2072,27 +2129,27 @@ toJson<T>(anyelement: T): SQL<InferData<T>>
 
 #### Returns
 
-`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
+`SQL`\<[`InferData`](README.md#inferdatat)\<`T`>>
 
 #### See
 
-https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-TABLE
+[https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-TABLE](https://www.postgresql.org/docs/9.5/functions-json.html#FUNCTIONS-JSON-CREATION-TABLE)
 
 ---
 
-<a id="tojsonb" name="tojsonb"></a>
+<a id="tojsonb" name="tojsonb" />
 
 ### toJsonb()
 
 ```ts
-toJsonb<T>(anyelement: T): SQL<InferData<T>>
+function toJsonb<T>(anyelement: T): SQL<InferData<T>>;
 ```
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `T` extends `SQLWrapper` |
+| Type parameter             |
+| :------------------------- |
+| `T` _extends_ `SQLWrapper` |
 
 #### Parameters
 
@@ -2102,93 +2159,93 @@ toJsonb<T>(anyelement: T): SQL<InferData<T>>
 
 #### Returns
 
-`SQL`<[`InferData`](README.md#inferdatat)<`T`>>
+`SQL`\<[`InferData`](README.md#inferdatat)\<`T`>>
 
 ---
 
-<a id="torange" name="torange"></a>
+<a id="torange" name="torange" />
 
 ### toRange()
 
 ```ts
-toRange<T>(tuple: T, __namedParameters:     Object): SQL<T>
+function toRange<T>(tuple: T, __namedParameters: object): SQL<T>;
 ```
 
 Using canonical form of included lower bound and excluded upper bound. See
-https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE.
+[https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE](https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE).
 
 #### Type parameters
 
-| Type parameter            |
-| :------------------------ | --------------------- | --------- | ------------- | ------------------- | ------- |
-| `T` extends \[`undefined` | `number`, `undefined` | `number`] | \[`undefined` | `Date`, `undefined` | `Date`] |
+| Type parameter                                                                                                       |
+| :------------------------------------------------------------------------------------------------------------------- |
+| `T` _extends_ \[`undefined` \| `number`, `undefined` \| `number`] \| \[`undefined` \| `Date`, `undefined` \| `Date`] |
 
 #### Parameters
 
 | Parameter                       | Type                                         |
 | :------------------------------ | :------------------------------------------- |
 | `tuple`                         | `T`                                          |
-| `__namedParameters`             | `Object`                                     |
+| `__namedParameters`             | `object`                                     |
 | `__namedParameters.lowerBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
 | `__namedParameters.upperBound`? | [`RangeBoundType`](src/pg.md#rangeboundtype) |
 
 #### Returns
 
-`SQL`<`T`>
+`SQL`\<`T`>
 
 ---
 
-<a id="totsquery" name="totsquery"></a>
+<a id="totsquery" name="totsquery" />
 
 ### toTsquery()
 
 ```ts
-toTsquery(text: unknown, text:     Object): SQL<string>
+function toTsquery(text: unknown, text: object): SQL<string>;
 ```
 
 #### Parameters
 
-| Parameter         | Type         | Description                                      |
-| :---------------- | :----------- | :----------------------------------------------- | --- |
-| `text`            | `unknown`    | Source text to convert into a text search query. |
-| `text`            | `Object`     | Source text to convert into a text search query. |
-| `text.plain`?     | `boolean`    | -                                                |
-| `text.regconfig`? | `SQLWrapper` | [`RegconfigString`](src/pg.md#regconfigstring)   | -   |
+| Parameter         | Type                                                           | Description                                      |
+| :---------------- | :------------------------------------------------------------- | :----------------------------------------------- |
+| `text`            | `unknown`                                                      | Source text to convert into a text search query. |
+| `text`            | `object`                                                       | Source text to convert into a text search query. |
+| `text.plain`?     | `boolean`                                                      | -                                                |
+| `text.regconfig`? | `SQLWrapper` \| [`RegconfigString`](src/pg.md#regconfigstring) | -                                                |
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 ---
 
-<a id="totsvector" name="totsvector"></a>
+<a id="totsvector" name="totsvector" />
 
 ### toTsvector()
 
 ```ts
-toTsvector(text: unknown, text:     Object): SQL<string>
+function toTsvector(text: unknown, text: object): SQL<string>;
 ```
 
 #### Parameters
 
-| Parameter         | Type         | Description                                                                                                           |
-| :---------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------- | --- |
-| `text`            | `unknown`    | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
-| `text`            | `Object`     | Source text to convert into a text search vector.<br /><br /> `sql   to_tsvector();   --or;   plainto_tsvector();   ` |
-| `text.regconfig`? | `SQLWrapper` | [`RegconfigString`](src/pg.md#regconfigstring)                                                                        | -   |
+| Parameter         | Type                                                           | Description                                                                                                                    |
+| :---------------- | :------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| `text`            | `unknown`                                                      | <p>Source text to convert into a text search vector.</p> <code> to_tsvector();<p> --or;</p><p> plainto_tsvector();</p> </code> |
+| `text`            | `object`                                                       | <p>Source text to convert into a text search vector.</p> <code> to_tsvector();<p> --or;</p><p> plainto_tsvector();</p> </code> |
+| `text.regconfig`? | `SQLWrapper` \| [`RegconfigString`](src/pg.md#regconfigstring) | -                                                                                                                              |
 
 #### Returns
 
-`SQL`<`string`>
+`SQL`\<`string`>
 
 ---
 
-<a id="ts" name="ts"></a>
+<a id="ts" name="ts" />
 
 ### ts()
 
 ```ts
-ts(vector: SQLWrapper, querytext: SQLWrapper): SQL<unknown>
+function ts(vector: SQLWrapper, querytext: SQLWrapper): SQL<unknown>;
 ```
 
 Test a text search query against a ts_vector value.
@@ -2202,27 +2259,30 @@ Test a text search query against a ts_vector value.
 
 #### Returns
 
-`SQL`<`unknown`>
+`SQL`\<`unknown`>
 
 ---
 
-<a id="tsrange" name="tsrange"></a>
+<a id="tsrange" name="tsrange" />
 
 ### tsrange()
 
 ```ts
-tsrange<TName, TConfig, TData>(name: TName, config?: TConfig): PgCustomColumnBuilder<Object>
+function tsrange<TName, TConfig, TData>(
+  name: TName,
+  config?: TConfig
+): PgCustomColumnBuilder<object>;
 ```
 
 Implements Postgres timestamp range.
 
 #### Type parameters
 
-| Type parameter             | Value                                                                                                                                      |
-| :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `TName` extends `string`   | -                                                                                                                                          |
-| `TConfig` extends `Object` | -                                                                                                                                          |
-| `TData`                    | `TConfig`\[`"mode"`] extends `"string"` ? [`RangeValue`](src/pg.md#rangevaluet)<`string`> : [`RangeValue`](src/pg.md#rangevaluet)<`number` | `Date`> |
+| Type parameter               | Value                                                                                                                                                     |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TName` _extends_ `string`   | -                                                                                                                                                         |
+| `TConfig` _extends_ `object` | -                                                                                                                                                         |
+| `TData`                      | `TConfig`\[`"mode"`] _extends_ `"string"` ? [`RangeValue`](src/pg.md#rangevaluet)\<`string`> : [`RangeValue`](src/pg.md#rangevaluet)\<`number` \| `Date`> |
 
 #### Parameters
 
@@ -2233,30 +2293,38 @@ Implements Postgres timestamp range.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `TData`            |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `string`           |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+| Member        | Type               |
+| :------------ | :----------------- |
+| `columnType`  | `"PgCustomColumn"` |
+| `data`        | `TData`            |
+| `dataType`    | `"custom"`         |
+| `driverParam` | `string`           |
+| `enumValues`  | `undefined`        |
+| `name`        | `TName`            |
 
 #### See
 
-- https://www.postgresql.org/docs/current/rangetypes.html
-- https://github.com/bendrucker/postgres-date
+- [https://www.postgresql.org/docs/current/rangetypes.html](https://www.postgresql.org/docs/current/rangetypes.html)
+- [https://github.com/bendrucker/postgres-date](https://github.com/bendrucker/postgres-date)
 
 ---
 
-<a id="tsrangeschema" name="tsrangeschema"></a>
+<a id="tsrangeschema" name="tsrangeschema" />
 
 ### tsrangeSchema()
 
 ```ts
-tsrangeSchema<TMode, TData>(__namedParameters:     Object): ZodObject<Object, "strip", ZodTypeAny, { [k_1 in "lower" | "upper"]: addQuestionMarks<baseObjectOutputType<Object>, (undefined extends TData ? never : "lower") | (undefined extends TData ? never : "upper")>[k_1] }, Object>
+function tsrangeSchema<TMode, TData>(
+  __namedParameters: object
+): ZodObject<
+  object,
+  'strip',
+  ZodTypeAny,
+  { [k in 'lower' | 'upper']: addQuestionMarks<baseObjectOutputType<Object>, any>[k] },
+  object
+>;
 ```
 
 Because of typescript's peculiar handling of Inifinity/-Infinity, ranges without limit need to
@@ -2264,16 +2332,16 @@ consider number members that indicate infinite bounds.
 
 #### Type parameters
 
-| Type parameter             | Value                                            |
-| :------------------------- | :----------------------------------------------- | ------ |
-| `TMode` extends `"string"` | `"date"`                                         | -      |
-| `TData`                    | `TMode` extends `"string"` ? `string` : `number` | `Date` |
+| Type parameter                           | Value                                                        |
+| :--------------------------------------- | :----------------------------------------------------------- |
+| `TMode` _extends_ `"string"` \| `"date"` | -                                                            |
+| `TData`                                  | `TMode` _extends_ `"string"` ? `string` : `number` \| `Date` |
 
 #### Parameters
 
 | Parameter                         | Type      |
 | :-------------------------------- | :-------- |
-| `__namedParameters`               | `Object`  |
+| `__namedParameters`               | `object`  |
 | `__namedParameters.max`?          | `Date`    |
 | `__namedParameters.min`?          | `Date`    |
 | `__namedParameters.mode`?         | `TMode`   |
@@ -2281,32 +2349,31 @@ consider number members that indicate infinite bounds.
 
 #### Returns
 
-`ZodObject`<`Object`, `"strip"`, `ZodTypeAny`,
-`{ [k_1 in "lower" | "upper"]: addQuestionMarks<baseObjectOutputType<Object>, (undefined extends TData ? never : "lower") | (undefined extends TData ? never : "upper")>[k_1] }`,
-`Object`>
+`ZodObject`\<`object`, `"strip"`, `ZodTypeAny`, \{ \[k in "lower" | "upper"]:
+addQuestionMarks\<baseObjectOutputType\<Object>, any>\[k] }, `object`>
 
-> | Member  | Type                                                   | Value   |
-> | :------ | :----------------------------------------------------- | :------ | ---------------------------------------------------------------------------------- | -------- | ------- | ----------- |
-> | `lower` | `ZodEffects`<`ZodNullable`<`ZodDate`>, `TData`, `null` | `Date`> | `ZodEffects`<`ZodNullable`<`ZodUnion`<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` | `number` | `Date`> | lowerSchema |
-> | `upper` | `ZodEffects`<`ZodNullable`<`ZodDate`>, `TData`, `null` | `Date`> | `ZodEffects`<`ZodNullable`<`ZodUnion`<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` | `number` | `Date`> | upperSchema |
+| Member  | Type                                                                                                                                                                                | Value       |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------- |
+| `lower` | `ZodEffects`\<`ZodNullable`\<`ZodDate`>, `TData`, `null` \| `Date`> \| `ZodEffects`\<`ZodNullable`\<`ZodUnion`\<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` \| `number` \| `Date`> | lowerSchema |
+| `upper` | `ZodEffects`\<`ZodNullable`\<`ZodDate`>, `TData`, `null` \| `Date`> \| `ZodEffects`\<`ZodNullable`\<`ZodUnion`\<\[`ZodDate`, `ZodNumber`]>>, `TData`, `null` \| `number` \| `Date`> | upperSchema |
 
 ---
 
-<a id="tsvector" name="tsvector"></a>
+<a id="tsvector" name="tsvector" />
 
 ### tsvector()
 
 ```ts
-tsvector<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<Object>
+function tsvector<TName>(dbName: TName, fieldConfig?: unknown): PgCustomColumnBuilder<object>;
 ```
 
 Postgres text-search vector.
 
 #### Type parameters
 
-| Type parameter           |
-| :----------------------- |
-| `TName` extends `string` |
+| Type parameter             |
+| :------------------------- |
+| `TName` _extends_ `string` |
 
 #### Parameters
 
@@ -2317,13 +2384,13 @@ Postgres text-search vector.
 
 #### Returns
 
-`PgCustomColumnBuilder`<`Object`>
+`PgCustomColumnBuilder`\<`object`>
 
-> | Member        | Type               |
-> | :------------ | :----------------- |
-> | `columnType`  | `"PgCustomColumn"` |
-> | `data`        | `string`           |
-> | `dataType`    | `"custom"`         |
-> | `driverParam` | `unknown`          |
-> | `enumValues`  | `undefined`        |
-> | `name`        | `TName`            |
+| Member        | Type               |
+| :------------ | :----------------- |
+| `columnType`  | `"PgCustomColumn"` |
+| `data`        | `string`           |
+| `dataType`    | `"custom"`         |
+| `driverParam` | `unknown`          |
+| `enumValues`  | `undefined`        |
+| `name`        | `TName`            |

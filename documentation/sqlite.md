@@ -7,19 +7,19 @@
 
 ## Functions
 
-<a id="random" name="random"></a>
+<a id="random" name="random" />
 
 ### random()
 
 ```ts
-random(): SQL<number>
+function random(): SQL<number>;
 ```
 
 SQLite random function.
 
 #### Returns
 
-`SQL`<`number`>
+`SQL`\<`number`>
 
 Random random integer between -9223372036854775808 and +9223372036854775807.
 

@@ -13,7 +13,7 @@
 	"cleanOutputDir": true,
 	"hideBreadcrumbs": true,
 	"publicPath": ".",
-	"namedAnchors": true,
+	"useHTMLAnchors": true,
 	"readme": "none",
 	"githubPages": false,
 	"excludeGroups": false,

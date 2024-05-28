@@ -7,19 +7,19 @@
 
 ## Functions
 
-<a id="random" name="random"></a>
+<a id="random" name="random" />
 
 ### random()
 
 ```ts
-random(): SQL<number>
+function random(): SQL<number>;
 ```
 
 MySQL random function.
 
 #### Returns
 
-`SQL`<`number`>
+`SQL`\<`number`>
 
 Random number between 0 and 1.
 
