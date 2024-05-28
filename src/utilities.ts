@@ -178,3 +178,10 @@ export function paginate<T extends Select>(
 ) {
 	return qb.limit(size).offset(page * size);
 }
+
+// /**
+//  * ...
+//  */
+// export function uuidDashless() {
+// 	return sql`replace(uuid(), '-', '')`.mapWith(String);
+// }

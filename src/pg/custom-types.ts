@@ -10,7 +10,7 @@ import { RANGE_BOUND_BRACKETS } from './internals';
  * `text` column with `config.enum` but this time with runtime peace-of mind.
  *
  * If you simply want a union-typed text without runtime safety of values, use drizzle's own `text`
- * with the `config.enum`.
+ * with the `config.enum` configuration.
  *
  * @see https://orm.drizzle.team/docs/column-types/pg#text
  */
