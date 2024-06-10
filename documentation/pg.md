@@ -55,6 +55,7 @@
   - [jsonBuildObject()](#jsonbuildobject)
   - [jsonObjectAgg()](#jsonobjectagg)
   - [jsonStripNulls()](#jsonstripnulls)
+  - [jsonbBuildObject()](#jsonbbuildobject)
   - [jsonbObjectAgg()](#jsonbobjectagg)
   - [makeCube()](#makecube)
   - [nanoid()](#nanoid)
@@ -1426,7 +1427,7 @@ function jsonAggBuildObject<T>(
 ```
 
 Aggregate sql values into an array of json objects using a combination of `json_agg` and
-`json_build_object`.
+`jsonb_build_object`. Jsonb object building is used in lieu of json to allow use of distinct.
 
 #### Type parameters
 
@@ -1560,6 +1561,38 @@ SQL json_strip_nulls.
 `SQL`\<`SetNonNullable`\<`T` _extends_ `SQLWrapper` ?
 [`InferData`](README.md#inferdatat)\<`T`\<`T`>> : `T`, keyof `T` _extends_ `SQLWrapper` ?
 [`InferData`](README.md#inferdatat)\<`T`\<`T`>> : `T`>>
+
+---
+
+<a id="jsonbbuildobject" name="jsonbbuildobject" />
+
+### jsonbBuildObject()
+
+```ts
+function jsonbBuildObject<T>(
+  shape: T
+): SQL<{ [K in string | number | symbol]: T[K] extends SQLWrapper ? InferData<any[any]> : T[K] }>;
+```
+
+Build objects using \`jsonb_build_object(k1, v1, ...kn, vn). Since it is a jsonb method, it should
+return an object with unwrapped value types instead of SQL wrapped types.
+
+#### Type parameters
+
+| Type parameter                   |
+| :------------------------------- |
+| `T` _extends_ `ColumnsSelection` |
+
+#### Parameters
+
+| Parameter | Type |
+| :-------- | :--- |
+| `shape`   | `T`  |
+
+#### Returns
+
+`SQL`\<\{ \[K in string | number | symbol]: T\[K] extends SQLWrapper ? InferData\<any\[any]> : T\[K]
+}>
 
 ---
 
