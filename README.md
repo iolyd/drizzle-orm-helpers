@@ -76,7 +76,7 @@ export function joinTranslations<
   TSelect extends PgSelect,
   TTranslations extends
     | (AnyTable<TableConfig> & LangColumn)
-    | (Subquery<string, Record<string, unknown>> & LangColumn),
+    | (Subquery<string, ColumnSelection> & LangColumn),
 >(select: TSelect, translations: TTranslations, on: SQL) {
   return select
     .leftJoin(languages, $true)
