@@ -124,8 +124,26 @@ export function jsonBuildObject<T extends ColumnsSelection>(shape: T) {
 }
 
 /**
+ * Build objects using `jsonb_build_object(k1, v1, ...kn, vn). Since it is a jsonb method, it should
+ * return an object with unwrapped value types instead of SQL wrapped types.
+ */
+export function jsonbBuildObject<T extends ColumnsSelection>(shape: T) {
+	const chunks: SQLChunk[] = [];
+	Object.entries(shape).forEach(([key, value]) => {
+		if (chunks.length > 0) {
+			chunks.push(sql.raw(`,`));
+		}
+		chunks.push(sql.raw(`'${key}',`));
+		chunks.push(sql`${value}`);
+	});
+	return sql<{
+		[K in keyof T]: T[K] extends SQLWrapper ? InferData<T[K]> : T[K];
+	}>`jsonb_build_object(${sql.join(chunks)})`;
+}
+
+/**
  * Aggregate sql values into an array of json objects using a combination of `json_agg` and
- * `json_build_object`.
+ * `jsonb_build_object`. Jsonb object building is used in lieu of json to allow use of distinct.
  */
 export function jsonAggBuildObject<T extends ColumnsSelection>(
 	shape: T,
@@ -137,24 +155,11 @@ export function jsonAggBuildObject<T extends ColumnsSelection>(
 		// notNull?: boolean;
 	} = {}
 ) {
-	const chunks: SQL[] = [];
-	Object.entries(shape).forEach(([key, value]) => {
-		if (chunks.length > 0) {
-			chunks.push(sql.raw(`,`));
-		}
-		chunks.push(sql.raw(`'${key}',`));
-		chunks.push(sql`${value}`);
-	});
-	return sql.join([
-		new StringChunk('coalesce(json_agg(' + distinct ? 'distinct ' : ''),
-		new StringChunk('json_build_object('),
-		sql.join(chunks),
-		new StringChunk(")), '[]')"),
-	]) as SQL<
+	return sql<
 		{
 			[K in keyof T]: T[K] extends SQLWrapper ? InferData<T[K]> : T[K];
 		}[]
-	>;
+	>`coalesce(json_agg(${sql.raw(distinct ? 'distinct' : '')} ${jsonbBuildObject(shape)}), '${sql`[]`}')`;
 }
 
 /**
