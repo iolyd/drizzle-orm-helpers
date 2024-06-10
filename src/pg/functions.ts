@@ -127,7 +127,7 @@ export function jsonBuildObject<T extends ColumnsSelection>(shape: T) {
  * Aggregate sql values into an array of json objects using a combination of `json_agg` and
  * `json_build_object`.
  */
-export function jsonAggBuildObject<T extends Record<string, ColumnsSelection>>(
+export function jsonAggBuildObject<T extends ColumnsSelection>(
 	shape: T,
 	{
 		distinct = true,
