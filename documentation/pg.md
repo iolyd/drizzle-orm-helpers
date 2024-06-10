@@ -1430,9 +1430,9 @@ Aggregate sql values into an array of json objects using a combination of `json_
 
 #### Type parameters
 
-| Type parameter                                        |
-| :---------------------------------------------------- |
-| `T` _extends_ `Record`\<`string`, `ColumnsSelection`> |
+| Type parameter                   |
+| :------------------------------- |
+| `T` _extends_ `ColumnsSelection` |
 
 #### Parameters
 
