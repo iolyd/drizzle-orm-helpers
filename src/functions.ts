@@ -14,8 +14,8 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 			R | RemoveNull<H extends SQL | SQL.Aliased ? InferData<H> : never>
 		>
 	: N extends true
-		? SQL<R | null>
-		: SQL<R>;
+		? R | null
+		: R;
 /**
  * @see https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
  */
